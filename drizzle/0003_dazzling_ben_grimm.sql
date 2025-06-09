@@ -1,0 +1,1 @@
+ALTER TABLE "entries" ALTER COLUMN "date" SET DATA TYPE timestamp;

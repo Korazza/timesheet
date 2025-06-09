@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1749222222278,
+      "tag": "0000_violet_expediter",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1749224345574,
+      "tag": "0001_vengeful_paper_doll",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1749236506039,
+      "tag": "0002_curious_shard",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1749321887856,
+      "tag": "0003_dazzling_ben_grimm",
+      "breakpoints": true
+    }
+  ]
+}
