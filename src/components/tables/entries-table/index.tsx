@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import {
-	ColumnDef,
 	ColumnFiltersState,
 	SortingState,
 	flexRender,
@@ -21,26 +20,45 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Entry } from "@/db/schema"
+import { getColumns } from "./columns"
+import { EntryUpdateDialog } from "@/components/dialogs/entry-update-dialog"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { DatePicker } from "@/components/date-picker"
+import DateRangePicker from "@/components/date-range-picker"
 
-interface DataTableProps<TData, TValue> {
-	columns: ColumnDef<TData, TValue>[]
-	data: TData[]
+interface EntriesTableProps {
+	entries: Entry[]
 }
 
-export function DataTable<TData, TValue>({
-	columns,
-	data,
-}: DataTableProps<TData, TValue>) {
+export function EntriesTable({ entries }: EntriesTableProps) {
 	const [sorting, setSorting] = React.useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
 		[]
 	)
 
+	const [editingEntry, setEditingEntry] = React.useState<Entry | null>(null)
+
+	const onEditEntry = (entry: Entry) => {
+		setEditingEntry(entry)
+	}
+
+	const onDeleteEntry = (entry: Entry) => {
+		if (confirm(`Vuoi davvero eliminare l’entry del ${entry.date}?`)) {
+			console.log("Elimino:", entry)
+		}
+	}
+
+	const onEntryUpdateDialogOpeningChange = (open: boolean) => {
+		if (!open) setEditingEntry(null)
+	}
+
+	const columns = getColumns({ onEdit: onEditEntry, onDelete: onDeleteEntry })
+
 	const table = useReactTable({
-		data,
+		data: entries,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
@@ -56,14 +74,27 @@ export function DataTable<TData, TValue>({
 
 	return (
 		<div>
-			<div className="flex items-center py-4">
+			<EntryUpdateDialog
+				open={editingEntry !== null}
+				entry={editingEntry}
+				onOpenChange={onEntryUpdateDialogOpeningChange}
+			/>
+			<div className="flex items-center py-4 gap-2">
 				<Input
 					placeholder="Filtra clienti..."
-					value={(table.getColumn("clientId")?.getFilterValue() as string) ?? ""}
+					value={
+						(table.getColumn("clientId")?.getFilterValue() as string) ?? ""
+					}
 					onChange={(event) =>
 						table.getColumn("clientId")?.setFilterValue(event.target.value)
 					}
 					className="max-w-sm"
+				/>
+				<DateRangePicker
+				/* 					date={
+						(table.getColumn("date")?.getFilterValue() as Date) ?? new Date()
+					}
+					onChange={(date) => table.getColumn("date")?.setFilterValue(date)} */
 				/>
 			</div>
 			<div className="rounded-md border">
@@ -71,30 +102,31 @@ export function DataTable<TData, TValue>({
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
-								{headerGroup.headers.map((header) => {
-									return (
-										<TableHead key={header.id}>
-											{header.isPlaceholder
-												? null
-												: flexRender(
-														header.column.columnDef.header,
-														header.getContext()
-												  )}
-										</TableHead>
-									)
-								})}
+								{headerGroup.headers.map((header) => (
+									<TableHead key={header.id}>
+										{header.isPlaceholder
+											? null
+											: flexRender(
+													header.column.columnDef.header,
+													header.getContext()
+											  )}
+									</TableHead>
+								))}
 							</TableRow>
 						))}
 					</TableHeader>
 					<TableBody>
-						{table.getRowModel().rows?.length ? (
+						{table.getRowModel().rows.length ? (
 							table.getRowModel().rows.map((row) => (
 								<TableRow
 									key={row.id}
 									data-state={row.getIsSelected() && "selected"}
 								>
 									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>
+										<TableCell
+											key={cell.id}
+											className={cell.column.id === "actions" ? "" : ""}
+										>
 											{flexRender(
 												cell.column.columnDef.cell,
 												cell.getContext()
@@ -123,7 +155,10 @@ export function DataTable<TData, TValue>({
 					onClick={() => table.previousPage()}
 					disabled={!table.getCanPreviousPage()}
 				>
-					Previous
+					<ChevronLeft />
+				</Button>
+				<Button disabled={true} variant="outline">
+					{table.getPageCount()}
 				</Button>
 				<Button
 					variant="outline"
@@ -131,7 +166,7 @@ export function DataTable<TData, TValue>({
 					onClick={() => table.nextPage()}
 					disabled={!table.getCanNextPage()}
 				>
-					Next
+					<ChevronRight />
 				</Button>
 			</div>
 		</div>
