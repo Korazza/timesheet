@@ -1,55 +1,9 @@
 {
-  "id": "a03bdb94-ae86-4eb7-b521-a98fbeff91da",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.clients": {
-      "name": "clients",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "email": {
-          "name": "email",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "clients_email_unique": {
-          "name": "clients_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.employees": {
       "name": "employees",
       "schema": "",
@@ -106,15 +60,47 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "employees_email_unique": {
-          "name": "employees_email_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ]
+          ],
+          "nullsNotDistinct": false,
+          "name": "employees_email_unique"
         }
       },
-      "policies": {},
       "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false
+    },
+    "public.clients": {
+      "name": "clients",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {},
+      "policies": {},
       "isRLSEnabled": false
     },
     "public.entries": {
@@ -142,23 +128,36 @@
         },
         "type": {
           "name": "type",
-          "type": "entryType",
+          "type": "entry_type",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'WORK'"
         },
-        "start": {
-          "name": "start",
+        "activity_type": {
+          "name": "activity_type",
+          "type": "activity_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date": {
+          "name": "date",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true
         },
-        "end": {
-          "name": "end",
-          "type": "timestamp with time zone",
+        "hours": {
+          "name": "hours",
+          "type": "real",
           "primaryKey": false,
           "notNull": true
+        },
+        "overtime_hours": {
+          "name": "overtime_hours",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
         },
         "description": {
           "name": "description",
@@ -176,23 +175,11 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "entries_employee_id_employees_id_fk": {
-          "name": "entries_employee_id_employees_id_fk",
-          "tableFrom": "entries",
-          "tableTo": "employees",
-          "columnsFrom": [
-            "employee_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
         "entries_client_id_clients_id_fk": {
           "name": "entries_client_id_clients_id_fk",
           "tableFrom": "entries",
           "tableTo": "clients",
+          "schemaTo": "public",
           "columnsFrom": [
             "client_id"
           ],
@@ -201,32 +188,56 @@
           ],
           "onDelete": "set null",
           "onUpdate": "no action"
+        },
+        "entries_employee_id_employees_id_fk": {
+          "name": "entries_employee_id_employees_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "employees",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "employee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {},
       "checkConstraints": {},
+      "policies": {},
       "isRLSEnabled": false
     }
   },
   "enums": {
-    "public.entryType": {
-      "name": "entryType",
-      "schema": "public",
+    "public.activity_type": {
+      "name": "activity_type",
+      "values": [
+        "PROJECT",
+        "TASK",
+        "AMS"
+      ],
+      "schema": "public"
+    },
+    "public.entry_type": {
+      "name": "entry_type",
       "values": [
         "WORK",
         "HOLIDAY",
+        "PERMIT",
         "SICK"
-      ]
+      ],
+      "schema": "public"
     },
     "public.role": {
       "name": "role",
-      "schema": "public",
       "values": [
         "EMPLOYEE",
         "ADMIN"
-      ]
+      ],
+      "schema": "public"
     }
   },
   "schemas": {},
@@ -235,8 +246,11 @@
   "policies": {},
   "views": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
     "tables": {}
   }
 }

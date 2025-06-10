@@ -1,7 +1,7 @@
 import { SectionCards } from "@/components/section-cards"
 import { ChartArea } from "@/components/chart-area"
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
 	return (
 		<div className="flex flex-1 flex-col h-full">
 			<div className="@container/main flex flex-1 flex-col gap-2">

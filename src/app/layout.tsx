@@ -4,9 +4,6 @@ import { NextIntlClientProvider } from "next-intl"
 import { getLocale } from "next-intl/server"
 import { Geist, Geist_Mono } from "next/font/google"
 
-import { AppSidebar } from "@/components/app-sidebar"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
-import { SiteHeader } from "@/components/site-header"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -42,13 +39,7 @@ export default async function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<SidebarProvider>
-						<AppSidebar />
-						<SidebarInset>
-							<SiteHeader />
-							<NextIntlClientProvider>{children}</NextIntlClientProvider>
-						</SidebarInset>
-					</SidebarProvider>
+					<NextIntlClientProvider>{children}</NextIntlClientProvider>
 				</ThemeProvider>
 			</body>
 		</html>

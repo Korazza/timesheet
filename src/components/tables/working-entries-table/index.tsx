@@ -20,45 +20,45 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { WorkingEntryCreateDialog } from "@/components/dialogs/working-entry-create-dialog"
+import { WorkingEntryEditDialog } from "@/components/dialogs/working-entry-edit-dialog"
+import { WorkingEntryConfirmDeleteDialog } from "@/components/dialogs/working-entry-confirm-delete-dialog"
 import { Entry } from "@/db/schema"
+import { useEntries } from "@/hooks/use-entries"
+import { useDialog } from "@/hooks/use-dialog"
 import { getColumns } from "./columns"
-import { EntryUpdateDialog } from "@/components/dialogs/entry-update-dialog"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { DatePicker } from "@/components/date-picker"
-import DateRangePicker from "@/components/date-range-picker"
+import { WorkingEntriesTableToolbar } from "./toolbar"
+import { WorkingEntriesTablePagination } from "./pagination"
 
-interface EntriesTableProps {
-	entries: Entry[]
-}
-
-export function EntriesTable({ entries }: EntriesTableProps) {
+export function WorkingEntriesTable() {
+	const { workingEntries } = useEntries()
+	const { activeDialog, openDialog } = useDialog()
 	const [sorting, setSorting] = React.useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
 		[]
 	)
-
 	const [editingEntry, setEditingEntry] = React.useState<Entry | null>(null)
+	const [deletingEntry, setDeletingEntry] = React.useState<Entry | null>(null)
 
 	const onEditEntry = (entry: Entry) => {
 		setEditingEntry(entry)
+		openDialog("editEntry")
 	}
 
 	const onDeleteEntry = (entry: Entry) => {
-		if (confirm(`Vuoi davvero eliminare l’entry del ${entry.date}?`)) {
-			console.log("Elimino:", entry)
-		}
+		setDeletingEntry(entry)
+		openDialog("confirmDeleteEntry")
 	}
 
-	const onEntryUpdateDialogOpeningChange = (open: boolean) => {
-		if (!open) setEditingEntry(null)
-	}
+	React.useEffect(() => {
+		if (activeDialog !== "editEntry") setEditingEntry(null)
+		if (activeDialog !== "confirmDeleteEntry") setDeletingEntry(null)
+	}, [activeDialog])
 
 	const columns = getColumns({ onEdit: onEditEntry, onDelete: onDeleteEntry })
 
 	const table = useReactTable({
-		data: entries,
+		data: workingEntries,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
@@ -73,37 +73,18 @@ export function EntriesTable({ entries }: EntriesTableProps) {
 	})
 
 	return (
-		<div>
-			<EntryUpdateDialog
-				open={editingEntry !== null}
-				entry={editingEntry}
-				onOpenChange={onEntryUpdateDialogOpeningChange}
-			/>
-			<div className="flex items-center py-4 gap-2">
-				<Input
-					placeholder="Filtra clienti..."
-					value={
-						(table.getColumn("clientId")?.getFilterValue() as string) ?? ""
-					}
-					onChange={(event) =>
-						table.getColumn("clientId")?.setFilterValue(event.target.value)
-					}
-					className="max-w-sm"
-				/>
-				<DateRangePicker
-				/* 					date={
-						(table.getColumn("date")?.getFilterValue() as Date) ?? new Date()
-					}
-					onChange={(date) => table.getColumn("date")?.setFilterValue(date)} */
-				/>
-			</div>
-			<div className="rounded-md border">
+		<div className="space-y-4">
+			<WorkingEntriesTableToolbar table={table} />
+			<WorkingEntryCreateDialog />
+			<WorkingEntryEditDialog entry={editingEntry} />
+			<WorkingEntryConfirmDeleteDialog entry={deletingEntry} />
+			<div className="md:rounded-md border px-1">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => (
-									<TableHead key={header.id}>
+									<TableHead key={header.id} colSpan={header.colSpan}>
 										{header.isPlaceholder
 											? null
 											: flexRender(
@@ -116,17 +97,14 @@ export function EntriesTable({ entries }: EntriesTableProps) {
 						))}
 					</TableHeader>
 					<TableBody>
-						{table.getRowModel().rows.length ? (
+						{table.getRowModel().rows?.length ? (
 							table.getRowModel().rows.map((row) => (
 								<TableRow
 									key={row.id}
 									data-state={row.getIsSelected() && "selected"}
 								>
 									{row.getVisibleCells().map((cell) => (
-										<TableCell
-											key={cell.id}
-											className={cell.column.id === "actions" ? "" : ""}
-										>
+										<TableCell key={cell.id} className="">
 											{flexRender(
 												cell.column.columnDef.cell,
 												cell.getContext()
@@ -148,27 +126,7 @@ export function EntriesTable({ entries }: EntriesTableProps) {
 					</TableBody>
 				</Table>
 			</div>
-			<div className="flex items-center justify-end space-x-2 py-4">
-				<Button
-					variant="outline"
-					size="sm"
-					onClick={() => table.previousPage()}
-					disabled={!table.getCanPreviousPage()}
-				>
-					<ChevronLeft />
-				</Button>
-				<Button disabled={true} variant="outline">
-					{table.getPageCount()}
-				</Button>
-				<Button
-					variant="outline"
-					size="sm"
-					onClick={() => table.nextPage()}
-					disabled={!table.getCanNextPage()}
-				>
-					<ChevronRight />
-				</Button>
-			</div>
+			<WorkingEntriesTablePagination table={table} />
 		</div>
 	)
 }

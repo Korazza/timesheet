@@ -1,22 +1,12 @@
 "use client"
 
-import {
-	BadgeCheck,
-	Bell,
-	ChevronsUpDown,
-	CreditCard,
-	LogOut,
-	Sparkles,
-} from "lucide-react"
+import { EllipsisVertical, LogOut } from "lucide-react"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
-	DropdownMenuGroup,
 	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -25,16 +15,11 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar"
+import { logout } from "@/actions/auth"
+import { useUser } from "@/hooks/use-user"
 
-export function NavUser({
-	user,
-}: {
-	user: {
-		firstName: string
-		lastName: string
-		email: string
-	}
-}) {
+export function NavUser() {
+	const { user } = useUser()
 	const { isMobile } = useSidebar()
 
 	return (
@@ -44,12 +29,12 @@ export function NavUser({
 					<DropdownMenuTrigger asChild>
 						<SidebarMenuButton
 							size="lg"
-							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
 						>
 							<Avatar className="h-8 w-8 rounded-lg">
-								<AvatarFallback className="rounded-lg bg-primary text-secondary">
-									{user.firstName.charAt(0)}
-									{user.lastName.charAt(0)}
+								<AvatarFallback className="rounded-lg bg-primary font-semibold text-primary-foreground">
+									{user.firstName.charAt(0).toUpperCase()}
+									{user.lastName.charAt(0).toUpperCase()}
 								</AvatarFallback>
 							</Avatar>
 							<div className="grid flex-1 text-left text-sm leading-tight">
@@ -58,7 +43,7 @@ export function NavUser({
 								</span>
 								<span className="truncate text-xs">{user.email}</span>
 							</div>
-							<ChevronsUpDown className="ml-auto size-4" />
+							<EllipsisVertical className="ml-auto size-4" />
 						</SidebarMenuButton>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent
@@ -67,28 +52,7 @@ export function NavUser({
 						align="end"
 						sideOffset={4}
 					>
-						<DropdownMenuGroup>
-							<DropdownMenuItem>
-								<Sparkles />
-								Upgrade to Pro
-							</DropdownMenuItem>
-						</DropdownMenuGroup>
-						<DropdownMenuGroup>
-							<DropdownMenuItem>
-								<BadgeCheck />
-								Account
-							</DropdownMenuItem>
-							<DropdownMenuItem>
-								<CreditCard />
-								Billing
-							</DropdownMenuItem>
-							<DropdownMenuItem>
-								<Bell />
-								Notifications
-							</DropdownMenuItem>
-						</DropdownMenuGroup>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem>
+						<DropdownMenuItem onClick={logout}>
 							<LogOut />
 							Log out
 						</DropdownMenuItem>

@@ -14,12 +14,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
-
-const user = {
-	firstName: "Roberto",
-	lastName: "Coratti",
-	email: "roberto.coratti@assertcode.it",
-}
+import { Employee } from "@/db/schema"
 
 const navMainItems: NavMainItem[] = [
 	{
@@ -67,7 +62,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			</SidebarContent>
 
 			<SidebarFooter>
-				<NavUser user={user} />
+				<NavUser />
 			</SidebarFooter>
 		</Sidebar>
 	)

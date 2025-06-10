@@ -32,59 +32,74 @@ import {
 	CommandItem,
 	CommandList,
 } from "@/components/ui/command"
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select"
-import { Entry } from "@/db/schema"
-import { Input } from "../ui/input"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { EntryWithClient } from "@/db/schema"
+import { useClients } from "@/hooks/use-clients"
+import { updateEntry } from "@/actions/entries"
+import { useEntries } from "@/hooks/use-entries"
+import { useDialog } from "@/hooks/use-dialog"
 
-interface EntryUpdateFormProps {
-	entry: Entry
+const MIN_HOURS = 0.5
+const MAX_HOURS = 24
+
+interface WorkingEntryEditFormProps {
+	entry: EntryWithClient
 }
 
-const clients = [
-	{ name: "Deloitte", clientId: "1" },
-	{ name: "Almaviva", clientId: "2" },
-	{ name: "Enel", clientId: "3" },
-	{ name: "Fincons", clientId: "4" },
-] as const
-
-const entryTypes = [
-	{ label: "Lavorativo", value: "WORK" },
-	{ label: "Permesso", value: "PERMIT" },
-	{ label: "Ferie", value: "HOLIDAY" },
-	{ label: "Malattia", value: "SICK" },
-] as const
-
 const formSchema = z.object({
-	date: z.date({ required_error: "Inserire una data" }),
-	entryType: z.string({
-		required_error: "Inserire tipologia",
+	date: z.date({
+		required_error: "Inserire una data",
+		message: "Valore errato",
 	}),
 	clientId: z.string().nullable(),
+	description: z.string().min(1, "La descrizione non può essere vuota"),
 	hours: z
 		.number()
-		.min(0.5, "Le ore devono essere maggiori di 0.5")
-		.max(20, "Le ore devono essere minori di 20"),
+		.min(MIN_HOURS, `Le ore devono essere maggiori di ${MIN_HOURS}`)
+		.max(MAX_HOURS, `Le ore devono essere minori di ${MAX_HOURS}`),
+	overtimeHours: z
+		.number()
+		.min(MIN_HOURS, `Le ore devono essere maggiori di ${MIN_HOURS}`)
+		.max(MAX_HOURS, `Le ore devono essere minori di ${MAX_HOURS}`)
+		.optional(),
 })
 
-export function EntryUpdateForm({ entry }: EntryUpdateFormProps) {
+export function WorkingEntryEditForm({ entry }: WorkingEntryEditFormProps) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			date: entry.date,
-			entryType: entry.type,
+			date: new Date(entry.date),
 			clientId: entry.clientId,
+			description: entry.description ?? "",
 			hours: entry.hours,
 		},
 	})
+	const { clients } = useClients()
+	const { setEntries } = useEntries()
+	const { closeDialog } = useDialog()
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		toast("Test")
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		try {
+			const updatedEntry: EntryWithClient = {
+				...entry,
+				...values,
+				date: values.date.toISOString(),
+			}
+
+			updatedEntry.client = clients.find((c) => c.id === updatedEntry.clientId)
+
+			await updateEntry(updatedEntry)
+
+			setEntries((prevEntries) =>
+				prevEntries.map((e) => (e.id === updatedEntry.id ? updatedEntry : e))
+			)
+
+			closeDialog()
+			toast.success("Attività aggiornata con successo")
+		} catch (e) {
+			toast.error(String(e))
+		}
 	}
 
 	return (
@@ -109,7 +124,7 @@ export function EntryUpdateForm({ entry }: EntryUpdateFormProps) {
 											{field.value ? (
 												format(field.value, "P", { locale: it })
 											) : (
-												<span>Pick a date</span>
+												<span>Seleziona una data</span>
 											)}
 											<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
 										</Button>
@@ -124,31 +139,6 @@ export function EntryUpdateForm({ entry }: EntryUpdateFormProps) {
 									/>
 								</PopoverContent>
 							</Popover>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={form.control}
-					name="entryType"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Tipologia</FormLabel>
-							<Select onValueChange={field.onChange} defaultValue={field.value}>
-								<FormControl>
-									<SelectTrigger>
-										<SelectValue placeholder="Seleziona una tipologia" />
-									</SelectTrigger>
-								</FormControl>
-								<SelectContent>
-									{entryTypes.map((entryType) => (
-										<SelectItem key={entryType.value} value={entryType.value}>
-											{entryType.label}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -172,9 +162,8 @@ export function EntryUpdateForm({ entry }: EntryUpdateFormProps) {
 											)}
 										>
 											{field.value
-												? clients.find(
-														(client) => client.clientId === field.value
-												  )?.name
+												? clients.find((client) => client.id === field.value)
+														?.name
 												: "Seleziona cliente"}
 											<ChevronsUpDown className="opacity-50" />
 										</Button>
@@ -192,16 +181,16 @@ export function EntryUpdateForm({ entry }: EntryUpdateFormProps) {
 												{clients.map((client) => (
 													<CommandItem
 														value={client.name}
-														key={client.clientId}
+														key={client.id}
 														onSelect={(...args) => {
-															form.setValue("clientId", client.clientId)
+															form.setValue("clientId", client.id)
 														}}
 													>
 														{client.name}
 														<Check
 															className={cn(
 																"ml-auto",
-																client.clientId === field.value
+																client.id === field.value
 																	? "opacity-100"
 																	: "opacity-0"
 															)}
@@ -220,18 +209,60 @@ export function EntryUpdateForm({ entry }: EntryUpdateFormProps) {
 
 				<FormField
 					control={form.control}
+					name="description"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Descrizione</FormLabel>
+							<FormControl>
+								<Textarea
+									placeholder="Descrizione..."
+									className="resize-none"
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
 					name="hours"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Ore</FormLabel>
 							<FormControl>
-								<Input
-									{...field}
-									className="w-fit"
-									placeholder="8.0"
-									type="number"
-									onChange={(e) => field.onChange(Number(e.target.value))}
-								/>
+								<span className="flex items-center gap-2">
+									<Input
+										{...field}
+										className="w-fit"
+										type="number"
+										onChange={(e) => field.onChange(Number(e.target.value))}
+									/>
+									h
+								</span>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="overtimeHours"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Straordinari</FormLabel>
+							<FormControl>
+								<span className="flex items-center gap-2">
+									<Input
+										{...field}
+										className="w-fit"
+										type="number"
+										onChange={(e) => field.onChange(Number(e.target.value))}
+									/>
+									h
+								</span>
 							</FormControl>
 							<FormMessage />
 						</FormItem>

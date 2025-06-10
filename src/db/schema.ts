@@ -1,8 +1,8 @@
+import { relations } from "drizzle-orm";
 import {
-  date,
-  integer,
   pgEnum,
   pgTable,
+  real,
   text,
   timestamp,
   uuid,
@@ -12,8 +12,20 @@ import {
 export const roleEnum = pgEnum("role", ["EMPLOYEE", "ADMIN"]);
 export type Role = typeof roleEnum.enumValues[number];
 
-export const entryTypeEnum = pgEnum("entryType", ["WORK", "HOLIDAY", "SICK"]);
+export const entryTypeEnum = pgEnum("entry_type", [
+  "WORK",
+  "HOLIDAY",
+  "PERMIT",
+  "SICK",
+]);
 export type EntryType = typeof entryTypeEnum.enumValues[number];
+
+export const activityTypeEnum = pgEnum("activity_type", [
+  "PROJECT",
+  "TASK",
+  "AMS",
+]);
+export type ActivityType = typeof activityTypeEnum.enumValues[number];
 
 export const employeesTable = pgTable("employees", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -22,7 +34,8 @@ export const employeesTable = pgTable("employees", {
   lastName: varchar("last_name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   role: roleEnum("role").notNull().default("EMPLOYEE"),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
+  createdAt: timestamp("created_at", { mode: "string", withTimezone: true })
+    .defaultNow()
     .notNull(),
 });
 export type Employee = typeof employeesTable.$inferSelect;
@@ -46,10 +59,25 @@ export const entriesTable = pgTable("entries", {
     onDelete: "set null",
   }),
   type: entryTypeEnum("type").notNull().default("WORK"),
-  date: timestamp("date").notNull(),
-  hours: integer("hours").notNull(),
+  activityType: activityTypeEnum("activity_type"),
+  date: timestamp("date", { mode: "string", withTimezone: true }).notNull(),
+  hours: real("hours").notNull(),
+  overtimeHours: real("overtime_hours"),
   description: text("description"),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
+  createdAt: timestamp("created_at", { mode: "string", withTimezone: true })
+    .defaultNow()
     .notNull(),
 });
 export type Entry = typeof entriesTable.$inferSelect;
+export type EntryWithClient = Entry & { client?: Client | null };
+
+export const entriesRelations = relations(entriesTable, ({ one }) => ({
+  employee: one(employeesTable, {
+    fields: [entriesTable.clientId],
+    references: [employeesTable.id],
+  }),
+  client: one(clientsTable, {
+    fields: [entriesTable.clientId],
+    references: [clientsTable.id],
+  }),
+}));
