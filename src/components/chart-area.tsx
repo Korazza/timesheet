@@ -162,7 +162,7 @@ export function ChartArea() {
 	})
 
 	return (
-		<Card className="@container/card h-full">
+		<Card className="@container/card h-full flex-1">
 			<CardHeader>
 				<CardTitle>Ore per cliente</CardTitle>
 				<CardDescription>
@@ -208,7 +208,7 @@ export function ChartArea() {
 			<CardContent className="px-2 pt-4 sm:px-6 sm:pt-6 h-full items-end flex">
 				<ChartContainer
 					config={chartConfig}
-					className="aspect-auto h-[400px] w-full"
+					className="aspect-auto h-full w-full"
 				>
 					<AreaChart data={filteredData}>
 						<defs>

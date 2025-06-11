@@ -6,22 +6,22 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { WorkingEntryCreateForm } from "@/components/forms/working-entry-create-form"
+import { PermitEntryCreateForm } from "@/components/forms/permit-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
 
-export function WorkingEntryCreateDialog() {
+export function PermitEntryCreateDialog() {
 	const { activeDialog, closeDialog } = useDialog()
 
 	return (
 		<Dialog
-			open={activeDialog === "createWorkingEntry"}
+			open={activeDialog === "createPermitEntry"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Aggiungi attività</DialogTitle>
+					<DialogTitle>Aggiungi ferie</DialogTitle>
 				</DialogHeader>
-				<WorkingEntryCreateForm />
+				<PermitEntryCreateForm />
 			</DialogContent>
 		</Dialog>
 	)

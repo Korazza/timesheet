@@ -1,3 +1,5 @@
+import { toast } from "sonner"
+
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -13,13 +15,13 @@ import { Entry } from "@/db/schema"
 import { deleteEntry } from "@/actions/entries"
 import { useEntries } from "@/hooks/use-entries"
 
-interface WorkingEntryConfirmDeleteDialogProps {
+interface EntryConfirmDeleteDialogProps {
 	entry: Entry | null
 }
 
-export function WorkingEntryConfirmDeleteDialog({
+export function EntryConfirmDeleteDialog({
 	entry,
-}: WorkingEntryConfirmDeleteDialogProps) {
+}: EntryConfirmDeleteDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
 	const { setEntries } = useEntries()
 
@@ -41,6 +43,15 @@ export function WorkingEntryConfirmDeleteDialog({
 							await deleteEntry(entry.id)
 							setEntries((prev) => prev.filter((e) => e.id !== entry.id))
 							closeDialog()
+
+							const deleteMessage = {
+								WORK: "Attività eliminata con successo",
+								HOLIDAY: "Ferie eliminata con successo",
+								PERMIT: "Permesso eliminato con successo",
+								SICK: "Malattia eliminata con successo",
+							}[entry.type]
+
+							toast.success(deleteMessage)
 						}}
 					>
 						Conferma

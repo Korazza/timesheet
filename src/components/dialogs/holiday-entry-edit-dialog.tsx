@@ -7,28 +7,28 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog"
 import { Entry } from "@/db/schema"
-import { WorkingEntryEditForm } from "@/components/forms/working-entry-edit-form"
 import { useDialog } from "@/hooks/use-dialog"
+import { HolidayEntryEditForm } from "@/components/forms/holiday-entry-edit-form"
 
-interface WorkingEntryEditDialogProps {
+interface HolidayEntryEditDialogProps {
 	entry: Entry | null
 }
 
-export function WorkingEntryEditDialog({ entry }: WorkingEntryEditDialogProps) {
+export function HolidayEntryEditDialog({ entry }: HolidayEntryEditDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
 
 	if (!entry) return null
 
 	return (
 		<Dialog
-			open={activeDialog === "editWorkingEntry"}
+			open={activeDialog === "editHolidayEntry"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Modifica attività</DialogTitle>
+					<DialogTitle>Modifica ferie</DialogTitle>
 				</DialogHeader>
-				<WorkingEntryEditForm entry={entry} />
+				<HolidayEntryEditForm entry={entry} />
 			</DialogContent>
 		</Dialog>
 	)

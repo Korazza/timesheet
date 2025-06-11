@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import { format } from "date-fns"
 import { it } from "date-fns/locale"
 import { z } from "zod"
+import { CalendarIcon, Check, ChevronsUpDown, Save } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -23,7 +24,6 @@ import {
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
 import { cn } from "@/lib/utils"
-import { CalendarIcon, Check, ChevronsUpDown, Save } from "lucide-react"
 import {
 	Command,
 	CommandEmpty,

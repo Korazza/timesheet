@@ -2,7 +2,20 @@
 
 import { createContext, useState } from "react"
 
-type DialogId = "editEntry" | "createEntry" | "confirmDeleteEntry" | null
+type DialogId =
+	| "editWorkingEntry"
+	| "createWorkingEntry"
+	| "editHolidayEntry"
+	| "createHolidayEntry"
+	| "editPermitEntry"
+	| "createPermitEntry"
+	| "editSickEntry"
+	| "createSickEntry"
+	| "confirmDeleteEntry"
+	| "createClient"
+	| "editClient"
+	| "confirmDeleteClient"
+	| null
 
 type DialogContextType = {
 	activeDialog: DialogId

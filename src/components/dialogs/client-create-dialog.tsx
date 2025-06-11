@@ -6,22 +6,22 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { WorkingEntryCreateForm } from "@/components/forms/working-entry-create-form"
+import { ClientCreateForm } from "@/components/forms/client-create-form"
 import { useDialog } from "@/hooks/use-dialog"
 
-export function WorkingEntryCreateDialog() {
+export function ClientCreateDialog() {
 	const { activeDialog, closeDialog } = useDialog()
 
 	return (
 		<Dialog
-			open={activeDialog === "createWorkingEntry"}
+			open={activeDialog === "createClient"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Aggiungi attività</DialogTitle>
+					<DialogTitle>Aggiungi cliente</DialogTitle>
 				</DialogHeader>
-				<WorkingEntryCreateForm />
+				<ClientCreateForm />
 			</DialogContent>
 		</Dialog>
 	)

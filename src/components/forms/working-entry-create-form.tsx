@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import { format } from "date-fns"
 import { it } from "date-fns/locale"
 import { z } from "zod"
+import { CalendarIcon, Check, ChevronsUpDown, Plus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -23,7 +24,6 @@ import {
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
 import { cn } from "@/lib/utils"
-import { CalendarIcon, Check, ChevronsUpDown, Plus } from "lucide-react"
 import {
 	Command,
 	CommandEmpty,
@@ -57,11 +57,15 @@ const formSchema = z.object({
 		required_error: "Inserire una data",
 		message: "Valore errato",
 	}),
-	clientId: z.string().nullable(),
-	activityType: z.enum(activityTypeEnum.enumValues),
-	description: z.string().min(1, "La descrizione non può essere vuota"),
+	clientId: z.string({ required_error: "Inserire il cliente" }).nullable(),
+	activityType: z.enum(activityTypeEnum.enumValues, {
+		required_error: "Inserire la tipologia",
+	}),
+	description: z
+		.string({ required_error: "La descrizione non può essere vuota" })
+		.min(1, "La descrizione non può essere vuota"),
 	hours: z
-		.number()
+		.number({ required_error: "Inserire le ore" })
 		.min(MIN_HOURS, `Le ore devono essere maggiori di ${MIN_HOURS}`)
 		.max(MAX_HOURS, `Le ore devono essere minori di ${MAX_HOURS}`),
 	overtimeHours: z
@@ -165,7 +169,7 @@ export function WorkingEntryCreateForm() {
 					render={({ field }) => (
 						<FormItem className="flex flex-col">
 							<FormLabel>Cliente</FormLabel>
-							<Popover>
+							<Popover modal={true}>
 								<PopoverTrigger asChild>
 									<FormControl>
 										<Button

@@ -93,74 +93,6 @@ export const getColumns = ({
 		},
 	},
 	{
-		accessorKey: "client",
-		accessorFn: (row) => (row.client ? row.client.name : ""),
-		filterFn: (row, id, value) => {
-			return value.includes(row.getValue(id))
-		},
-		header: ({ column }) => (
-			<Button
-				size="sm"
-				variant="ghost"
-				className="-ml-3"
-				onClick={() => {
-					if (column.getIsSorted() === "desc") {
-						column.toggleSorting(false)
-					} else if (column.getIsSorted() === "asc") {
-						column.clearSorting()
-					} else {
-						column.toggleSorting(true)
-					}
-				}}
-			>
-				Cliente
-				{column.getIsSorted() === "asc" ? (
-					<ArrowUp className="ml-2 h-4 w-4" />
-				) : column.getIsSorted() === "desc" ? (
-					<ArrowDown className="ml-2 h-4 w-4" />
-				) : (
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				)}
-			</Button>
-		),
-	},
-	{
-		accessorKey: "description",
-		filterFn: "includesString",
-		header: ({ column }) => (
-			<Button
-				size="sm"
-				variant="ghost"
-				className="-ml-3"
-				onClick={() => {
-					if (column.getIsSorted() === "desc") {
-						column.toggleSorting(false)
-					} else if (column.getIsSorted() === "asc") {
-						column.clearSorting()
-					} else {
-						column.toggleSorting(true)
-					}
-				}}
-			>
-				Descrizione
-				{column.getIsSorted() === "asc" ? (
-					<ArrowUp className="ml-2 h-4 w-4" />
-				) : column.getIsSorted() === "desc" ? (
-					<ArrowDown className="ml-2 h-4 w-4" />
-				) : (
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				)}
-			</Button>
-		),
-		cell: ({ row }) => {
-			return (
-				<div className="max-w-[600px] truncate">
-					{row.getValue("description")}
-				</div>
-			)
-		},
-	},
-	{
 		accessorKey: "hours",
 		header: ({ column }) => (
 			<Button
@@ -188,38 +120,6 @@ export const getColumns = ({
 			</Button>
 		),
 		cell: ({ row }) => `${row.getValue("hours")} h`,
-	},
-	{
-		accessorKey: "overtimeHours",
-		header: ({ column }) => (
-			<Button
-				size="sm"
-				variant="ghost"
-				className="-ml-3"
-				onClick={() => {
-					if (column.getIsSorted() === "desc") {
-						column.toggleSorting(false)
-					} else if (column.getIsSorted() === "asc") {
-						column.clearSorting()
-					} else {
-						column.toggleSorting(true)
-					}
-				}}
-			>
-				Straordinari
-				{column.getIsSorted() === "asc" ? (
-					<ArrowUp className="ml-2 h-4 w-4" />
-				) : column.getIsSorted() === "desc" ? (
-					<ArrowDown className="ml-2 h-4 w-4" />
-				) : (
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				)}
-			</Button>
-		),
-		cell: ({ row }) => {
-			const overtimeHours = row.getValue("overtimeHours")
-			return overtimeHours ? `${overtimeHours} h` : ""
-		},
 	},
 	{
 		id: "actions",

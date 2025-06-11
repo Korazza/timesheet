@@ -1,7 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { Clock, LayoutDashboard, UserCog, Users } from "lucide-react"
+import {
+	Clock,
+	GalleryVerticalEnd,
+	LayoutDashboard,
+	UserCog,
+	Users,
+} from "lucide-react"
 
 import { NavMain, type NavMainItem } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
@@ -14,7 +20,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Employee } from "@/db/schema"
+import Link from "next/link"
 
 const navMainItems: NavMainItem[] = [
 	{
@@ -24,18 +30,30 @@ const navMainItems: NavMainItem[] = [
 	},
 	{
 		title: "Consuntivazioni",
-		url: "/entries",
 		icon: Clock,
+		items: [
+			{
+				title: "Attività",
+				url: "/activity",
+			},
+			{
+				title: "Ferie",
+				url: "/holiday",
+			},
+			{
+				title: "Permessi",
+				url: "/permit",
+			},
+			{
+				title: "Malattia",
+				url: "/sick",
+			},
+		],
 	},
 	{
 		title: "Clienti",
-		url: "#",
+		url: "/client",
 		icon: Users,
-	},
-	{
-		title: "Dipendenti",
-		url: "#",
-		icon: UserCog,
 	},
 ]
 
@@ -45,20 +63,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarHeader>
 				<SidebarMenu>
 					<SidebarMenuItem>
-						<SidebarMenuButton
-							asChild
-							className="data-[slot=sidebar-menu-button]:!p-1.5"
-						>
-							<a href="/">
-								<span className="text-base font-semibold">Assertcode</span>
-							</a>
-						</SidebarMenuButton>
+						<Link href="/">
+							<SidebarMenuButton
+								size="lg"
+								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
+							>
+								<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+									<GalleryVerticalEnd className="size-4" />
+								</div>
+								<span className="font-medium">Assertcode</span>
+							</SidebarMenuButton>
+						</Link>
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarHeader>
 
 			<SidebarContent>
-				<NavMain items={navMainItems} />
+				<NavMain navItems={navMainItems} />
 			</SidebarContent>
 
 			<SidebarFooter>
