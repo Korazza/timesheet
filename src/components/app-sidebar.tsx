@@ -9,7 +9,7 @@ import {
 	Users,
 } from "lucide-react"
 
-import { NavMain, type NavMainItem } from "@/components/nav-main"
+import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import {
 	Sidebar,
@@ -21,41 +21,6 @@ import {
 	SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-
-const navMainItems: NavMainItem[] = [
-	{
-		title: "Dashboard",
-		url: "/",
-		icon: LayoutDashboard,
-	},
-	{
-		title: "Consuntivazioni",
-		icon: Clock,
-		items: [
-			{
-				title: "Attività",
-				url: "/activity",
-			},
-			{
-				title: "Ferie",
-				url: "/holiday",
-			},
-			{
-				title: "Permessi",
-				url: "/permit",
-			},
-			{
-				title: "Malattia",
-				url: "/sick",
-			},
-		],
-	},
-	{
-		title: "Clienti",
-		url: "/client",
-		icon: Users,
-	},
-]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	return (
@@ -79,7 +44,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			</SidebarHeader>
 
 			<SidebarContent>
-				<NavMain navItems={navMainItems} />
+				<NavMain />
 			</SidebarContent>
 
 			<SidebarFooter>

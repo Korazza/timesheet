@@ -129,13 +129,13 @@ const chartConfig = {
 	},
 	desktop: {
 		label: "Desktop",
-		color: "var(--primary)",
+		color: "var(--chart-1)",
 	},
 	mobile: {
 		label: "Mobile",
-		color: "var(--primary)",
+		color: "var(--chart-2)",
 	},
-} satisfies ChartConfig
+} as const satisfies ChartConfig
 
 export function ChartArea() {
 	const isMobile = useIsMobile()
@@ -246,7 +246,7 @@ export function ChartArea() {
 							minTickGap={32}
 							tickFormatter={(value) => {
 								const date = new Date(value)
-								return date.toLocaleDateString("en-US", {
+								return date.toLocaleDateString("it-IT", {
 									month: "short",
 									day: "numeric",
 								})
@@ -258,7 +258,7 @@ export function ChartArea() {
 							content={
 								<ChartTooltipContent
 									labelFormatter={(value) => {
-										return new Date(value).toLocaleDateString("en-US", {
+										return new Date(value).toLocaleDateString("it-IT", {
 											month: "short",
 											day: "numeric",
 										})

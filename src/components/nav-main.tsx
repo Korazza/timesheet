@@ -20,15 +20,9 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import { NAVIGATION_ITEMS } from "@/lib/navigation"
 
-export type NavMainItem = {
-	title: string
-	url?: string
-	icon: LucideIcon
-	items?: { title: string; url: string }[]
-}
-
-export function NavMain({ navItems }: { navItems: NavMainItem[] }) {
+export function NavMain() {
 	const pathname = usePathname()
 
 	return (
@@ -36,7 +30,7 @@ export function NavMain({ navItems }: { navItems: NavMainItem[] }) {
 			<SidebarGroupLabel>Timesheet</SidebarGroupLabel>
 			<SidebarGroupContent>
 				<SidebarMenu>
-					{navItems.map((item) => {
+					{NAVIGATION_ITEMS.map((item) => {
 						const isActive =
 							item.url === pathname ||
 							item.items?.some((i) => i.url === pathname)

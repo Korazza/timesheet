@@ -2,17 +2,17 @@ import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
 import { NextIntlClientProvider } from "next-intl"
 import { getLocale } from "next-intl/server"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Inter, JetBrains_Mono } from "next/font/google"
 
 import "./globals.css"
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
+const sans = Inter({
+	variable: "--font-sans",
 	subsets: ["latin"],
 })
 
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
+const mono = JetBrains_Mono({
+	variable: "--font--mono",
 	subsets: ["latin"],
 })
 
@@ -30,9 +30,7 @@ export default async function RootLayout({
 
 	return (
 		<html lang={locale} suppressHydrationWarning>
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-			>
+			<body className={`${sans.variable} ${mono.variable} antialiased`}>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system"
