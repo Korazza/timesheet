@@ -73,7 +73,7 @@ export function PermitEntriesTable() {
 	})
 
 	return (
-		<div className="space-y-4">
+		<div className="flex-1 flex flex-col gap-2">
 			<PermitEntriesTableToolbar table={table} />
 			<PermitEntryCreateDialog />
 			<PermitEntryEditDialog entry={editingEntry} />

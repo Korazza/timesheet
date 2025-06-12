@@ -65,7 +65,7 @@ export function ClientsTable() {
 	})
 
 	return (
-		<div className="space-y-4">
+		<div className="flex-1 flex flex-col gap-2">
 			<ClientsTableToolbar table={table} />
 			<ClientCreateDialog />
 			<ClientEditDialog client={editingClient} />

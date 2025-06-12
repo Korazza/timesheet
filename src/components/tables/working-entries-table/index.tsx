@@ -73,7 +73,7 @@ export function WorkingEntriesTable() {
 	})
 
 	return (
-		<div className="space-y-4">
+		<div className="flex-1 flex flex-col gap-2">
 			<WorkingEntriesTableToolbar table={table} />
 			<WorkingEntryCreateDialog />
 			<WorkingEntryEditDialog entry={editingEntry} />

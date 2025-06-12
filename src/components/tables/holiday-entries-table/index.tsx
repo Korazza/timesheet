@@ -73,7 +73,7 @@ export function HolidayEntriesTable() {
 	})
 
 	return (
-		<div className="space-y-4">
+		<div className="flex-1 flex flex-col gap-2">
 			<HolidayEntriesTableToolbar table={table} />
 			<HolidayEntryCreateDialog />
 			<HolidayEntryEditDialog entry={editingEntry} />

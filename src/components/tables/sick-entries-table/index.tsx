@@ -73,7 +73,7 @@ export function SickEntriesTable() {
 	})
 
 	return (
-		<div className="space-y-4">
+		<div className="flex-1 flex flex-col gap-2">
 			<SickEntriesTableToolbar table={table} />
 			<SickEntryCreateDialog />
 			<SickEntryEditDialog entry={editingEntry} />
