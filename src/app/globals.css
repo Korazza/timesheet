@@ -141,15 +141,15 @@
 	--accent: oklch(0.3983 0.0097 176.8389);
 	--accent-foreground: oklch(0.9461 0 0);
 	--destructive: oklch(0.6561 0.2223 34.0280);
-	--border: oklch(0.3316 0.0071 182.5945);
-	--input: oklch(0.3316 0.0071 182.5945);
+	--border: oklch(0.2932 0.0057 196.8484);
+	--input: oklch(0.2932 0.0057 196.8484);
 	--ring: oklch(0.7254 0.1087 83.4242);
 	--chart-1: oklch(0.7550 0.1242 83.5740);
 	--chart-2: oklch(0.6587 0.1176 70.4292);
 	--chart-3: oklch(0.5643 0.1185 56.6700);
 	--chart-4: oklch(0.4705 0.1274 43.1539);
 	--chart-5: oklch(0.3856 0.1383 34.1149);
-	--sidebar: oklch(0.3316 0.0071 182.5945);
+	--sidebar: oklch(0.2932 0.0057 196.8484);
 	--sidebar-foreground: oklch(0.9461 0 0);
 	--sidebar-primary: oklch(0.8229 0.1443 82.3092);
 	--sidebar-primary-foreground: oklch(0.1406 0.0030 69.3860);
