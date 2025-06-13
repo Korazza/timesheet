@@ -2,16 +2,22 @@ import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
 import { NextIntlClientProvider } from "next-intl"
 import { getLocale } from "next-intl/server"
-import { Inter, JetBrains_Mono } from "next/font/google"
+import { Geist, Libre_Baskerville, Source_Code_Pro } from "next/font/google"
 
 import "./globals.css"
 
-const sans = Inter({
+const sans = Geist({
 	variable: "--font-sans",
 	subsets: ["latin"],
 })
 
-const mono = JetBrains_Mono({
+const serif = Libre_Baskerville({
+	variable: "--font-serif",
+	weight: "400",
+	subsets: ["latin"],
+})
+
+const mono = Source_Code_Pro({
 	variable: "--font--mono",
 	subsets: ["latin"],
 })
@@ -30,7 +36,7 @@ export default async function RootLayout({
 
 	return (
 		<html lang={locale} suppressHydrationWarning>
-			<body className={`${sans.variable} ${mono.variable} antialiased`}>
+			<body className={`${sans.variable} ${serif.variable} ${mono.variable} antialiased`}>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system"
