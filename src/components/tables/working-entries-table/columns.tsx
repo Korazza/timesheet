@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
-import { it } from "date-fns/locale"
+
 import {
 	ArrowDown,
 	ArrowUp,
@@ -87,7 +87,7 @@ export const getColumns = ({
 			const date = new Date(row.getValue("date"))
 			return (
 				<span className="font-medium" suppressHydrationWarning>
-					{format(date, "P", { locale: it })}
+					{format(date, "P")}
 				</span>
 			)
 		},

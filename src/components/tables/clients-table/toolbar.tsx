@@ -1,9 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import { Table } from "@tanstack/react-table"
 import { FunnelX, Plus } from "lucide-react"
-import { DateRange } from "react-day-picker"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"

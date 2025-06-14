@@ -1,4 +1,13 @@
-import { isWeekend, subDays } from "date-fns"
+import {
+	addDays,
+	endOfMonth,
+	endOfWeek,
+	format,
+	isWeekend,
+	startOfMonth,
+	startOfWeek,
+	subDays,
+} from "date-fns"
 
 const holidayCache: Record<number, Set<string>> = {}
 
@@ -35,8 +44,8 @@ function getEasterDate(year: number): Date {
 	return new Date(year, month - 1, day)
 }
 
-function dateKey(d: Date): string {
-	return d.toISOString().slice(0, 10)
+export function dateKey(d: Date): string {
+	return format(d, "yyyy-MM-dd")
 }
 
 export function getHolidaySet(year: number): Set<string> {
@@ -63,4 +72,19 @@ export function subWorkingDays(
 	}
 
 	return currentDate
+}
+
+export function getCalendarMatrix(date: Date) {
+	const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 })
+	const end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 })
+
+	const days: Date[] = []
+	let current = start
+
+	while (current <= end) {
+		days.push(current)
+		current = addDays(current, 1)
+	}
+
+	return days
 }

@@ -3,7 +3,7 @@
 import * as React from "react"
 import { type DateRange } from "react-day-picker"
 import { format } from "date-fns"
-import { it } from "date-fns/locale"
+
 import { CalendarIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -41,11 +41,10 @@ export default function DateRangePicker({
 							dateRange.to &&
 							dateRange.from.toDateString() !== dateRange.to.toDateString() ? (
 								<>
-									{format(dateRange.from, "P", { locale: it })} -{" "}
-									{format(dateRange.to, "P", { locale: it })}
+									{format(dateRange.from, "P")} - {format(dateRange.to, "P")}
 								</>
 							) : (
-								format(dateRange.from, "P", { locale: it })
+								format(dateRange.from, "P")
 							)
 						) : (
 							<span>Seleziona un intervallo</span>

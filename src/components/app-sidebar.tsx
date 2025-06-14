@@ -1,13 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-	Clock,
-	GalleryVerticalEnd,
-	LayoutDashboard,
-	UserCog,
-	Users,
-} from "lucide-react"
+import { GalleryVerticalEnd } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"

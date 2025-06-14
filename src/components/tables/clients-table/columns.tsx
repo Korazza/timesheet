@@ -1,15 +1,13 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { format } from "date-fns"
-import { it } from "date-fns/locale"
+
 import {
 	ArrowDown,
 	ArrowUp,
 	ArrowUpDown,
 	MoreHorizontal,
 	Pencil,
-	Trash,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"

@@ -6,7 +6,6 @@ import { FunnelX, Plus } from "lucide-react"
 import { DateRange } from "react-day-picker"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import DateRangePicker from "@/components/date-range-picker"
 import { useDialog } from "@/hooks/use-dialog"
 

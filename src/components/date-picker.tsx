@@ -1,7 +1,6 @@
 "use client"
 
 import { format } from "date-fns"
-import { it } from "date-fns/locale"
 import { Calendar as CalendarIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -29,7 +28,7 @@ export function DatePicker({ date, onChange }: DatePickerProps) {
 					>
 						<CalendarIcon />
 						{date ? (
-							format(date, "P", { locale: it })
+							format(date, "P")
 						) : (
 							<span>Seleziona una data</span>
 						)}

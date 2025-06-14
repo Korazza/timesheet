@@ -27,8 +27,8 @@ import {
 } from "@/components/ui/select"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { useEntries } from "@/hooks/use-entries"
-import { eachDayOfInterval, isSameDay, isWeekend } from "date-fns"
-import { getHolidaySet, subWorkingDays } from "@/lib/calendar"
+import { eachDayOfInterval, format, isWeekend } from "date-fns"
+import { dateKey, getHolidaySet, subWorkingDays } from "@/lib/calendar"
 
 type TimeRange = "90d" | "30d" | "7d"
 
@@ -60,17 +60,13 @@ export function ChartArea() {
 		}[timeRange]
 
 		const workingDays = eachDayOfInterval({ start: fromDate, end: now }).filter(
-			(d) =>
-				!isWeekend(d) &&
-				!getHolidaySet(d.getFullYear()).has(d.toISOString().slice(0, 10))
+			(d) => !isWeekend(d) && !getHolidaySet(d.getFullYear()).has(dateKey(d))
 		)
 
-		const workingDaySet = new Set(
-			workingDays.map((d) => d.toISOString().slice(0, 10))
-		)
+		const workingDaySet = new Set(workingDays.map((d) => dateKey(d)))
 
 		const filteredEntries = workingEntries.filter((entry) =>
-			workingDaySet.has(new Date(entry.date).toISOString().slice(0, 10))
+			workingDaySet.has(dateKey(new Date(entry.date)))
 		)
 
 		const clientMap = new Map()
@@ -93,9 +89,9 @@ export function ChartArea() {
 		}
 
 		const _chartData = workingDays.map((day) => {
-			const isoDate = day.toISOString().slice(0, 10)
+			const dateStr = dateKey(day)
 			const dailyEntries = filteredEntries.filter(
-				(entry) => new Date(entry.date).toISOString().slice(0, 10) === isoDate
+				(entry) => dateKey(new Date(entry.date)) === dateStr
 			)
 
 			const dataPoint: any = { date: day.toISOString() }
@@ -232,37 +228,34 @@ export function ChartArea() {
 							minTickGap={32}
 							tickFormatter={(value) => {
 								const date = new Date(value)
-								return date.toLocaleDateString("it-IT", {
-									month: "short",
-									day: "numeric",
-								})
+								return format(date, "d MMM")
 							}}
 						/>
 						<ChartTooltip
 							cursor={false}
-							defaultIndex={isMobile ? -1 : 10}
+							defaultIndex={-1}
 							content={
 								<ChartTooltipContent
 									labelFormatter={(value) => {
-										return new Date(value).toLocaleDateString("it-IT", {
-											month: "short",
-											day: "numeric",
-										})
+										const date = new Date(value)
+										return format(date, "EEEE d MMMM")
 									}}
-									/* 									formatter={(value, name, item) =>
+									formatter={(value, name, item) =>
 										Number(value) > 0 ? (
-											<div className="flex gap-2 items-center">
-												<span
-													className="w-2.5 h-2.5 rounded-full"
-													style={{ backgroundColor: item.color }}
-												/>
-												<span className="font-semibold">
-													{chartClients.find((c) => c.id === name).name}:
+											<span className="flex flex-row justify-between items-center w-full">
+												<span className="flex items-center gap-1">
+													<div
+														className="w-2.5 h-2.5 rounded-full bg-red-500"
+														style={{ backgroundColor: item.color }}
+													/>
+													<span className="font-semibold">
+														{chartClients.find((c) => c.id === name).name}
+													</span>
 												</span>
 												<span>{`${value} h`}</span>
-											</div>
-										) : undefined
-									} */
+											</span>
+										) : null
+									}
 								/>
 							}
 						/>

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { format } from "date-fns"
-import { it } from "date-fns/locale"
+
 import { z } from "zod"
 import { CalendarIcon, Plus } from "lucide-react"
 
@@ -101,7 +101,7 @@ export function SickEntryCreateForm() {
 											)}
 										>
 											{field.value ? (
-												format(field.value, "P", { locale: it })
+												format(field.value, "P")
 											) : (
 												<span>Seleziona una data</span>
 											)}

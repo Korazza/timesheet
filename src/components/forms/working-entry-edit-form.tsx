@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { format } from "date-fns"
-import { it } from "date-fns/locale"
+
 import { z } from "zod"
 import { CalendarIcon, Check, ChevronsUpDown, Save } from "lucide-react"
 
@@ -122,7 +122,7 @@ export function WorkingEntryEditForm({ entry }: WorkingEntryEditFormProps) {
 											)}
 										>
 											{field.value ? (
-												format(field.value, "P", { locale: it })
+												format(field.value, "P")
 											) : (
 												<span>Seleziona una data</span>
 											)}
@@ -182,7 +182,7 @@ export function WorkingEntryEditForm({ entry }: WorkingEntryEditFormProps) {
 													<CommandItem
 														value={client.name}
 														key={client.id}
-														onSelect={(...args) => {
+														onSelect={() => {
 															form.setValue("clientId", client.id)
 														}}
 													>
