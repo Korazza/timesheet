@@ -75,11 +75,15 @@ const formSchema = z.object({
 		.optional(),
 })
 
-export function WorkingEntryCreateForm() {
+interface WorkingEntryCreateFormProps {
+	date?: Date
+}
+
+export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			date: new Date(),
+			date: date ?? new Date(),
 			description: undefined,
 			hours: 8,
 			overtimeHours: undefined,
@@ -121,6 +125,8 @@ export function WorkingEntryCreateForm() {
 		}
 	}
 
+	const dateReadOnly = !!date
+
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -128,10 +134,15 @@ export function WorkingEntryCreateForm() {
 					control={form.control}
 					name="date"
 					render={({ field }) => (
-						<FormItem className="flex flex-col">
+						<FormItem
+							className={cn(
+								"flex flex-col",
+								dateReadOnly && "text-muted-foreground"
+							)}
+						>
 							<FormLabel>Data</FormLabel>
 							<Popover>
-								<PopoverTrigger asChild>
+								<PopoverTrigger asChild disabled={dateReadOnly}>
 									<FormControl>
 										<Button
 											variant={"outline"}
@@ -153,6 +164,7 @@ export function WorkingEntryCreateForm() {
 									<Calendar
 										mode="single"
 										selected={field.value}
+										disabled={dateReadOnly}
 										onSelect={field.onChange}
 										captionLayout="dropdown"
 									/>

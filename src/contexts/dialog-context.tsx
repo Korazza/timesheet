@@ -2,7 +2,7 @@
 
 import { createContext, useState } from "react"
 
-type DialogId =
+export type DialogId =
 	| "editWorkingEntry"
 	| "createWorkingEntry"
 	| "editHolidayEntry"

@@ -45,11 +45,15 @@ const formSchema = z.object({
 		.max(MAX_HOURS, `Le ore devono essere minori di ${MAX_HOURS}`),
 })
 
-export function HolidayEntryCreateForm() {
+interface HolidayEntryCreateFormProps {
+	date?: Date
+}
+
+export function HolidayEntryCreateForm({ date }: HolidayEntryCreateFormProps) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			date: new Date(),
+			date: date ?? new Date(),
 			hours: 8,
 		},
 	})
@@ -81,6 +85,8 @@ export function HolidayEntryCreateForm() {
 		}
 	}
 
+	const dateReadOnly = !!date
+
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -88,10 +94,15 @@ export function HolidayEntryCreateForm() {
 					control={form.control}
 					name="date"
 					render={({ field }) => (
-						<FormItem className="flex flex-col">
+						<FormItem
+							className={cn(
+								"flex flex-col",
+								dateReadOnly && "text-muted-foreground"
+							)}
+						>
 							<FormLabel>Data</FormLabel>
 							<Popover>
-								<PopoverTrigger asChild>
+								<PopoverTrigger asChild disabled={dateReadOnly}>
 									<FormControl>
 										<Button
 											variant={"outline"}
@@ -113,6 +124,7 @@ export function HolidayEntryCreateForm() {
 									<Calendar
 										mode="single"
 										selected={field.value}
+										disabled={dateReadOnly}
 										onSelect={field.onChange}
 										captionLayout="dropdown"
 									/>

@@ -9,7 +9,13 @@ import {
 import { HolidayEntryCreateForm } from "@/components/forms/holiday-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
 
-export function HolidayEntryCreateDialog() {
+interface HolidayEntryCreateDialogProps {
+	date?: Date
+}
+
+export function HolidayEntryCreateDialog({
+	date,
+}: HolidayEntryCreateDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
 
 	return (
@@ -21,7 +27,7 @@ export function HolidayEntryCreateDialog() {
 				<DialogHeader>
 					<DialogTitle>Aggiungi ferie</DialogTitle>
 				</DialogHeader>
-				<HolidayEntryCreateForm />
+				<HolidayEntryCreateForm date={date} />
 			</DialogContent>
 		</Dialog>
 	)

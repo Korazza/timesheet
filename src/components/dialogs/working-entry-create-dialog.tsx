@@ -9,7 +9,13 @@ import {
 import { WorkingEntryCreateForm } from "@/components/forms/working-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
 
-export function WorkingEntryCreateDialog() {
+interface WorkingEntryCreateDialogProps {
+	date?: Date
+}
+
+export function WorkingEntryCreateDialog({
+	date,
+}: WorkingEntryCreateDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
 
 	return (
@@ -21,7 +27,7 @@ export function WorkingEntryCreateDialog() {
 				<DialogHeader>
 					<DialogTitle>Aggiungi attività</DialogTitle>
 				</DialogHeader>
-				<WorkingEntryCreateForm />
+				<WorkingEntryCreateForm date={date} />
 			</DialogContent>
 		</Dialog>
 	)

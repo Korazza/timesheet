@@ -9,7 +9,13 @@ import {
 import { PermitEntryCreateForm } from "@/components/forms/permit-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
 
-export function PermitEntryCreateDialog() {
+interface PermitEntryCreatedialogProps {
+	date?: Date
+}
+
+export function PermitEntryCreateDialog({
+	date,
+}: PermitEntryCreatedialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
 
 	return (
@@ -21,7 +27,7 @@ export function PermitEntryCreateDialog() {
 				<DialogHeader>
 					<DialogTitle>Aggiungi ferie</DialogTitle>
 				</DialogHeader>
-				<PermitEntryCreateForm />
+				<PermitEntryCreateForm date={date} />
 			</DialogContent>
 		</Dialog>
 	)
