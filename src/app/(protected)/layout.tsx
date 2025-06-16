@@ -8,7 +8,6 @@ import { SiteHeader } from "@/components/site-header"
 import { getEmployee } from "@/actions/employees"
 import { Toaster } from "@/components/ui/sonner"
 import { UserProvider } from "@/contexts/user-context"
-import { DialogProvider } from "@/contexts/dialog-context"
 import "../globals.css"
 
 export const metadata: Metadata = {
@@ -29,18 +28,16 @@ export default async function RootLayout({
 
 	return (
 		<UserProvider employee={employee}>
-			<DialogProvider>
-				<SidebarProvider>
-					<AppSidebar />
-					<SidebarInset>
-						<div className="flex flex-col-reverse md:flex-col flex-1">
-							<SiteHeader />
-							<NextIntlClientProvider>{children}</NextIntlClientProvider>
-						</div>
-						<Toaster />
-					</SidebarInset>
-				</SidebarProvider>
-			</DialogProvider>
+			<SidebarProvider>
+				<AppSidebar />
+				<SidebarInset>
+					<div className="flex flex-col-reverse md:flex-col flex-1">
+						<SiteHeader />
+						<NextIntlClientProvider>{children}</NextIntlClientProvider>
+					</div>
+					<Toaster />
+				</SidebarInset>
+			</SidebarProvider>
 		</UserProvider>
 	)
 }

@@ -35,7 +35,6 @@ export default async function RootLayout({
 	children: React.ReactNode
 }) {
 	const locale = await getLocale()
-	console.log(locale)
 	configureDateFns(locale)
 
 	return (

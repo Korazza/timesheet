@@ -11,7 +11,7 @@ import { useDialog } from "@/hooks/use-dialog"
 import { PermitEntryEditForm } from "@/components/forms/permit-entry-edit-form"
 
 interface PermitEntryEditDialogProps {
-  entry: Entry | null
+  entry?: Entry | null
 }
 
 export function PermitEntryEditDialog({ entry }: PermitEntryEditDialogProps) {

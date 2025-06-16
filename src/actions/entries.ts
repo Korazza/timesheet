@@ -29,7 +29,6 @@ export const addEntry = async (entry: typeof entriesTable.$inferInsert) => {
 };
 
 export const updateEntry = async (entry: Entry) => {
-  console.log("entry:", JSON.stringify(entry, null, 2));
   await db
     .update(entriesTable)
     .set(entry)

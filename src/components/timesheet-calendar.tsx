@@ -12,7 +12,7 @@ import {
 	startOfWeek,
 	addDays,
 } from "date-fns"
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react"
+import { ChevronLeft, ChevronRight, Pencil, Trash } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -30,14 +30,6 @@ import {
 	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-import { HolidayEntryCreateDialog } from "@/components/dialogs/holiday-entry-create-dialog"
-import { HolidayEntryEditDialog } from "@/components/dialogs/holiday-entry-edit-dialog"
-import { PermitEntryCreateDialog } from "@/components/dialogs/permit-entry-create-dialog"
-import { PermitEntryEditDialog } from "@/components/dialogs/permit-entry-edit-dialog"
-import { SickEntryCreateDialog } from "@/components/dialogs/sick-entry-create-dialog"
-import { SickEntryEditDialog } from "@/components/dialogs/sick-entry-edit-dialog"
-import { WorkingEntryCreateDialog } from "@/components/dialogs/working-entry-create-dialog"
-import { WorkingEntryEditDialog } from "@/components/dialogs/working-entry-edit-dialog"
 import { useEntries } from "@/hooks/use-entries"
 import { getCalendarMatrix } from "@/lib/calendar"
 import { EntryWithClient } from "@/db/schema"
@@ -138,18 +130,25 @@ export function TimesheetCalendar() {
 		React.useState<EntryWithClient | null>(null)
 	const [selectedDate, setSelectedDate] = React.useState<Date>()
 	const { entries } = useEntries()
-	const { openDialog } = useDialog()
+	const { openDialog, closeDialog } = useDialog()
+
+	function getEditDialogId(entry: EntryWithClient): DialogId {
+		switch (entry.type) {
+			case "WORK":
+				return "editWorkingEntry"
+			case "HOLIDAY":
+				return "editHolidayEntry"
+			case "PERMIT":
+				return "editPermitEntry"
+			case "SICK":
+				return "editSickEntry"
+			default:
+				throw new Error("Tipo di entry sconosciuto")
+		}
+	}
 
 	return (
 		<React.Fragment>
-			<HolidayEntryCreateDialog date={selectedDate} />
-			<HolidayEntryEditDialog entry={selectedEntry} />
-			<PermitEntryCreateDialog date={selectedDate} />
-			<PermitEntryEditDialog entry={selectedEntry} />
-			<SickEntryCreateDialog date={selectedDate} />
-			<SickEntryEditDialog entry={selectedEntry} />
-			<WorkingEntryCreateDialog date={selectedDate} />
-			<WorkingEntryEditDialog entry={selectedEntry} />
 			<div className="flex-1 h-full flex flex-col border-2 border-border rounded-t-2xl overflow-hidden">
 				<div className="py-2">
 					<TimesheetCalendarHeader currentDate={date} onDateChange={setDate} />
@@ -175,10 +174,14 @@ export function TimesheetCalendar() {
 							<ContextMenu key={day.toISOString()}>
 								<ContextMenuTrigger
 									asChild
-									onContextMenu={() => {
-										debugger
-										setSelectedDate(day)
-										setSelectedEntry(null)
+									onContextMenu={(e) => {
+										const isEntry = (e.target as HTMLElement).closest(
+											"[data-entry]"
+										)
+										if (!isEntry) {
+											setSelectedDate(day)
+											setSelectedEntry(null)
+										}
 									}}
 								>
 									<div
@@ -200,7 +203,9 @@ export function TimesheetCalendar() {
 											{dayEntries.map((entry) => (
 												<div
 													key={entry.id}
+													data-entry
 													onContextMenu={() => {
+														closeDialog()
 														setSelectedEntry(entry)
 														setSelectedDate(undefined)
 													}}
@@ -216,23 +221,20 @@ export function TimesheetCalendar() {
 										<React.Fragment>
 											<ContextMenuItem
 												onClick={() => {
-													debugger
-													openDialog(
-														{
-															WORK: "editWorkingEntry",
-															HOLIDAY: "editHolidayEntry",
-															PERMIT: "editPermitEntry",
-															SICK: "editSickEntry",
-														}[selectedEntry.type] as DialogId
-													)
+													if (selectedEntry)
+														openDialog(getEditDialogId(selectedEntry), {
+															entry: selectedEntry,
+														})
 												}}
 											>
+												<Pencil />
 												Modifica
 											</ContextMenuItem>
 											<ContextMenuItem
 												variant="destructive"
 												onClick={() => console.log("Elimina")}
 											>
+												<Trash />
 												Elimina
 											</ContextMenuItem>
 										</React.Fragment>
@@ -243,22 +245,38 @@ export function TimesheetCalendar() {
 											</ContextMenuSubTrigger>
 											<ContextMenuSubContent className="w-44">
 												<ContextMenuItem
-													onClick={() => openDialog("createWorkingEntry")}
+													onClick={() =>
+														openDialog("createWorkingEntry", {
+															date: selectedDate,
+														})
+													}
 												>
 													Attivitá
 												</ContextMenuItem>
 												<ContextMenuItem
-													onClick={() => openDialog("createHolidayEntry")}
+													onClick={() =>
+														openDialog("createHolidayEntry", {
+															date: selectedDate,
+														})
+													}
 												>
 													Ferie
 												</ContextMenuItem>
 												<ContextMenuItem
-													onClick={() => openDialog("createPermitEntry")}
+													onClick={() =>
+														openDialog("createPermitEntry", {
+															date: selectedDate,
+														})
+													}
 												>
 													Permesso
 												</ContextMenuItem>
 												<ContextMenuItem
-													onClick={() => openDialog("createSickEntry")}
+													onClick={() =>
+														openDialog("createSickEntry", {
+															date: selectedDate,
+														})
+													}
 												>
 													Malattia
 												</ContextMenuItem>

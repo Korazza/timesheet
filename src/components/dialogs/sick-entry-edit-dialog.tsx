@@ -11,7 +11,7 @@ import { useDialog } from "@/hooks/use-dialog"
 import { SickEntryEditForm } from "@/components/forms/sick-entry-edit-form"
 
 interface SickEntryEditDialogProps {
-  entry: Entry | null
+  entry?: Entry | null
 }
 
 export function SickEntryEditDialog({ entry }: SickEntryEditDialogProps) {

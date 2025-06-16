@@ -16,7 +16,7 @@ import { deleteEntry } from "@/actions/entries"
 import { useEntries } from "@/hooks/use-entries"
 
 interface EntryConfirmDeleteDialogProps {
-	entry: Entry | null
+	entry?: Entry | null
 }
 
 export function EntryConfirmDeleteDialog({

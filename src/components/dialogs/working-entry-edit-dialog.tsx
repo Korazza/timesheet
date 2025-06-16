@@ -11,7 +11,7 @@ import { WorkingEntryEditForm } from "@/components/forms/working-entry-edit-form
 import { useDialog } from "@/hooks/use-dialog"
 
 interface WorkingEntryEditDialogProps {
-	entry: Entry | null
+	entry?: Entry | null
 }
 
 export function WorkingEntryEditDialog({ entry }: WorkingEntryEditDialogProps) {

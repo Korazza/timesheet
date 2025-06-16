@@ -11,7 +11,7 @@ import { useDialog } from "@/hooks/use-dialog"
 import { HolidayEntryEditForm } from "@/components/forms/holiday-entry-edit-form"
 
 interface HolidayEntryEditDialogProps {
-	entry: Entry | null
+	entry?: Entry | null
 }
 
 export function HolidayEntryEditDialog({ entry }: HolidayEntryEditDialogProps) {
