@@ -87,6 +87,8 @@ export function PermitEntryCreateForm({ date }: PermitEntryCreateFormProps) {
 
 	const dateReadOnly = !!date
 
+	const isLoading = form.formState.isSubmitting
+
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -102,7 +104,7 @@ export function PermitEntryCreateForm({ date }: PermitEntryCreateFormProps) {
 						>
 							<FormLabel>Data</FormLabel>
 							<Popover>
-								<PopoverTrigger asChild disabled={dateReadOnly}>
+								<PopoverTrigger asChild disabled={dateReadOnly || isLoading}>
 									<FormControl>
 										<Button
 											variant={"outline"}
@@ -124,7 +126,7 @@ export function PermitEntryCreateForm({ date }: PermitEntryCreateFormProps) {
 									<Calendar
 										mode="single"
 										selected={field.value}
-										disabled={dateReadOnly}
+										disabled={dateReadOnly || isLoading}
 										onSelect={field.onChange}
 										captionLayout="dropdown"
 									/>
@@ -144,9 +146,10 @@ export function PermitEntryCreateForm({ date }: PermitEntryCreateFormProps) {
 							<FormControl>
 								<span className="flex items-center gap-2">
 									<Input
-										{...field}
+										disabled={isLoading}
 										className="w-fit"
 										type="number"
+										{...field}
 										onChange={(e) => field.onChange(Number(e.target.value))}
 									/>
 									h
@@ -157,7 +160,7 @@ export function PermitEntryCreateForm({ date }: PermitEntryCreateFormProps) {
 					)}
 				/>
 
-				<Button type="submit">
+				<Button disabled={isLoading} type="submit">
 					<Plus />
 					Aggiungi
 				</Button>

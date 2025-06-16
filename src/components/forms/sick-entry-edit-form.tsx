@@ -80,6 +80,8 @@ export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
 		}
 	}
 
+	const isLoading = form.formState.isSubmitting
+
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -90,7 +92,7 @@ export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
 						<FormItem className="flex flex-col">
 							<FormLabel>Data</FormLabel>
 							<Popover>
-								<PopoverTrigger asChild>
+								<PopoverTrigger asChild disabled={isLoading}>
 									<FormControl>
 										<Button
 											variant={"outline"}
@@ -112,6 +114,7 @@ export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
 									<Calendar
 										mode="single"
 										selected={field.value}
+										disabled={isLoading}
 										onSelect={field.onChange}
 										captionLayout="dropdown"
 									/>
@@ -131,9 +134,10 @@ export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
 							<FormControl>
 								<span className="flex items-center gap-2">
 									<Input
-										{...field}
+										disabled={isLoading}
 										className="w-fit"
 										type="number"
+										{...field}
 										onChange={(e) => field.onChange(Number(e.target.value))}
 									/>
 									h
@@ -144,7 +148,7 @@ export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
 					)}
 				/>
 
-				<Button type="submit">
+				<Button disabled={isLoading} type="submit">
 					<Save />
 					Salva
 				</Button>

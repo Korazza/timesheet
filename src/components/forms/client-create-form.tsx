@@ -62,6 +62,8 @@ export function ClientCreateForm() {
 		}
 	}
 
+	const isLoading = form.formState.isSubmitting
+
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -72,7 +74,7 @@ export function ClientCreateForm() {
 						<FormItem>
 							<FormLabel>Nome</FormLabel>
 							<FormControl>
-								<Input placeholder="Nome..." {...field} />
+								<Input disabled={isLoading} placeholder="Nome..." {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -87,6 +89,7 @@ export function ClientCreateForm() {
 							<FormLabel>Descrizione</FormLabel>
 							<FormControl>
 								<Textarea
+									disabled={isLoading}
 									placeholder="Descrizione..."
 									className="resize-none"
 									{...field}
@@ -97,7 +100,7 @@ export function ClientCreateForm() {
 					)}
 				/>
 
-				<Button type="submit">
+				<Button disabled={isLoading} type="submit">
 					<Plus />
 					Aggiungi
 				</Button>

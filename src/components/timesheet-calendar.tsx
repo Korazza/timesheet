@@ -84,10 +84,17 @@ function TimesheetCalendarEntryPill({
 	const totalHours = entry.hours + (entry.overtimeHours ?? 0)
 
 	const colorMap = {
-		WORK: "var(--chart-2)",
-		PERMIT: "var(--chart-3)",
-		SICK: "var(--chart-4)",
-		HOLIDAY: "var(--chart-5)",
+		WORK: "var(--working-entry)",
+		PERMIT: "var(--permit-entry)",
+		SICK: "var(--sick-entry)",
+		HOLIDAY: "var(--holiday-entry)",
+	}
+
+	const foregroundColorMap = {
+		WORK: "var(--working-entry-foreground)",
+		PERMIT: "var(--permit-entry-foreground)",
+		SICK: "var(--sick-entry-foreground)",
+		HOLIDAY: "var(--holiday-entry-foreground)",
 	}
 
 	const labelMap = {
@@ -102,6 +109,7 @@ function TimesheetCalendarEntryPill({
 			className="text-xs px-2 py-1 rounded text-black font-medium flex items-center  justify-between"
 			style={{
 				backgroundColor: colorMap[entry.type],
+				color: foregroundColorMap[entry.type],
 			}}
 		>
 			<span className="truncate max-w-full">{labelMap[entry.type]}</span>
@@ -192,9 +200,9 @@ export function TimesheetCalendar() {
 									>
 										<span
 											className={cn(
-												"text-sm font-medium max-w-fit ml-auto text-muted-foreground",
+												"text-sm font-medium font-mono max-w-fit ml-auto text-muted-foreground",
 												isToday(day) &&
-													"bg-primary text-primary-foreground px-1.5 py-1 rounded-full"
+													"bg-primary text-primary-foreground px-1 py-0.5 rounded-full"
 											)}
 										>
 											{day.getDate()}
@@ -232,7 +240,12 @@ export function TimesheetCalendar() {
 											</ContextMenuItem>
 											<ContextMenuItem
 												variant="destructive"
-												onClick={() => console.log("Elimina")}
+												onClick={() => {
+													if (selectedEntry)
+														openDialog("confirmDeleteEntry", {
+															entry: selectedEntry,
+														})
+												}}
 											>
 												<Trash />
 												Elimina

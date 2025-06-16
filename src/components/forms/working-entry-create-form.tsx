@@ -127,6 +127,8 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 
 	const dateReadOnly = !!date
 
+	const isLoading = form.formState.isSubmitting
+
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -142,7 +144,7 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 						>
 							<FormLabel>Data</FormLabel>
 							<Popover>
-								<PopoverTrigger asChild disabled={dateReadOnly}>
+								<PopoverTrigger asChild disabled={dateReadOnly || isLoading}>
 									<FormControl>
 										<Button
 											variant={"outline"}
@@ -164,7 +166,7 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 									<Calendar
 										mode="single"
 										selected={field.value}
-										disabled={dateReadOnly}
+										disabled={dateReadOnly || isLoading}
 										onSelect={field.onChange}
 										captionLayout="dropdown"
 									/>
@@ -182,9 +184,10 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 						<FormItem className="flex flex-col">
 							<FormLabel>Cliente</FormLabel>
 							<Popover modal={true}>
-								<PopoverTrigger asChild>
+								<PopoverTrigger asChild disabled={isLoading}>
 									<FormControl>
 										<Button
+											disabled={isLoading}
 											variant="outline"
 											role="combobox"
 											className={cn(
@@ -244,7 +247,11 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Tipologia</FormLabel>
-							<Select onValueChange={field.onChange} defaultValue={field.value}>
+							<Select
+								disabled={isLoading}
+								onValueChange={field.onChange}
+								defaultValue={field.value}
+							>
 								<FormControl>
 									<SelectTrigger>
 										<SelectValue placeholder="Seleziona tipologia" />
@@ -274,6 +281,7 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 							<FormLabel>Descrizione</FormLabel>
 							<FormControl>
 								<Textarea
+									disabled={isLoading}
 									placeholder="Descrizione..."
 									className="resize-none"
 									{...field}
@@ -293,9 +301,10 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 							<FormControl>
 								<span className="flex items-center gap-2">
 									<Input
-										{...field}
+										disabled={isLoading}
 										className="w-fit"
 										type="number"
+										{...field}
 										onChange={(e) => field.onChange(Number(e.target.value))}
 									/>
 									h
@@ -315,9 +324,10 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 							<FormControl>
 								<span className="flex items-center gap-2">
 									<Input
-										{...field}
+										disabled={isLoading}
 										className="w-fit"
 										type="number"
+										{...field}
 										onChange={(e) => field.onChange(Number(e.target.value))}
 									/>
 									h
@@ -328,7 +338,7 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 					)}
 				/>
 
-				<Button type="submit">
+				<Button disabled={isLoading} type="submit">
 					<Plus />
 					Aggiungi
 				</Button>

@@ -81,6 +81,8 @@ export function PermitEntryEditForm({ entry }: PermitEntryEditFormProps) {
 		}
 	}
 
+	const isLoading = form.formState.isSubmitting
+
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -91,7 +93,7 @@ export function PermitEntryEditForm({ entry }: PermitEntryEditFormProps) {
 						<FormItem className="flex flex-col">
 							<FormLabel>Data</FormLabel>
 							<Popover>
-								<PopoverTrigger asChild>
+								<PopoverTrigger asChild disabled={isLoading}>
 									<FormControl>
 										<Button
 											variant={"outline"}
@@ -113,6 +115,7 @@ export function PermitEntryEditForm({ entry }: PermitEntryEditFormProps) {
 									<Calendar
 										mode="single"
 										selected={field.value}
+										disabled={isLoading}
 										onSelect={field.onChange}
 										captionLayout="dropdown"
 									/>
@@ -132,9 +135,10 @@ export function PermitEntryEditForm({ entry }: PermitEntryEditFormProps) {
 							<FormControl>
 								<span className="flex items-center gap-2">
 									<Input
-										{...field}
+										disabled={isLoading}
 										className="w-fit"
 										type="number"
+										{...field}
 										onChange={(e) => field.onChange(Number(e.target.value))}
 									/>
 									h
@@ -145,7 +149,7 @@ export function PermitEntryEditForm({ entry }: PermitEntryEditFormProps) {
 					)}
 				/>
 
-				<Button type="submit">
+				<Button disabled={isLoading} type="submit">
 					<Save />
 					Salva
 				</Button>

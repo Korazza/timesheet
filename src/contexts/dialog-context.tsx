@@ -65,8 +65,8 @@ export const DialogProvider = ({ children, registry }: DialogProviderProps) => {
 		<DialogContext.Provider
 			value={{ activeDialog, dialogProps, openDialog, closeDialog }}
 		>
-			{renderedDialog}
 			{children}
+			{renderedDialog}
 		</DialogContext.Provider>
 	)
 }
