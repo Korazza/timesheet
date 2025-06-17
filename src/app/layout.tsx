@@ -25,6 +25,9 @@ const mono = Source_Code_Pro({
 })
 
 export const metadata: Metadata = {
+	icons: {
+		icon: [{ url: "/logo-no-text-no-bg.png", type: "image/png" }],
+	},
 	title: "Timesheet",
 	description: "Assertcode Timesheet",
 }
@@ -39,6 +42,14 @@ export default async function RootLayout({
 
 	return (
 		<html lang={locale} suppressHydrationWarning>
+			<head>
+				<link
+					rel="icon"
+					href="/assets/logo-no-text-no-bg?<generated>"
+					type="image/<generated>"
+					sizes="<generated>"
+				/>
+			</head>
 			<body
 				className={`${sans.variable} ${serif.variable} ${mono.variable} antialiased`}
 			>
