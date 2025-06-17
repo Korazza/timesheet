@@ -49,296 +49,30 @@ import { useIsMobile } from "@/hooks/use-mobile"
 
 type TimesheetCalendarViewType = "month" | "week" | "day"
 
-interface TimesheetCalendarHeaderProps {
-	currentDate: Date
-	onDateChange: (date: Date) => void
-	viewType: TimesheetCalendarViewType
-	onViewTypeChange: (viewType: TimesheetCalendarViewType) => void
+function getInitialDate(): Date {
+	const today = new Date()
+	const day = today.getDay()
+	if (day === 6) return addDays(today, 2)
+	if (day === 0) return addDays(today, 1)
+	return today
 }
 
-export function TimesheetCalendarHeader({
-	currentDate,
-	onDateChange,
-	viewType,
-	onViewTypeChange,
-}: TimesheetCalendarHeaderProps) {
-	function getNextValidDate(date: Date): Date {
-		let next = addDays(date, 1)
-		while (isWeekend(next)) {
-			next = addDays(next, 1)
-		}
-		return next
+function getEditDialogId(entry: EntryWithClient): DialogId {
+	switch (entry.type) {
+		case "WORK":
+			return "editWorkingEntry"
+		case "HOLIDAY":
+			return "editHolidayEntry"
+		case "PERMIT":
+			return "editPermitEntry"
+		case "SICK":
+			return "editSickEntry"
+		default:
+			throw new Error("Tipo di entry sconosciuto")
 	}
-
-	function getPrevValidDate(date: Date): Date {
-		let prev = addDays(date, -1)
-		while (isWeekend(prev)) {
-			prev = addDays(prev, -1)
-		}
-		return prev
-	}
-
-	return (
-		<div className="w-full grid grid-cols-2 md:grid-cols-3 px-2 place-items-center">
-			<Button
-				variant="outline"
-				className="hidden place-self-start md:block"
-				onClick={() => {
-					const today = new Date()
-					onDateChange(
-						viewType === "day" && isWeekend(today)
-							? getNextValidDate(today)
-							: today
-					)
-				}}
-			>
-				Oggi
-			</Button>
-			<div className="flex items-center gap-4">
-				<Button
-					variant="outline"
-					size="icon"
-					onClick={() => {
-						if (viewType === "month") {
-							onDateChange(subMonths(currentDate, 1))
-						} else if (viewType === "week") {
-							onDateChange(addDays(currentDate, -7))
-						} else {
-							onDateChange(getPrevValidDate(currentDate))
-						}
-					}}
-				>
-					<ChevronLeft className="h-5 w-5" />
-				</Button>
-				<div suppressHydrationWarning className="text-lg font-semibold">
-					{viewType === "month" ? (
-						format(currentDate, "MMMM yyyy")
-					) : viewType === "week" ? (
-						<>
-							{format(startOfWeek(currentDate, { weekStartsOn: 1 }), "dd MMM")}{" "}
-							–{" "}
-							{format(
-								endOfWeek(currentDate, { weekStartsOn: 6 }),
-								"dd MMM yyyy"
-							)}
-						</>
-					) : (
-						format(currentDate, "dd MMMM yyyy")
-					)}
-				</div>
-				<Button
-					variant="outline"
-					size="icon"
-					onClick={() => {
-						if (viewType === "month") {
-							onDateChange(addMonths(currentDate, 1))
-						} else if (viewType === "week") {
-							onDateChange(addDays(currentDate, 7))
-						} else {
-							onDateChange(getNextValidDate(currentDate))
-						}
-					}}
-				>
-					<ChevronRight className="h-5 w-5" />
-				</Button>
-			</div>
-			<React.Fragment>
-				<ToggleGroup
-					type="single"
-					variant="outline"
-					value={viewType}
-					onValueChange={(val) => {
-						if (val) onViewTypeChange(val as TimesheetCalendarViewType)
-					}}
-					className="hidden place-self-end *:data-[slot=toggle-group-item]:!px-4 md:flex"
-				>
-					<ToggleGroupItem
-						value={"month" as TimesheetCalendarViewType}
-						aria-label="Toggle month view type"
-					>
-						Mese
-					</ToggleGroupItem>
-					<ToggleGroupItem
-						value={"week" as TimesheetCalendarViewType}
-						aria-label="Toggle week view type"
-					>
-						Settimana
-					</ToggleGroupItem>
-					<ToggleGroupItem
-						value={"day" as TimesheetCalendarViewType}
-						aria-label="Toggle day view type"
-					>
-						Giorno
-					</ToggleGroupItem>
-				</ToggleGroup>
-				<Select
-					value={viewType}
-					onValueChange={(selectedViewType) => {
-						onViewTypeChange(selectedViewType as TimesheetCalendarViewType)
-					}}
-				>
-					<SelectTrigger
-						className="flex justify-self-end w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate md:hidden"
-						size="sm"
-						aria-label="Select a value"
-					>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent className="rounded-xl">
-						<SelectItem
-							value={"month" as TimesheetCalendarViewType}
-							className="rounded-lg"
-						>
-							Mese
-						</SelectItem>
-						<SelectItem
-							value={"week" as TimesheetCalendarViewType}
-							className="rounded-lg"
-						>
-							Settimana
-						</SelectItem>
-						<SelectItem
-							value={"day" as TimesheetCalendarViewType}
-							className="rounded-lg"
-						>
-							Giorno
-						</SelectItem>
-					</SelectContent>
-				</Select>
-			</React.Fragment>
-		</div>
-	)
-}
-
-interface TimesheetCalendarEntryPillProps {
-	entry: EntryWithClient
-	viewType: TimesheetCalendarViewType
-}
-
-export function TimesheetCalendarEntryPill({
-	entry,
-	viewType,
-}: TimesheetCalendarEntryPillProps) {
-	const isMobile = useIsMobile()
-	const totalHours = entry.hours + (entry.overtimeHours ?? 0)
-
-	const colorMap = {
-		WORK: "var(--working-entry)",
-		PERMIT: "var(--permit-entry)",
-		SICK: "var(--sick-entry)",
-		HOLIDAY: "var(--holiday-entry)",
-	}
-
-	const foregroundColorMap = {
-		WORK: "var(--working-entry-foreground)",
-		PERMIT: "var(--permit-entry-foreground)",
-		SICK: "var(--sick-entry-foreground)",
-		HOLIDAY: "var(--holiday-entry-foreground)",
-	}
-
-	const labelMap = {
-		WORK: entry.client?.name ?? "Lavoro",
-		HOLIDAY: "Ferie",
-		PERMIT: "Permesso",
-		SICK: "Malattia",
-	}
-
-	const content = (
-		<div
-			className="rounded px-2.5 py-1 md:px-3 md:py-2 transition-shadow hover:shadow-sm"
-			style={{
-				backgroundColor: colorMap[entry.type],
-				color: foregroundColorMap[entry.type],
-			}}
-		>
-			<div
-				className={cn(
-					"flex flex-col gap-1",
-					"md:flex-row md:items-center md:justify-between"
-				)}
-			>
-				<div className="text-xs md:text-sm font-semibold truncate max-w-full">
-					{labelMap[entry.type]}
-				</div>
-				<div className="text-sm md:text-base font-bold">
-					{totalHours} h
-					{entry.overtimeHours && (
-						<span className="ml-1 text-xs font-medium opacity-80">
-							(+{entry.overtimeHours} h)
-						</span>
-					)}
-				</div>
-			</div>
-
-			{(viewType === "day" || !isMobile) && entry.description && (
-				<div className="text-xs mt-1 font-medium opacity-80 line-clamp-2 max-w-full break-words">
-					{entry.description}
-				</div>
-			)}
-		</div>
-	)
-
-	if (entry.description && isMobile && viewType !== "day") {
-		return (
-			<Tooltip>
-				<TooltipTrigger asChild>{content}</TooltipTrigger>
-				<TooltipContent className="max-w-[200px] text-sm whitespace-pre-wrap">
-					{entry.description}
-				</TooltipContent>
-			</Tooltip>
-		)
-	}
-
-	return content
-}
-
-function TimesheetLegend() {
-	const legendItems = [
-		{
-			label: "Attività",
-			color: "var(--working-entry)",
-		},
-		{
-			label: "Ferie",
-			color: "var(--holiday-entry)",
-		},
-		{
-			label: "Permesso",
-			color: "var(--permit-entry)",
-		},
-		{
-			label: "Malattia",
-			color: "var(--sick-entry)",
-		},
-	]
-
-	return (
-		<div className="flex flex-wrap gap-2 md:gap-4 lg:gap-8 xl:gap-10 px-4 md:w-full md:justify-center py-2 bg-muted/50 border-t">
-			{legendItems.map((item) => (
-				<div
-					key={item.label}
-					className="flex items-center gap-1 md:gap-2 text-xs md:text-sm"
-				>
-					<span
-						className="w-4 h-4 rounded shadow"
-						style={{ backgroundColor: item.color }}
-					/>
-					<span className="text-card-foreground">{item.label}</span>
-				</div>
-			))}
-		</div>
-	)
 }
 
 export function TimesheetCalendar() {
-	function getInitialDate(): Date {
-		const today = new Date()
-		const day = today.getDay()
-		if (day === 6) return addDays(today, 2)
-		if (day === 0) return addDays(today, 1)
-		return today
-	}
-
 	const isMobile = useIsMobile()
 	const [date, setDate] = React.useState(() => getInitialDate())
 	const [viewType, setViewType] = React.useState<TimesheetCalendarViewType>(
@@ -356,21 +90,6 @@ export function TimesheetCalendar() {
 	const [selectedDate, setSelectedDate] = React.useState<Date>()
 	const { entries } = useEntries()
 	const { openDialog, closeDialog } = useDialog()
-
-	function getEditDialogId(entry: EntryWithClient): DialogId {
-		switch (entry.type) {
-			case "WORK":
-				return "editWorkingEntry"
-			case "HOLIDAY":
-				return "editHolidayEntry"
-			case "PERMIT":
-				return "editPermitEntry"
-			case "SICK":
-				return "editSickEntry"
-			default:
-				throw new Error("Tipo di entry sconosciuto")
-		}
-	}
 
 	const WEEK_DAYS = React.useMemo(() => {
 		const weekDaysRaw =
@@ -395,7 +114,7 @@ export function TimesheetCalendar() {
 	}, [isMobile, viewType, date])
 
 	return (
-		<div className="flex-1 h-full flex flex-col md:border-2 border-border md:rounded-2xl overflow-hidden">
+		<div className="flex-1 h-full flex flex-col md:border border-border md:rounded-2xl overflow-hidden md:shadow-md">
 			<div className="py-2">
 				<TimesheetCalendarHeader
 					currentDate={date}
@@ -577,6 +296,287 @@ export function TimesheetCalendar() {
 				})}
 			</div>
 			<TimesheetLegend />
+		</div>
+	)
+}
+
+interface TimesheetCalendarHeaderProps {
+	currentDate: Date
+	onDateChange: (date: Date) => void
+	viewType: TimesheetCalendarViewType
+	onViewTypeChange: (viewType: TimesheetCalendarViewType) => void
+}
+
+function TimesheetCalendarHeader({
+	currentDate,
+	onDateChange,
+	viewType,
+	onViewTypeChange,
+}: TimesheetCalendarHeaderProps) {
+	function getNextValidDate(date: Date): Date {
+		let next = addDays(date, 1)
+		while (isWeekend(next)) {
+			next = addDays(next, 1)
+		}
+		return next
+	}
+
+	function getPrevValidDate(date: Date): Date {
+		let prev = addDays(date, -1)
+		while (isWeekend(prev)) {
+			prev = addDays(prev, -1)
+		}
+		return prev
+	}
+
+	return (
+		<div className="w-full grid grid-cols-2 md:grid-cols-3 px-2 place-items-center">
+			<Button
+				variant="outline"
+				className="hidden place-self-start md:block"
+				onClick={() => {
+					const today = new Date()
+					onDateChange(
+						viewType === "day" && isWeekend(today)
+							? getNextValidDate(today)
+							: today
+					)
+				}}
+			>
+				Oggi
+			</Button>
+			<div className="flex items-center gap-4">
+				<Button
+					variant="outline"
+					size="icon"
+					onClick={() => {
+						if (viewType === "month") {
+							onDateChange(subMonths(currentDate, 1))
+						} else if (viewType === "week") {
+							onDateChange(addDays(currentDate, -7))
+						} else {
+							onDateChange(getPrevValidDate(currentDate))
+						}
+					}}
+				>
+					<ChevronLeft className="h-5 w-5" />
+				</Button>
+				<div suppressHydrationWarning className="text-lg font-semibold">
+					{viewType === "month" ? (
+						format(currentDate, "MMMM yyyy")
+					) : viewType === "week" ? (
+						<>
+							{format(startOfWeek(currentDate, { weekStartsOn: 1 }), "dd MMM")}{" "}
+							–{" "}
+							{format(
+								endOfWeek(currentDate, { weekStartsOn: 6 }),
+								"dd MMM yyyy"
+							)}
+						</>
+					) : (
+						format(currentDate, "dd MMMM yyyy")
+					)}
+				</div>
+				<Button
+					variant="outline"
+					size="icon"
+					onClick={() => {
+						if (viewType === "month") {
+							onDateChange(addMonths(currentDate, 1))
+						} else if (viewType === "week") {
+							onDateChange(addDays(currentDate, 7))
+						} else {
+							onDateChange(getNextValidDate(currentDate))
+						}
+					}}
+				>
+					<ChevronRight className="h-5 w-5" />
+				</Button>
+			</div>
+			<React.Fragment>
+				<ToggleGroup
+					type="single"
+					variant="outline"
+					value={viewType}
+					onValueChange={(val) => {
+						if (val) onViewTypeChange(val as TimesheetCalendarViewType)
+					}}
+					className="hidden place-self-end *:data-[slot=toggle-group-item]:!px-4 md:flex"
+				>
+					<ToggleGroupItem
+						value={"month" as TimesheetCalendarViewType}
+						aria-label="Toggle month view type"
+					>
+						Mese
+					</ToggleGroupItem>
+					<ToggleGroupItem
+						value={"week" as TimesheetCalendarViewType}
+						aria-label="Toggle week view type"
+					>
+						Settimana
+					</ToggleGroupItem>
+					<ToggleGroupItem
+						value={"day" as TimesheetCalendarViewType}
+						aria-label="Toggle day view type"
+					>
+						Giorno
+					</ToggleGroupItem>
+				</ToggleGroup>
+				<Select
+					value={viewType}
+					onValueChange={(selectedViewType) => {
+						onViewTypeChange(selectedViewType as TimesheetCalendarViewType)
+					}}
+				>
+					<SelectTrigger
+						className="flex justify-self-end w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate md:hidden"
+						size="sm"
+						aria-label="Select a value"
+					>
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent className="rounded-xl">
+						<SelectItem
+							value={"month" as TimesheetCalendarViewType}
+							className="rounded-lg"
+						>
+							Mese
+						</SelectItem>
+						<SelectItem
+							value={"week" as TimesheetCalendarViewType}
+							className="rounded-lg"
+						>
+							Settimana
+						</SelectItem>
+						<SelectItem
+							value={"day" as TimesheetCalendarViewType}
+							className="rounded-lg"
+						>
+							Giorno
+						</SelectItem>
+					</SelectContent>
+				</Select>
+			</React.Fragment>
+		</div>
+	)
+}
+
+interface TimesheetCalendarEntryPillProps {
+	entry: EntryWithClient
+	viewType: TimesheetCalendarViewType
+}
+
+function TimesheetCalendarEntryPill({
+	entry,
+	viewType,
+}: TimesheetCalendarEntryPillProps) {
+	const isMobile = useIsMobile()
+	const totalHours = entry.hours + (entry.overtimeHours ?? 0)
+
+	const colorMap = {
+		WORK: "var(--working-entry)",
+		PERMIT: "var(--permit-entry)",
+		SICK: "var(--sick-entry)",
+		HOLIDAY: "var(--holiday-entry)",
+	}
+
+	const foregroundColorMap = {
+		WORK: "var(--working-entry-foreground)",
+		PERMIT: "var(--permit-entry-foreground)",
+		SICK: "var(--sick-entry-foreground)",
+		HOLIDAY: "var(--holiday-entry-foreground)",
+	}
+
+	const labelMap = {
+		WORK: entry.client?.name ?? "Lavoro",
+		HOLIDAY: "Ferie",
+		PERMIT: "Permesso",
+		SICK: "Malattia",
+	}
+
+	const content = (
+		<div
+			className="rounded px-2.5 py-1 md:px-3 md:py-2 transition-shadow hover:shadow-sm"
+			style={{
+				backgroundColor: colorMap[entry.type],
+				color: foregroundColorMap[entry.type],
+			}}
+		>
+			<div
+				className={cn(
+					"flex flex-col gap-1",
+					"md:flex-row md:items-center md:justify-between"
+				)}
+			>
+				<div className="text-xs md:text-sm font-semibold truncate max-w-full">
+					{labelMap[entry.type]}
+				</div>
+				<div className="text-sm md:text-base font-bold">
+					{totalHours} h
+					{entry.overtimeHours && (
+						<span className="ml-1 text-xs font-medium opacity-80">
+							(+{entry.overtimeHours} h)
+						</span>
+					)}
+				</div>
+			</div>
+
+			{(viewType === "day" || !isMobile) && entry.description && (
+				<div className="text-xs mt-1 font-medium opacity-80 line-clamp-2 max-w-full break-words">
+					{entry.description}
+				</div>
+			)}
+		</div>
+	)
+
+	if (entry.description && isMobile && viewType !== "day") {
+		return (
+			<Tooltip>
+				<TooltipTrigger asChild>{content}</TooltipTrigger>
+				<TooltipContent className="max-w-[200px] text-sm whitespace-pre-wrap">
+					{entry.description}
+				</TooltipContent>
+			</Tooltip>
+		)
+	}
+
+	return content
+}
+
+function TimesheetLegend() {
+	const legendItems = [
+		{
+			label: "Attività",
+			color: "var(--working-entry)",
+		},
+		{
+			label: "Ferie",
+			color: "var(--holiday-entry)",
+		},
+		{
+			label: "Permesso",
+			color: "var(--permit-entry)",
+		},
+		{
+			label: "Malattia",
+			color: "var(--sick-entry)",
+		},
+	]
+
+	return (
+		<div className="flex flex-wrap gap-2.5 md:gap-4 lg:gap-8 xl:gap-10 px-4 md:w-full justify-center py-2 bg-muted/50 border-t">
+			{legendItems.map((item) => (
+				<div
+					key={item.label}
+					className="flex items-center gap-1 md:gap-2 text-xs md:text-sm"
+				>
+					<span
+						className="w-4 h-4 rounded shadow"
+						style={{ backgroundColor: item.color }}
+					/>
+					<span className="text-card-foreground">{item.label}</span>
+				</div>
+			))}
 		</div>
 	)
 }

@@ -78,7 +78,7 @@ export function WorkingEntriesTable() {
 			<WorkingEntryCreateDialog />
 			<WorkingEntryEditDialog entry={editingEntry} />
 			<EntryConfirmDeleteDialog entry={deletingEntry} />
-			<div className="md:rounded-md border px-1">
+			<div className="md:rounded-md border md:shadow-xs px-1">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (

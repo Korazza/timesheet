@@ -30,7 +30,7 @@ export function WorkingEntriesTableToolbar<Entry>({
 	const isFiltered = table.getState().columnFilters.length > 0
 
 	return (
-		<div className="flex flex-col md:flex-row items-end md:items-center gap-2 justify-between">
+		<div className="flex flex-col md:flex-row items-end md:items-center gap-2 justify-between px-2 md:px-0">
 			<div className="flex flex-1 flex-wrap gap-2 items-center">
 				<Input
 					placeholder="Descrizione..."
