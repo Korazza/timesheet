@@ -118,7 +118,7 @@ export function TimesheetCalendarHeader({
 							{format(startOfWeek(currentDate, { weekStartsOn: 1 }), "dd MMM")}{" "}
 							–{" "}
 							{format(
-								endOfWeek(currentDate, { weekStartsOn: 1 }),
+								endOfWeek(currentDate, { weekStartsOn: 6 }),
 								"dd MMM yyyy"
 							)}
 						</>
@@ -215,7 +215,7 @@ interface TimesheetCalendarEntryPillProps {
 	viewType: TimesheetCalendarViewType
 }
 
-function TimesheetCalendarEntryPill({
+export function TimesheetCalendarEntryPill({
 	entry,
 	viewType,
 }: TimesheetCalendarEntryPillProps) {
@@ -245,7 +245,7 @@ function TimesheetCalendarEntryPill({
 
 	const content = (
 		<div
-			className="rounded px-2 py-1 md:py-2.5"
+			className="rounded px-2.5 py-1 md:px-3 md:py-2 transition-shadow hover:shadow-sm"
 			style={{
 				backgroundColor: colorMap[entry.type],
 				color: foregroundColorMap[entry.type],
@@ -253,31 +253,32 @@ function TimesheetCalendarEntryPill({
 		>
 			<div
 				className={cn(
-					"text-xs md:text-sm lg:text-base font-bold flex flex-col-reverse md:flex-row items-center gap-0 md:justify-between md:gap-1 lg:gap-4 xl:gap-6",
-					viewType === "day" &&
-						"text-md flex-row gap-1 justify-center md:justify-between"
+					"flex flex-col gap-1",
+					"md:flex-row md:items-center md:justify-between"
 				)}
 			>
-				<div className="truncate max-w-full">{labelMap[entry.type]}</div>
-				<div className="font-black md:font-bold">
+				<div className="text-xs md:text-sm font-semibold truncate max-w-full">
+					{labelMap[entry.type]}
+				</div>
+				<div className="text-sm md:text-base font-bold">
 					{totalHours} h
 					{entry.overtimeHours && (
-						<span className="hidden ml-1 text-xs font-bold md:inline md:font-medium">
-							(+ {entry.overtimeHours} h)
+						<span className="ml-1 text-xs font-medium opacity-80">
+							(+{entry.overtimeHours} h)
 						</span>
 					)}
 				</div>
 			</div>
 
-			{(viewType === "day" || !isMobile) && (
-				<div className="font-medium">
+			{(viewType === "day" || !isMobile) && entry.description && (
+				<div className="text-xs mt-1 font-medium opacity-80 line-clamp-2 max-w-full break-words">
 					{entry.description}
 				</div>
 			)}
 		</div>
 	)
 
-	if (entry.description && isMobile) {
+	if (entry.description && isMobile && viewType !== "day") {
 		return (
 			<Tooltip>
 				<TooltipTrigger asChild>{content}</TooltipTrigger>
