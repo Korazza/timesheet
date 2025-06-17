@@ -320,7 +320,7 @@ function TimesheetLegend() {
 					className="flex items-center gap-1 md:gap-2 text-xs md:text-sm"
 				>
 					<span
-						className="w-4 h-4 rounded"
+						className="w-4 h-4 rounded shadow"
 						style={{ backgroundColor: item.color }}
 					/>
 					<span className="text-card-foreground">{item.label}</span>
