@@ -292,6 +292,44 @@ export function TimesheetCalendarEntryPill({
 	return content
 }
 
+function TimesheetLegend() {
+	const legendItems = [
+		{
+			label: "Attività",
+			color: "var(--working-entry)",
+		},
+		{
+			label: "Ferie",
+			color: "var(--holiday-entry)",
+		},
+		{
+			label: "Permesso",
+			color: "var(--permit-entry)",
+		},
+		{
+			label: "Malattia",
+			color: "var(--sick-entry)",
+		},
+	]
+
+	return (
+		<div className="flex flex-wrap gap-2 md:gap-4 lg:gap-8 xl:gap-10 px-4 md:w-full md:justify-center py-2 bg-muted/50 border-t">
+			{legendItems.map((item) => (
+				<div
+					key={item.label}
+					className="flex items-center gap-1 md:gap-2 text-xs md:text-sm"
+				>
+					<span
+						className="w-4 h-4 rounded"
+						style={{ backgroundColor: item.color }}
+					/>
+					<span className="text-card-foreground">{item.label}</span>
+				</div>
+			))}
+		</div>
+	)
+}
+
 export function TimesheetCalendar() {
 	function getInitialDate(): Date {
 		const today = new Date()
@@ -501,7 +539,7 @@ export function TimesheetCalendar() {
 													})
 												}
 											>
-												Attivitá
+												Attività
 											</ContextMenuItem>
 											<ContextMenuItem
 												onClick={() =>
@@ -538,6 +576,7 @@ export function TimesheetCalendar() {
 					)
 				})}
 			</div>
+			<TimesheetLegend />
 		</div>
 	)
 }

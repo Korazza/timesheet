@@ -2,7 +2,7 @@ import { Clock, LayoutDashboard, LucideIcon, Users } from "lucide-react"
 
 export type NavigationItem = {
 	title: string
-	url?: string
+	url: string
 	icon: LucideIcon
 	items?: { title: string; url: string }[]
 }
