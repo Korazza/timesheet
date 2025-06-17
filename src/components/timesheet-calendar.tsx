@@ -11,6 +11,8 @@ import {
 	eachDayOfInterval,
 	startOfWeek,
 	addDays,
+	isWeekend,
+	endOfWeek,
 } from "date-fns"
 import { ChevronLeft, ChevronRight, Pencil, Trash } from "lucide-react"
 
@@ -24,27 +26,26 @@ import {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
-	ContextMenuShortcut,
 	ContextMenuSub,
 	ContextMenuSubContent,
 	ContextMenuSubTrigger,
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-import { useEntries } from "@/hooks/use-entries"
-import { getCalendarMatrix } from "@/lib/calendar"
-import { EntryWithClient } from "@/db/schema"
-import { cn } from "@/lib/utils"
-import { useDialog } from "@/hooks/use-dialog"
-import { DialogId } from "@/contexts/dialog-context"
-import { useIsMobile } from "@/hooks/use-mobile"
-import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "./ui/select"
+} from "@/components/ui/select"
+import { useEntries } from "@/hooks/use-entries"
+import { getCalendarMatrix, getDayView, getWeekDays } from "@/lib/calendar"
+import { EntryWithClient } from "@/db/schema"
+import { cn } from "@/lib/utils"
+import { useDialog } from "@/hooks/use-dialog"
+import { DialogId } from "@/contexts/dialog-context"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 type TimesheetCalendarViewType = "month" | "week" | "day"
 
@@ -61,12 +62,35 @@ export function TimesheetCalendarHeader({
 	viewType,
 	onViewTypeChange,
 }: TimesheetCalendarHeaderProps) {
+	function getNextValidDate(date: Date): Date {
+		let next = addDays(date, 1)
+		while (isWeekend(next)) {
+			next = addDays(next, 1)
+		}
+		return next
+	}
+
+	function getPrevValidDate(date: Date): Date {
+		let prev = addDays(date, -1)
+		while (isWeekend(prev)) {
+			prev = addDays(prev, -1)
+		}
+		return prev
+	}
+
 	return (
-		<div className="w-full grid grid-rows-2 grid-cols-2 md:grid-rows-1 md:grid-cols-3 px-2 md:place-items-center">
+		<div className="w-full grid grid-cols-2 md:grid-cols-3 px-2 place-items-center">
 			<Button
 				variant="outline"
-				className="place-self-start"
-				onClick={() => onDateChange(new Date())}
+				className="hidden place-self-start md:block"
+				onClick={() => {
+					const today = new Date()
+					onDateChange(
+						viewType === "day" && isWeekend(today)
+							? getNextValidDate(today)
+							: today
+					)
+				}}
 			>
 				Oggi
 			</Button>
@@ -74,17 +98,46 @@ export function TimesheetCalendarHeader({
 				<Button
 					variant="outline"
 					size="icon"
-					onClick={() => onDateChange(subMonths(currentDate, 1))}
+					onClick={() => {
+						if (viewType === "month") {
+							onDateChange(subMonths(currentDate, 1))
+						} else if (viewType === "week") {
+							onDateChange(addDays(currentDate, -7))
+						} else {
+							onDateChange(getPrevValidDate(currentDate))
+						}
+					}}
 				>
 					<ChevronLeft className="h-5 w-5" />
 				</Button>
 				<div suppressHydrationWarning className="text-lg font-semibold">
-					{format(currentDate, "MMMM yyyy")}
+					{viewType === "month" ? (
+						format(currentDate, "MMMM yyyy")
+					) : viewType === "week" ? (
+						<>
+							{format(startOfWeek(currentDate, { weekStartsOn: 1 }), "dd MMM")}{" "}
+							–{" "}
+							{format(
+								endOfWeek(currentDate, { weekStartsOn: 1 }),
+								"dd MMM yyyy"
+							)}
+						</>
+					) : (
+						format(currentDate, "dd MMMM yyyy")
+					)}
 				</div>
 				<Button
 					variant="outline"
 					size="icon"
-					onClick={() => onDateChange(addMonths(currentDate, 1))}
+					onClick={() => {
+						if (viewType === "month") {
+							onDateChange(addMonths(currentDate, 1))
+						} else if (viewType === "week") {
+							onDateChange(addDays(currentDate, 7))
+						} else {
+							onDateChange(getNextValidDate(currentDate))
+						}
+					}}
 				>
 					<ChevronRight className="h-5 w-5" />
 				</Button>
@@ -125,11 +178,11 @@ export function TimesheetCalendarHeader({
 					}}
 				>
 					<SelectTrigger
-						className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate md:hidden"
+						className="flex justify-self-end w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate md:hidden"
 						size="sm"
 						aria-label="Select a value"
 					>
-						<SelectValue placeholder="Ultimi 3 mesi" />
+						<SelectValue />
 					</SelectTrigger>
 					<SelectContent className="rounded-xl">
 						<SelectItem
@@ -159,11 +212,14 @@ export function TimesheetCalendarHeader({
 
 interface TimesheetCalendarEntryPillProps {
 	entry: EntryWithClient
+	viewType: TimesheetCalendarViewType
 }
 
 function TimesheetCalendarEntryPill({
 	entry,
+	viewType,
 }: TimesheetCalendarEntryPillProps) {
+	const isMobile = useIsMobile()
 	const totalHours = entry.hours + (entry.overtimeHours ?? 0)
 
 	const colorMap = {
@@ -189,18 +245,39 @@ function TimesheetCalendarEntryPill({
 
 	const content = (
 		<div
-			className="text-xs px-2 py-1 rounded text-black font-medium flex items-center  justify-between"
+			className="rounded px-2 py-1 md:py-2.5"
 			style={{
 				backgroundColor: colorMap[entry.type],
 				color: foregroundColorMap[entry.type],
 			}}
 		>
-			<span className="truncate max-w-full">{labelMap[entry.type]}</span>
-			<span>{totalHours} h</span>
+			<div
+				className={cn(
+					"text-xs md:text-sm lg:text-base font-bold flex flex-col-reverse md:flex-row items-center gap-0 md:justify-between md:gap-1 lg:gap-4 xl:gap-6",
+					viewType === "day" &&
+						"text-md flex-row gap-1 justify-center md:justify-between"
+				)}
+			>
+				<div className="truncate max-w-full">{labelMap[entry.type]}</div>
+				<div className="font-black md:font-bold">
+					{totalHours} h
+					{entry.overtimeHours && (
+						<span className="hidden ml-1 text-xs font-bold md:inline md:font-medium">
+							(+ {entry.overtimeHours} h)
+						</span>
+					)}
+				</div>
+			</div>
+
+			{(viewType === "day" || !isMobile) && (
+				<div className="font-medium">
+					{entry.description}
+				</div>
+			)}
 		</div>
 	)
 
-	if (entry.description) {
+	if (entry.description && isMobile) {
 		return (
 			<Tooltip>
 				<TooltipTrigger asChild>{content}</TooltipTrigger>
@@ -215,21 +292,31 @@ function TimesheetCalendarEntryPill({
 }
 
 export function TimesheetCalendar() {
+	function getInitialDate(): Date {
+		const today = new Date()
+		const day = today.getDay()
+		if (day === 6) return addDays(today, 2)
+		if (day === 0) return addDays(today, 1)
+		return today
+	}
+
 	const isMobile = useIsMobile()
-	const [date, setDate] = React.useState(new Date())
+	const [date, setDate] = React.useState(() => getInitialDate())
 	const [viewType, setViewType] = React.useState<TimesheetCalendarViewType>(
 		isMobile ? "week" : "month"
 	)
-	const days = getCalendarMatrix(date)
+	const days = (
+		viewType === "month"
+			? getCalendarMatrix(date)
+			: viewType === "week"
+			? getWeekDays(date)
+			: getDayView(date)
+	).filter((d) => d.getDay() !== 0 && d.getDay() !== 6)
 	const [selectedEntry, setSelectedEntry] =
 		React.useState<EntryWithClient | null>(null)
 	const [selectedDate, setSelectedDate] = React.useState<Date>()
 	const { entries } = useEntries()
 	const { openDialog, closeDialog } = useDialog()
-
-	React.useEffect(() => {
-		setViewType(isMobile ? "week" : "month")
-	}, [isMobile])
 
 	function getEditDialogId(entry: EntryWithClient): DialogId {
 		switch (entry.type) {
@@ -246,17 +333,30 @@ export function TimesheetCalendar() {
 		}
 	}
 
-	const WEEK_DAYS = React.useMemo(
-		() =>
-			eachDayOfInterval({
-				start: startOfWeek(new Date(), { weekStartsOn: 1 }),
-				end: addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 6),
-			}).map((date) => format(date, isMobile ? "E" : "EEEE")),
-		[isMobile]
-	)
+	const WEEK_DAYS = React.useMemo(() => {
+		const weekDaysRaw =
+			viewType === "day"
+				? [
+						{
+							label: format(date, "EEEE"),
+							date,
+						},
+				  ]
+				: eachDayOfInterval({
+						start: startOfWeek(date, { weekStartsOn: 1 }),
+						end: addDays(startOfWeek(date, { weekStartsOn: 1 }), 6),
+				  }).map((date) => ({
+						label: format(date, isMobile ? "E" : "EEEE"),
+						date,
+				  }))
+
+		return weekDaysRaw
+			.filter((d) => d.date.getDay() !== 0 && d.date.getDay() !== 6)
+			.map((d) => d.label)
+	}, [isMobile, viewType, date])
 
 	return (
-		<div className="flex-1 h-full flex flex-col md:border-2 border-border md:rounded-t-2xl overflow-hidden">
+		<div className="flex-1 h-full flex flex-col md:border-2 border-border md:rounded-2xl overflow-hidden">
 			<div className="py-2">
 				<TimesheetCalendarHeader
 					currentDate={date}
@@ -265,162 +365,178 @@ export function TimesheetCalendar() {
 					onViewTypeChange={setViewType}
 				/>
 			</div>
-			{viewType === "month" && (
-				<React.Fragment>
-					<div className="grid grid-cols-7">
-						{WEEK_DAYS.map((d) => (
-							<div
-								key={d}
-								className="bg-card border-1 py-2 text-sm font-medium text-center text-card-foreground"
-								suppressHydrationWarning
-							>
-								{d}
-							</div>
-						))}
-					</div>
-					<div className="flex-1 grid grid-cols-7">
-						{days.map((day) => {
-							const dayEntries = entries.filter((e) =>
-								isSameDay(new Date(e.date), day)
-							)
+			{viewType !== "day" && (
+				<div className="grid grid-cols-5">
+					{WEEK_DAYS.map((d) => (
+						<div
+							key={d}
+							className="bg-card border-1 py-2 text-sm font-medium text-center text-card-foreground"
+							suppressHydrationWarning
+						>
+							{d}
+						</div>
+					))}
+				</div>
+			)}
+			<div
+				className={cn(
+					"flex-1 grid",
+					(viewType === "month" || viewType === "week") && "grid-cols-5",
+					viewType === "day" && "grid-cols-1"
+				)}
+			>
+				{days.map((day) => {
+					const dayEntries = entries.filter((e) =>
+						isSameDay(new Date(e.date), day)
+					)
 
-							return (
-								<ContextMenu key={day.toISOString()}>
-									<ContextMenuTrigger
-										asChild
-										onContextMenu={(e) => {
-											const isEntry = (e.target as HTMLElement).closest(
-												"[data-entry]"
-											)
-											if (!isEntry) {
-												setSelectedDate(day)
-												setSelectedEntry(null)
-											}
-										}}
-									>
-										<div
+					return (
+						<ContextMenu key={day.toISOString()}>
+							<ContextMenuTrigger
+								asChild
+								onContextMenu={(e) => {
+									const isEntry = (e.target as HTMLElement).closest(
+										"[data-entry]"
+									)
+									if (!isEntry) {
+										setSelectedDate(day)
+										setSelectedEntry(null)
+									}
+								}}
+							>
+								<div
+									className={cn(
+										"transition-all flex flex-col border-1 gap-1.5 p-2 bg-card text-card-foreground",
+										!isSameMonth(day, date) && "opacity-25",
+										viewType === "week" && "gap-4",
+										viewType === "day" && "p-4 gap-6"
+									)}
+								>
+									{viewType !== "day" && (
+										<span
 											className={cn(
-												"transition-all flex flex-col border-1 gap-1.5 p-2 bg-card text-card-foreground",
-												!isSameMonth(day, date) && "opacity-25"
+												"font-medium max-w-fit ml-auto text-muted-foreground",
+												isToday(day) &&
+													"bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full shadow-sm",
+												viewType === "month" && "text-sm"
 											)}
 										>
-											<span
-												className={cn(
-													"text-sm font-medium max-w-fit ml-auto text-muted-foreground",
-													isToday(day) &&
-														"bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full shadow-sm"
-												)}
-											>
-												{day.getDate()}
+											{day.getDate()}
+										</span>
+									)}
+
+									{viewType === "day" && dayEntries.length === 0 ? (
+										<div className="flex-1 flex items-center justify-center text-muted-foreground">
+											<span className="text-lg lg:text-xl">
+												Nessuna consuntivazione
 											</span>
-											<div className="flex flex-col flex-1 gap-1">
-												{dayEntries.map((entry) => (
-													<div
-														key={entry.id}
-														data-entry
-														onContextMenu={() => {
-															closeDialog()
-															setSelectedEntry(entry)
-															setSelectedDate(undefined)
-														}}
-													>
-														<TimesheetCalendarEntryPill entry={entry} />
-													</div>
-												))}
-											</div>
 										</div>
-									</ContextMenuTrigger>
-									<ContextMenuContent>
-										{selectedEntry ? (
-											<React.Fragment>
-												<ContextMenuItem
-													onClick={() => {
-														if (selectedEntry)
-															openDialog(getEditDialogId(selectedEntry), {
-																entry: selectedEntry,
-															})
+									) : (
+										<div
+											className={cn(
+												"flex flex-col flex-1 gap-1 md:gap-1.5",
+												viewType === "week" && "gap-2.5 md:gap-6",
+												viewType === "day" &&
+													"gap-4 md:gap-6 lg:gap-8 lg:items-center lg:justify-center"
+											)}
+										>
+											{dayEntries.map((entry) => (
+												<div
+													key={entry.id}
+													data-entry
+													onContextMenu={() => {
+														closeDialog()
+														setSelectedEntry(entry)
+														setSelectedDate(undefined)
 													}}
 												>
-													<Pencil />
-													Modifica
-												</ContextMenuItem>
-												<ContextMenuItem
-													variant="destructive"
-													onClick={() => {
-														if (selectedEntry)
-															openDialog("confirmDeleteEntry", {
-																entry: selectedEntry,
-															})
-													}}
-												>
-													<Trash />
-													Elimina
-												</ContextMenuItem>
-											</React.Fragment>
-										) : selectedDate ? (
-											<ContextMenuSub>
-												<ContextMenuSubTrigger inset>
-													Aggiungi
-												</ContextMenuSubTrigger>
-												<ContextMenuSubContent className="w-44">
-													<ContextMenuItem
-														onClick={() =>
-															openDialog("createWorkingEntry", {
-																date: selectedDate,
-															})
-														}
-													>
-														Attivitá
-													</ContextMenuItem>
-													<ContextMenuItem
-														onClick={() =>
-															openDialog("createHolidayEntry", {
-																date: selectedDate,
-															})
-														}
-													>
-														Ferie
-													</ContextMenuItem>
-													<ContextMenuItem
-														onClick={() =>
-															openDialog("createPermitEntry", {
-																date: selectedDate,
-															})
-														}
-													>
-														Permesso
-													</ContextMenuItem>
-													<ContextMenuItem
-														onClick={() =>
-															openDialog("createSickEntry", {
-																date: selectedDate,
-															})
-														}
-													>
-														Malattia
-													</ContextMenuItem>
-												</ContextMenuSubContent>
-											</ContextMenuSub>
-										) : null}
-									</ContextMenuContent>
-								</ContextMenu>
-							)
-						})}
-					</div>
-				</React.Fragment>
-			)}
-
-			{viewType === "week" && (
-				<div className="p-4 text-center text-muted-foreground text-sm">
-					🚧 Vista settimanale in sviluppo
-				</div>
-			)}
-
-			{viewType === "day" && (
-				<div className="p-4 text-center text-muted-foreground text-sm">
-					🚧 Vista giornaliera in sviluppo
-				</div>
-			)}
+													<TimesheetCalendarEntryPill
+														entry={entry}
+														viewType={viewType}
+													/>
+												</div>
+											))}
+										</div>
+									)}
+								</div>
+							</ContextMenuTrigger>
+							<ContextMenuContent>
+								{selectedEntry ? (
+									<React.Fragment>
+										<ContextMenuItem
+											onClick={() => {
+												if (selectedEntry)
+													openDialog(getEditDialogId(selectedEntry), {
+														entry: selectedEntry,
+													})
+											}}
+										>
+											<Pencil />
+											Modifica
+										</ContextMenuItem>
+										<ContextMenuItem
+											variant="destructive"
+											onClick={() => {
+												if (selectedEntry)
+													openDialog("confirmDeleteEntry", {
+														entry: selectedEntry,
+													})
+											}}
+										>
+											<Trash />
+											Elimina
+										</ContextMenuItem>
+									</React.Fragment>
+								) : selectedDate ? (
+									<ContextMenuSub>
+										<ContextMenuSubTrigger inset>
+											Aggiungi
+										</ContextMenuSubTrigger>
+										<ContextMenuSubContent className="w-44">
+											<ContextMenuItem
+												onClick={() =>
+													openDialog("createWorkingEntry", {
+														date: selectedDate,
+													})
+												}
+											>
+												Attivitá
+											</ContextMenuItem>
+											<ContextMenuItem
+												onClick={() =>
+													openDialog("createHolidayEntry", {
+														date: selectedDate,
+													})
+												}
+											>
+												Ferie
+											</ContextMenuItem>
+											<ContextMenuItem
+												onClick={() =>
+													openDialog("createPermitEntry", {
+														date: selectedDate,
+													})
+												}
+											>
+												Permesso
+											</ContextMenuItem>
+											<ContextMenuItem
+												onClick={() =>
+													openDialog("createSickEntry", {
+														date: selectedDate,
+													})
+												}
+											>
+												Malattia
+											</ContextMenuItem>
+										</ContextMenuSubContent>
+									</ContextMenuSub>
+								) : null}
+							</ContextMenuContent>
+						</ContextMenu>
+					)
+				})}
+			</div>
 		</div>
 	)
 }
