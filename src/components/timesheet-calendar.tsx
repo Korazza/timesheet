@@ -14,7 +14,14 @@ import {
 	isWeekend,
 	endOfWeek,
 } from "date-fns"
-import { ChevronLeft, ChevronRight, Pencil, Trash } from "lucide-react"
+import {
+	ChevronLeft,
+	ChevronRight,
+	FileSpreadsheet,
+	Pencil,
+	Trash,
+} from "lucide-react"
+import * as XLSX from "xlsx"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -46,6 +53,7 @@ import { cn } from "@/lib/utils"
 import { useDialog } from "@/hooks/use-dialog"
 import { DialogId } from "@/contexts/dialog-context"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { activityTypeOptions, entryTypeOptions } from "@/enums"
 
 type TimesheetCalendarViewType = "month" | "week" | "day"
 
@@ -113,15 +121,76 @@ export function TimesheetCalendar() {
 			.map((d) => d.label)
 	}, [isMobile, viewType, date])
 
+	const handleExportExcel = React.useCallback(() => {
+		if (!entries || entries.length === 0) return
+		const data = entries.map((entry) => ({
+			Data: format(new Date(entry.date), "dd/MM/yyyy"),
+			Tipo:
+				entryTypeOptions.find((eto) => eto.value === entry.type)?.label || "",
+			Tipologia:
+				activityTypeOptions.find((ato) => ato.value === entry.activityType)
+					?.label || "",
+			Cliente: entry.client?.name || "",
+			Descrizione: entry.description || "",
+			Ore: entry.hours,
+			"Ore Straordinarie": entry.overtimeHours || 0,
+		}))
+		const worksheet = XLSX.utils.json_to_sheet(data, { cellDates: true })
+
+		worksheet["!cols"] = [
+			{ wch: 14 },
+			{ wch: 12 },
+			{ wch: 16 },
+			{ wch: 22 },
+			{ wch: 60 },
+			{ wch: 10 },
+			{ wch: 18 },
+		]
+
+		const range = XLSX.utils.decode_range(worksheet["!ref"]!)
+		for (let R = range.s.r + 1; R <= range.e.r; ++R) {
+			const cellOre = worksheet[XLSX.utils.encode_cell({ c: 5, r: R })]
+			if (cellOre) {
+				cellOre.t = "n"
+				cellOre.z = "0.00"
+			}
+			const cellStraord = worksheet[XLSX.utils.encode_cell({ c: 6, r: R })]
+			if (cellStraord) {
+				cellStraord.t = "n"
+				cellStraord.z = "0.00"
+			}
+		}
+
+		if (worksheet["!ref"]) {
+			worksheet["!autofilter"] = { ref: worksheet["!ref"] as string }
+		}
+
+		const workbook = XLSX.utils.book_new()
+		XLSX.utils.book_append_sheet(workbook, worksheet, "Consuntivazioni")
+		XLSX.writeFile(
+			workbook,
+			`Consuntivazioni_${format(new Date(), "dd-MM-yyyy_HH-mm-ss")}.xlsx`
+		)
+	}, [entries])
+
 	return (
 		<div className="flex-1 h-full flex flex-col md:border border-border md:rounded-2xl overflow-hidden md:shadow-md">
-			<div className="py-2">
+			<div className="flex items-center justify-between p-2">
 				<TimesheetCalendarHeader
 					currentDate={date}
 					onDateChange={setDate}
 					viewType={viewType}
 					onViewTypeChange={setViewType}
 				/>
+				<Button
+					className="hidden lg:inline-flex"
+					variant="outline"
+					onClick={handleExportExcel}
+					title="Esporta tutte le consuntivazioni in Excel"
+				>
+					<FileSpreadsheet className="w-4 h-4" />
+					<span className="hidden xl:inline">Esporta Excel</span>
+				</Button>
 			</div>
 			{viewType !== "day" && (
 				<div className="grid grid-cols-5">
@@ -335,6 +404,7 @@ function TimesheetCalendarHeader({
 			<Button
 				variant="outline"
 				className="hidden place-self-start md:block"
+				title="Naviga al giorno di oggi"
 				onClick={() => {
 					const today = new Date()
 					onDateChange(
@@ -350,6 +420,7 @@ function TimesheetCalendarHeader({
 				<Button
 					variant="outline"
 					size="icon"
+					title="Naviga alla sezione precedente"
 					onClick={() => {
 						if (viewType === "month") {
 							onDateChange(subMonths(currentDate, 1))
@@ -381,6 +452,7 @@ function TimesheetCalendarHeader({
 				<Button
 					variant="outline"
 					size="icon"
+					title="Naviga alla sezione successiva"
 					onClick={() => {
 						if (viewType === "month") {
 							onDateChange(addMonths(currentDate, 1))
