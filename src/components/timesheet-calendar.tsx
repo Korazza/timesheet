@@ -164,8 +164,9 @@ export function TimesheetCalendar() {
 							>
 								<div
 									className={cn(
-										"transition-all flex flex-col border-1 gap-1.5 p-2 bg-card text-card-foreground",
+										"transition-all flex flex-col border gap-1.5 p-2 bg-card text-card-foreground",
 										!isSameMonth(day, date) && "opacity-25",
+										isToday(day) && "border-primary rounded-sm shadow-xs",
 										viewType === "week" && "gap-4",
 										viewType === "day" && "p-4 gap-6"
 									)}
@@ -175,7 +176,7 @@ export function TimesheetCalendar() {
 											className={cn(
 												"font-medium max-w-fit ml-auto text-muted-foreground",
 												isToday(day) &&
-													"bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full shadow-sm",
+													"bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full shadow",
 												viewType === "month" && "text-sm"
 											)}
 										>
@@ -496,7 +497,7 @@ function TimesheetCalendarEntryPill({
 
 	const content = (
 		<div
-			className="rounded px-2.5 py-1 md:px-3 md:py-2 transition-shadow hover:shadow-sm"
+			className="rounded px-2.5 py-1 md:px-3 md:py-2 transition-shadow shadow hover:shadow-xl"
 			style={{
 				backgroundColor: colorMap[entry.type],
 				color: foregroundColorMap[entry.type],
@@ -515,7 +516,7 @@ function TimesheetCalendarEntryPill({
 					{totalHours} h
 					{entry.overtimeHours && (
 						<span className="ml-1 text-xs font-medium opacity-80">
-							(+{entry.overtimeHours} h)
+							(+ {entry.overtimeHours} h)
 						</span>
 					)}
 				</div>

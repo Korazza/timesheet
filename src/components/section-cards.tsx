@@ -91,7 +91,7 @@ export function SectionCards() {
 		const currentTotal = monthEntries.reduce((sum, e) => sum + e.hours, 0)
 
 		const currentOvertime = monthEntries.reduce(
-			(sum, e) => sum + Math.max(0, e.hours - 8),
+			(sum, e) => sum + (e.overtimeHours ?? 0),
 			0
 		)
 
