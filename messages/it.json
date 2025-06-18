@@ -1,6 +1,264 @@
 {
-  "HomePage": {
-    "title": "Hello world!",
-    "about": "Go to the about page"
+  "Calendar": {
+    "today": "Oggi",
+    "exportExcel": "Esporta Excel",
+    "noEntries": "Nessuna consuntivazione",
+    "activity": "Attività",
+    "holiday": "Ferie",
+    "permit": "Permesso",
+    "sick": "Malattia",
+    "month": "Mese",
+    "week": "Settimana",
+    "day": "Giorno",
+    "client": "Cliente",
+    "description": "Descrizione",
+    "hours": "Ore",
+    "overtimeHours": "Ore Straordinarie",
+    "add": "Aggiungi",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "next": "Prossima sezione",
+    "previous": "Sezione precedente",
+    "selectDate": "Seleziona una data",
+    "selectRange": "Seleziona un intervallo"
+  },
+  "Common": {
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "add": "Aggiungi",
+    "confirm": "Conferma",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "close": "Chiudi",
+    "openMenu": "Apri menu",
+    "actions": "Azioni",
+    "reset": "Reset",
+    "descriptionPlaceholder": "Descrizione...",
+    "client": "Cliente",
+    "namePlaceholder": "Nome...",
+    "error": "Si è verificato un errore"
+  },
+  "Sidebar": {
+    "dashboard": "Dashboard",
+    "clients": "Clienti",
+    "activities": "Attività",
+    "entries": "Consuntivazioni",
+    "holidays": "Ferie",
+    "permits": "Permessi",
+    "sick": "Malattia"
+  },
+  "Login": {
+    "description": "Accedi con il tuo account Google",
+    "loginWithGoogle": "Accedi con Google"
+  },
+  "Error": {
+    "notFound": "Pagina non trovata",
+    "generic": "Si è verificato un errore"
+  },
+  "PageTitles": {
+    "home": "Home",
+    "activities": "Attività",
+    "clients": "Clienti",
+    "entries": "Consuntivazioni",
+    "holidays": "Ferie",
+    "permits": "Permessi",
+    "sick": "Malattia"
+  },
+  "Tables": {
+    "Working": {
+      "date": "Data",
+      "client": "Cliente",
+      "description": "Descrizione",
+      "hours": "Ore",
+      "overtimeHours": "Straordinari"
+    },
+    "Holiday": {
+      "date": "Data",
+      "hours": "Ore"
+    },
+    "Permit": {
+      "date": "Data",
+      "hours": "Ore"
+    },
+    "Sick": {
+      "date": "Data",
+      "hours": "Ore"
+    },
+    "Clients": {
+      "name": "Nome",
+      "description": "Descrizione"
+    },
+    "Pagination": {
+      "rowsPerPage": "Righe per pagina",
+      "page": "Pagina",
+      "of": "di",
+      "goToFirstPage": "Vai alla prima pagina",
+      "goToPreviousPage": "Vai alla pagina precedente",
+      "goToNextPage": "Vai alla pagina successiva",
+      "goToLastPage": "Vai all'ultima pagina"
+    },
+    "Toolbar": {
+      "filter": "Filtra"
+    },
+    "FacetedFilter": {
+      "selected": "{n} selezionati",
+      "noResults": "Nessun risultato trovato",
+      "clearFilters": "Cancella filtri"
+    }
+  },
+  "Form": {
+    "Client": {
+      "name": "Nome",
+      "description": "Descrizione",
+      "success": {
+        "updated": "Cliente aggiornato con successo"
+      },
+      "errors": {
+        "requiredName": "Inserire un nome",
+        "invalidValue": "Valore errato"
+      }
+    },
+    "Holiday": {
+      "date": "Data",
+      "hours": "Ore",
+      "success": {
+        "created": "Ferie aggiunta con successo",
+        "updated": "Ferie aggiornata con successo"
+      },
+      "errors": {
+        "requiredDate": "Inserire una data",
+        "invalidValue": "Valore errato",
+        "minHours": "Le ore devono essere maggiori di {min}",
+        "maxHours": "Le ore devono essere minori di {max}"
+      }
+    },
+    "Permit": {
+      "date": "Data",
+      "hours": "Ore",
+      "success": {
+        "created": "Permesso aggiunto con successo",
+        "updated": "Permesso aggiornato con successo"
+      },
+      "errors": {
+        "requiredDate": "Inserire una data",
+        "invalidValue": "Valore errato",
+        "minHours": "Le ore devono essere maggiori di {min}",
+        "maxHours": "Le ore devono essere minori di {max}"
+      }
+    },
+    "Sick": {
+      "date": "Data",
+      "hours": "Ore",
+      "success": {
+        "created": "Malattia aggiunta con successo",
+        "updated": "Malattia aggiornata con successo"
+      },
+      "errors": {
+        "requiredDate": "Inserire una data",
+        "invalidValue": "Valore errato",
+        "minHours": "Le ore devono essere maggiori di {min}",
+        "maxHours": "Le ore devono essere minori di {max}"
+      }
+    },
+    "Working": {
+      "date": "Data",
+      "client": "Cliente",
+      "description": "Descrizione",
+      "hours": "Ore",
+      "overtimeHours": "Straordinari",
+      "activityType": "Tipologia",
+      "success": {
+        "created": "Attività aggiunta con successo",
+        "updated": "Attività aggiornata con successo"
+      },
+      "errors": {
+        "requiredDate": "Inserire una data",
+        "requiredClient": "Inserire il cliente",
+        "requiredActivityType": "Inserire la tipologia",
+        "requiredDescription": "La descrizione non può essere vuota",
+        "requiredHours": "Inserire le ore",
+        "invalidValue": "Valore errato",
+        "minHours": "Le ore devono essere maggiori di {min}",
+        "maxHours": "Le ore devono essere minori di {max}"
+      },
+      "selectClient": "Seleziona cliente",
+      "searchClient": "Cerca cliente...",
+      "noClientFound": "Nessun cliente trovato",
+      "selectActivityType": "Seleziona tipologia"
+    }
+  },
+  "Dialog": {
+    "Client": {
+      "createTitle": "Crea cliente",
+      "editTitle": "Modifica cliente"
+    },
+    "Holiday": {
+      "createTitle": "Aggiungi ferie",
+      "editTitle": "Modifica ferie"
+    },
+    "Permit": {
+      "createTitle": "Aggiungi permesso",
+      "editTitle": "Modifica permesso"
+    },
+    "Sick": {
+      "createTitle": "Aggiungi malattia",
+      "editTitle": "Modifica malattia"
+    },
+    "Working": {
+      "createTitle": "Aggiungi attività",
+      "editTitle": "Modifica attività"
+    },
+    "EntryDelete": {
+      "title": "Conferma eliminazione",
+      "description": "Sei sicuro di voler eliminare questa voce? L'operazione non può essere annullata.",
+      "cancel": "Annulla",
+      "confirm": "Conferma",
+      "success": {
+        "work": "Attività eliminata con successo",
+        "holiday": "Ferie eliminata con successo",
+        "permit": "Permesso eliminato con successo",
+        "sick": "Malattia eliminata con successo"
+      }
+    }
+  },
+  "SectionCards": {
+    "averagePerDay": "Media ore/giorno",
+    "deltaUp": "In aumento {field}",
+    "deltaDown": "In calo {field}",
+    "sinceLastMonth": "dal mese scorso",
+    "basedOnLastDays": "Basato sugli ultimi {n} giorni lavorativi",
+    "registeredDays": "Giornate registrate",
+    "daysToRegister": "{n} giornate da registrare",
+    "registeredDaysThisMonth": "Giornate registrate nel mese corrente",
+    "totalHours": "Ore totali",
+    "totalHoursThisMonth": "Totale ore nel mese corrente",
+    "overtime": "Straordinari",
+    "overtimeThisMonth": "Straordinari nel mese corrente"
+  },
+  "ThemeSwitcher": {
+    "changeTheme": "Cambia tema",
+    "light": "Chiaro",
+    "dark": "Scuro",
+    "system": "Sistema",
+    "lightLabel": "Tema chiaro",
+    "darkLabel": "Tema scuro",
+    "systemLabel": "Tema di sistema ({mode})"
+  },
+  "Enums": {
+    "role": {
+      "employee": "Dipendente",
+      "admin": "Amministratore"
+    },
+    "entryType": {
+      "work": "Lavoro",
+      "holiday": "Ferie",
+      "permit": "Permesso",
+      "sick": "Malattia"
+    },
+    "activityType": {
+      "project": "Progetto",
+      "task": "Task",
+      "ams": "AMS"
+    }
   }
 }

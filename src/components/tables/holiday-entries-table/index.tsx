@@ -26,7 +26,7 @@ import { EntryConfirmDeleteDialog } from "@/components/dialogs/entry-confirm-del
 import { Entry } from "@/db/schema"
 import { useEntries } from "@/hooks/use-entries"
 import { useDialog } from "@/hooks/use-dialog"
-import { getColumns } from "./columns"
+import { useTableColumns } from "./columns"
 import { HolidayEntriesTableToolbar } from "./toolbar"
 import { HolidayEntriesTablePagination } from "./pagination"
 
@@ -55,7 +55,7 @@ export function HolidayEntriesTable() {
 		if (activeDialog !== "confirmDeleteEntry") setDeletingEntry(null)
 	}, [activeDialog])
 
-	const columns = getColumns({ onEdit: onEditEntry, onDelete: onDeleteEntry })
+	const columns = useTableColumns({ onEdit: onEditEntry, onDelete: onDeleteEntry })
 
 	const table = useReactTable({
 		data: holidayEntries,
@@ -78,13 +78,17 @@ export function HolidayEntriesTable() {
 			<HolidayEntryCreateDialog />
 			<HolidayEntryEditDialog entry={editingEntry} />
 			<EntryConfirmDeleteDialog entry={deletingEntry} />
-			<div className="md:rounded-md border md:shadow-xs px-1">
+			<div className="md:rounded-md border md:shadow-xs">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => (
-									<TableHead key={header.id} colSpan={header.colSpan}>
+									<TableHead
+										key={header.id}
+										className="px-3"
+										colSpan={header.colSpan}
+									>
 										{header.isPlaceholder
 											? null
 											: flexRender(

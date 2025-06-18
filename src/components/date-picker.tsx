@@ -2,6 +2,7 @@
 
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -17,6 +18,7 @@ type DatePickerProps = {
 }
 
 export function DatePicker({ date, onChange }: DatePickerProps) {
+	const t = useTranslations("Calendar")
 	return (
 		<div className="grid gap-2">
 			<Popover>
@@ -30,7 +32,7 @@ export function DatePicker({ date, onChange }: DatePickerProps) {
 						{date ? (
 							format(date, "P")
 						) : (
-							<span>Seleziona una data</span>
+							<span>{t("selectDate", { default: "Select a date" })}</span>
 						)}
 					</Button>
 				</PopoverTrigger>

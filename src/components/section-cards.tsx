@@ -3,6 +3,7 @@
 import { useMemo } from "react"
 import { isSameDay, isSameMonth } from "date-fns"
 import { TrendingUp, TrendingDown } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Badge } from "@/components/ui/badge"
 import {
@@ -39,6 +40,7 @@ function getDelta(current: number, previous: number) {
 }
 
 export function SectionCards() {
+	const t = useTranslations("SectionCards")
 	const { entries } = useEntries()
 
 	const {
@@ -129,7 +131,9 @@ export function SectionCards() {
 	function renderDeltaLabel(value: number, field: string) {
 		const isPositive = value >= 0
 		const Icon = isPositive ? TrendingUp : TrendingDown
-		const text = isPositive ? `In aumento ${field}` : `In calo ${field}`
+		const text = isPositive
+			? t("deltaUp", { field })
+			: t("deltaDown", { field })
 
 		return (
 			<div className="line-clamp-1 flex gap-2 font-medium">
@@ -142,23 +146,23 @@ export function SectionCards() {
 		<div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @md/main:grid-cols-2 @2xl/main:grid-cols-4">
 			<Card className="@container/card">
 				<CardHeader>
-					<CardDescription>Media ore/giorno</CardDescription>
+					<CardDescription>{t("averagePerDay")}</CardDescription>
 					<CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-nowrap">
 						{averageHoursPerDay.toFixed(1)} h
 					</CardTitle>
 					<CardAction>{renderDeltaBadge(deltas.avg)}</CardAction>
 				</CardHeader>
 				<CardFooter className="flex-col items-start gap-1.5 text-sm hidden md:block">
-					{renderDeltaLabel(deltas.avg, "dal mese scorso")}
+					{renderDeltaLabel(deltas.avg, t("sinceLastMonth"))}
 					<div className="text-muted-foreground">
-						Basato sugli ultimi {registeredWorkingDays} giorni lavorativi
+						{t("basedOnLastDays", { n: registeredWorkingDays })}
 					</div>
 				</CardFooter>
 			</Card>
 
 			<Card className="@container/card">
 				<CardHeader>
-					<CardDescription>Giornate registrate</CardDescription>
+					<CardDescription>{t("registeredDays")}</CardDescription>
 					<CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-nowrap">
 						{registeredWorkingDays}/{totalWorkingDays}
 					</CardTitle>
@@ -170,38 +174,38 @@ export function SectionCards() {
 				</CardHeader>
 				<CardFooter className="flex-col items-start gap-1.5 text-sm hidden md:block">
 					<div className="line-clamp-1 flex gap-2 font-medium">
-						{totalWorkingDays - registeredWorkingDays} giornate da registrare
+						{t("daysToRegister", { n: totalWorkingDays - registeredWorkingDays })}
 					</div>
 					<div className="text-muted-foreground">
-						Giornate registrate nel mese corrente
+						{t("registeredDaysThisMonth")}
 					</div>
 				</CardFooter>
 			</Card>
 
 			<Card className="@container/card">
 				<CardHeader>
-					<CardDescription>Ore totali</CardDescription>
+					<CardDescription>{t("totalHours")}</CardDescription>
 					<CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-nowrap">
 						{totalHours} h
 					</CardTitle>
 				</CardHeader>
 				<CardFooter className="flex-col items-start gap-1.5 text-sm hidden md:block">
 					<div className="text-muted-foreground">
-						Totale ore nel mese corrente
+						{t("totalHoursThisMonth")}
 					</div>
 				</CardFooter>
 			</Card>
 
 			<Card className="@container/card">
 				<CardHeader>
-					<CardDescription>Straordinari</CardDescription>
+					<CardDescription>{t("overtime")}</CardDescription>
 					<CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-nowrap">
 						{overtimeHours} h
 					</CardTitle>
 				</CardHeader>
 				<CardFooter className="flex-col items-start gap-1.5 text-sm hidden md:block">
 					<div className="text-muted-foreground">
-						Straordinari nel mese corrente
+						{t("overtimeThisMonth")}
 					</div>
 				</CardFooter>
 			</Card>

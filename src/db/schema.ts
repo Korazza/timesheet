@@ -1,13 +1,16 @@
 import { relations } from "drizzle-orm";
 import {
+  index,
   pgEnum,
-  pgTable,
+  pgTableCreator,
   real,
   text,
   timestamp,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+
+const pgTable = pgTableCreator((name) => `timesheet_${name}`);
 
 export const roleEnum = pgEnum("role", ["EMPLOYEE", "ADMIN"]);
 export type Role = typeof roleEnum.enumValues[number];
@@ -37,7 +40,9 @@ export const employeesTable = pgTable("employees", {
   createdAt: timestamp("created_at", { mode: "string", withTimezone: true })
     .defaultNow()
     .notNull(),
-});
+}, (table) => [
+  index("idx_employees_user_id").on(table.userId),
+]);
 export type Employee = typeof employeesTable.$inferSelect;
 
 export const clientsTable = pgTable("clients", {
@@ -67,7 +72,9 @@ export const entriesTable = pgTable("entries", {
   createdAt: timestamp("created_at", { mode: "string", withTimezone: true })
     .defaultNow()
     .notNull(),
-});
+}, (table) => [
+  index("idx_entries_employee_id").on(table.employeeId),
+]);
 export type Entry = typeof entriesTable.$inferSelect;
 export type EntryWithClient = Entry & { client?: Client | null };
 

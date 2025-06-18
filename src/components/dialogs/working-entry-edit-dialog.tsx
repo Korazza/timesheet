@@ -9,6 +9,7 @@ import {
 import { Entry } from "@/db/schema"
 import { WorkingEntryEditForm } from "@/components/forms/working-entry-edit-form"
 import { useDialog } from "@/hooks/use-dialog"
+import { useTranslations } from "next-intl"
 
 interface WorkingEntryEditDialogProps {
 	entry?: Entry | null
@@ -16,6 +17,7 @@ interface WorkingEntryEditDialogProps {
 
 export function WorkingEntryEditDialog({ entry }: WorkingEntryEditDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
+	const t = useTranslations("Dialog.Working")
 
 	if (!entry) return null
 
@@ -26,7 +28,7 @@ export function WorkingEntryEditDialog({ entry }: WorkingEntryEditDialogProps) {
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Modifica attività</DialogTitle>
+					<DialogTitle>{t("editTitle")}</DialogTitle>
 				</DialogHeader>
 				<WorkingEntryEditForm entry={entry} />
 			</DialogContent>

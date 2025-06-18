@@ -28,7 +28,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
 							>
 								<div className="flex aspect-square size-8 items-center justify-center">
-									{/* <GalleryVerticalEnd className="size-4" /> */}
 									<Image
 										className="drop-shadow-sm dark:drop-shadow-primary/15"
 										src="/logo-no-text-no-bg.png"

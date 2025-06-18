@@ -9,6 +9,7 @@ import {
 import { Client } from "@/db/schema"
 import { useDialog } from "@/hooks/use-dialog"
 import { ClientEditForm } from "@/components/forms/client-edit-form"
+import { useTranslations } from "next-intl"
 
 interface ClientEditDialogProps {
 	client: Client | null
@@ -16,6 +17,7 @@ interface ClientEditDialogProps {
 
 export function ClientEditDialog({ client }: ClientEditDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
+	const t = useTranslations("Dialog.Client")
 
 	if (!client) return null
 
@@ -26,7 +28,7 @@ export function ClientEditDialog({ client }: ClientEditDialogProps) {
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Modifica ferie</DialogTitle>
+					<DialogTitle>{t("editTitle")}</DialogTitle>
 				</DialogHeader>
 				<ClientEditForm client={client} />
 			</DialogContent>

@@ -8,9 +8,11 @@ import {
 } from "@/components/ui/dialog"
 import { ClientCreateForm } from "@/components/forms/client-create-form"
 import { useDialog } from "@/hooks/use-dialog"
+import { useTranslations } from "next-intl"
 
 export function ClientCreateDialog() {
 	const { activeDialog, closeDialog } = useDialog()
+	const t = useTranslations("Dialog.Client")
 
 	return (
 		<Dialog
@@ -19,7 +21,7 @@ export function ClientCreateDialog() {
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Aggiungi cliente</DialogTitle>
+					<DialogTitle>{t("createTitle")}</DialogTitle>
 				</DialogHeader>
 				<ClientCreateForm />
 			</DialogContent>

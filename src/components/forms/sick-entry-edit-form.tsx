@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { format } from "date-fns"
+import { useTranslations } from "next-intl"
 
 import { z } from "zod"
 import { CalendarIcon, Save } from "lucide-react"
@@ -37,18 +38,21 @@ interface SickEntryEditFormProps {
 	entry: EntryWithClient
 }
 
-const formSchema = z.object({
-	date: z.date({
-		required_error: "Inserire una data",
-		message: "Valore errato",
-	}),
-	hours: z
-		.number()
-		.min(MIN_HOURS, `Le ore devono essere maggiori di ${MIN_HOURS}`)
-		.max(MAX_HOURS, `Le ore devono essere minori di ${MAX_HOURS}`),
-})
-
 export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
+	const t = useTranslations("Form.Sick")
+	const tCommon = useTranslations("Common")
+
+	const formSchema = z.object({
+		date: z.date({
+			required_error: t("errors.requiredDate"),
+			message: t("errors.invalidValue"),
+		}),
+		hours: z
+			.number()
+			.min(MIN_HOURS, t("errors.minHours", { min: MIN_HOURS }))
+			.max(MAX_HOURS, t("errors.maxHours", { max: MAX_HOURS })),
+	})
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -74,9 +78,9 @@ export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
 			)
 
 			closeDialog()
-			toast.success("Malattia aggiornata con successo")
+			toast.success(t("success.updated"))
 		} catch (e) {
-			toast.error(String(e))
+			toast.error(tCommon("error"))
 		}
 	}
 
@@ -90,7 +94,7 @@ export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
 					name="date"
 					render={({ field }) => (
 						<FormItem className="flex flex-col">
-							<FormLabel>Data</FormLabel>
+							<FormLabel>{t("date")}</FormLabel>
 							<Popover>
 								<PopoverTrigger asChild disabled={isLoading}>
 									<FormControl>
@@ -104,7 +108,11 @@ export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
 											{field.value ? (
 												format(field.value, "P")
 											) : (
-												<span>Seleziona una data</span>
+												<span>
+													{t("selectDate", {
+														defaultValue: "Seleziona una data",
+													})}
+												</span>
 											)}
 											<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
 										</Button>
@@ -130,7 +138,7 @@ export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
 					name="hours"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Ore</FormLabel>
+							<FormLabel>{t("hours")}</FormLabel>
 							<FormControl>
 								<span className="flex items-center gap-2">
 									<Input
@@ -150,7 +158,7 @@ export function SickEntryEditForm({ entry }: SickEntryEditFormProps) {
 
 				<Button disabled={isLoading} type="submit">
 					<Save />
-					Salva
+					{tCommon("save")}
 				</Button>
 			</form>
 		</Form>

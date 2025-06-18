@@ -1,6 +1,7 @@
 "use client"
 
 import { toast } from "sonner"
+import { useTranslations } from "next-intl"
 
 import {
 	AlertDialog,
@@ -26,6 +27,7 @@ export function EntryConfirmDeleteDialog({
 }: EntryConfirmDeleteDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
 	const { setEntries } = useEntries()
+	const t = useTranslations("Dialog.EntryDelete")
 
 	if (!entry) return null
 
@@ -33,13 +35,13 @@ export function EntryConfirmDeleteDialog({
 		<AlertDialog open={activeDialog === "confirmDeleteEntry"}>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Sei veramente sicuro?</AlertDialogTitle>
-					<AlertDialogDescription>
-						Questa azione non può essere annullata.
-					</AlertDialogDescription>
+					<AlertDialogTitle>{t("title")}</AlertDialogTitle>
+					<AlertDialogDescription>{t("description")}</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel onClick={closeDialog}>Annulla</AlertDialogCancel>
+					<AlertDialogCancel onClick={closeDialog}>
+						{t("cancel")}
+					</AlertDialogCancel>
 					<AlertDialogAction
 						onClick={async () => {
 							await deleteEntry(entry.id)
@@ -47,16 +49,16 @@ export function EntryConfirmDeleteDialog({
 							closeDialog()
 
 							const deleteMessage = {
-								WORK: "Attività eliminata con successo",
-								HOLIDAY: "Ferie eliminata con successo",
-								PERMIT: "Permesso eliminato con successo",
-								SICK: "Malattia eliminata con successo",
+								WORK: t("success.work"),
+								HOLIDAY: t("success.holiday"),
+								PERMIT: t("success.permit"),
+								SICK: t("success.sick"),
 							}[entry.type]
 
 							toast.success(deleteMessage)
 						}}
 					>
-						Conferma
+						{t("confirm")}
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

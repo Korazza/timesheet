@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog"
 import { PermitEntryCreateForm } from "@/components/forms/permit-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
+import { useTranslations } from "next-intl"
 
 interface PermitEntryCreatedialogProps {
 	date?: Date
@@ -17,6 +18,7 @@ export function PermitEntryCreateDialog({
 	date,
 }: PermitEntryCreatedialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
+	const t = useTranslations("Dialog.Permit")
 
 	return (
 		<Dialog
@@ -25,7 +27,7 @@ export function PermitEntryCreateDialog({
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Aggiungi ferie</DialogTitle>
+					<DialogTitle>{t("createTitle")}</DialogTitle>
 				</DialogHeader>
 				<PermitEntryCreateForm date={date} />
 			</DialogContent>

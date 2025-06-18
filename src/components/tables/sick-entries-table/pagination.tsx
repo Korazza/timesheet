@@ -14,6 +14,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
+import { useTranslations } from "next-intl"
 
 interface SickEntriesTablePaginationProps<TData> {
 	table: Table<TData>
@@ -22,11 +23,12 @@ interface SickEntriesTablePaginationProps<TData> {
 export function SickEntriesTablePagination<TData>({
 	table,
 }: SickEntriesTablePaginationProps<TData>) {
+	const t = useTranslations("Tables.Pagination")
 	return (
 		<div className="flex items-center justify-end">
 			<div className="flex items-center space-x-6 lg:space-x-8">
 				<div className="flex items-center space-x-2 px-2">
-					<p className="text-sm font-medium">Righe per pagina</p>
+					<p className="text-sm font-medium">{t("rowsPerPage")}</p>
 					<Select
 						value={`${table.getState().pagination.pageSize}`}
 						onValueChange={(value) => {
@@ -46,7 +48,7 @@ export function SickEntriesTablePagination<TData>({
 					</Select>
 				</div>
 				<div className="flex w-[100px] items-center justify-center text-sm font-medium">
-					Pagina {table.getState().pagination.pageIndex + 1} di{" "}
+					{t("page")} {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
 					{table.getPageCount()}
 				</div>
 				<div className="flex items-center space-x-2">
@@ -56,7 +58,7 @@ export function SickEntriesTablePagination<TData>({
 						onClick={() => table.setPageIndex(0)}
 						disabled={!table.getCanPreviousPage()}
 					>
-						<span className="sr-only">Go to first page</span>
+						<span className="sr-only">{t("goToFirstPage")}</span>
 						<ChevronsLeft />
 					</Button>
 					<Button
@@ -65,7 +67,7 @@ export function SickEntriesTablePagination<TData>({
 						onClick={() => table.previousPage()}
 						disabled={!table.getCanPreviousPage()}
 					>
-						<span className="sr-only">Go to previous page</span>
+						<span className="sr-only">{t("goToPreviousPage")}</span>
 						<ChevronLeft />
 					</Button>
 					<Button
@@ -74,7 +76,7 @@ export function SickEntriesTablePagination<TData>({
 						onClick={() => table.nextPage()}
 						disabled={!table.getCanNextPage()}
 					>
-						<span className="sr-only">Go to next page</span>
+						<span className="sr-only">{t("goToNextPage")}</span>
 						<ChevronRight />
 					</Button>
 					<Button
@@ -83,7 +85,7 @@ export function SickEntriesTablePagination<TData>({
 						onClick={() => table.setPageIndex(table.getPageCount() - 1)}
 						disabled={!table.getCanNextPage()}
 					>
-						<span className="sr-only">Go to last page</span>
+						<span className="sr-only">{t("goToLastPage")}</span>
 						<ChevronsRight />
 					</Button>
 				</div>

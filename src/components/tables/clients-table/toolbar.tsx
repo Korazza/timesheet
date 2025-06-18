@@ -6,6 +6,7 @@ import { FunnelX, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useDialog } from "@/hooks/use-dialog"
+import { useTranslations } from "next-intl"
 
 interface ClientsTableToolbarProps<Client> {
 	table: Table<Client>
@@ -14,6 +15,7 @@ interface ClientsTableToolbarProps<Client> {
 export function ClientsTableToolbar<Client>({
 	table,
 }: ClientsTableToolbarProps<Client>) {
+	const t = useTranslations("Common")
 	const { openDialog } = useDialog()
 	const isFiltered = table.getState().columnFilters.length > 0
 
@@ -21,7 +23,7 @@ export function ClientsTableToolbar<Client>({
 		<div className="flex flex-col md:flex-row items-end md:items-center gap-2 justify-between px-2 md:px-0">
 			<div className="flex flex-1 flex-wrap gap-2 items-center">
 				<Input
-					placeholder="Nome..."
+					placeholder={t("namePlaceholder")}
 					value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
 					onChange={(event) =>
 						table.getColumn("name")?.setFilterValue(event.target.value)
@@ -29,7 +31,7 @@ export function ClientsTableToolbar<Client>({
 					className="h-8 w-[200px] lg:w-[300px]"
 				/>
 				<Input
-					placeholder="Descrizione..."
+					placeholder={t("descriptionPlaceholder")}
 					value={
 						(table.getColumn("description")?.getFilterValue() as string) ?? ""
 					}
@@ -45,13 +47,13 @@ export function ClientsTableToolbar<Client>({
 						className="h-8 px-2 lg:px-3"
 					>
 						<FunnelX />
-						Reset
+						{t("reset")}
 					</Button>
 				)}
 			</div>
 			<Button size="lg" onClick={() => openDialog("createClient")}>
 				<Plus />
-				Aggiungi
+				{t("add")}
 			</Button>
 		</div>
 	)

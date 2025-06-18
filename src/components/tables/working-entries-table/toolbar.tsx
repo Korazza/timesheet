@@ -4,6 +4,7 @@ import { useMemo, useState } from "react"
 import { Table } from "@tanstack/react-table"
 import { FunnelX, Plus } from "lucide-react"
 import { DateRange } from "react-day-picker"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -19,6 +20,8 @@ interface WorkingEntriesTableToolbarProps<Entry> {
 export function WorkingEntriesTableToolbar<Entry>({
 	table,
 }: WorkingEntriesTableToolbarProps<Entry>) {
+	const t = useTranslations("Tables.Toolbar")
+	const tCommon = useTranslations("Common")
 	const { clients } = useClients()
 	const clientsOptions = useMemo(
 		() => clients.map((c) => ({ label: c.name, value: c.name })),
@@ -33,7 +36,7 @@ export function WorkingEntriesTableToolbar<Entry>({
 		<div className="flex flex-col md:flex-row items-end md:items-center gap-2 justify-between px-2 md:px-0">
 			<div className="flex flex-1 flex-wrap gap-2 items-center">
 				<Input
-					placeholder="Descrizione..."
+					placeholder={tCommon("descriptionPlaceholder")}
 					value={
 						(table.getColumn("description")?.getFilterValue() as string) ?? ""
 					}
@@ -54,7 +57,7 @@ export function WorkingEntriesTableToolbar<Entry>({
 				{table.getColumn("client") && (
 					<DataTableFacetedFilter
 						column={table.getColumn("client")}
-						title="Cliente"
+						title={tCommon("client")}
 						options={clientsOptions}
 					/>
 				)}
@@ -69,13 +72,13 @@ export function WorkingEntriesTableToolbar<Entry>({
 						className="h-8 px-2 lg:px-3"
 					>
 						<FunnelX />
-						Reset
+						{tCommon("reset")}
 					</Button>
 				)}
 			</div>
 			<Button size="lg" onClick={() => openDialog("createWorkingEntry")}>
 				<Plus />
-				Aggiungi
+				{tCommon("add")}
 			</Button>
 		</div>
 	)

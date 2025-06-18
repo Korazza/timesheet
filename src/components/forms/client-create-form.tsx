@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import { Plus } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -22,19 +23,22 @@ import { useClients } from "@/hooks/use-clients"
 import { addClient } from "@/actions/clients"
 import { Textarea } from "../ui/textarea"
 
-const formSchema = z.object({
-	name: z.string({
-		required_error: "Inserire un nome",
-		message: "Valore errato",
-	}),
-	description: z
-		.string({
-			message: "Valore errato",
-		})
-		.optional(),
-})
-
 export function ClientCreateForm() {
+	const t = useTranslations("Form.Client")
+	const tCommon = useTranslations("Common")
+
+	const formSchema = z.object({
+		name: z.string({
+			required_error: t("errors.requiredName"),
+			message: t("errors.invalidValue"),
+		}),
+		description: z
+			.string({
+				message: t("errors.invalidValue"),
+			})
+			.optional(),
+	})
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -56,9 +60,9 @@ export function ClientCreateForm() {
 			setClients((prev) => [...prev, createdEntry])
 
 			closeDialog()
-			toast.success("Cliente aggiunto con successo")
+			toast.success(t("success.created"))
 		} catch (e) {
-			toast.error(String(e))
+			toast.error(tCommon("error"))
 		}
 	}
 
@@ -72,9 +76,13 @@ export function ClientCreateForm() {
 					name="name"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Nome</FormLabel>
+							<FormLabel>{t("name")}</FormLabel>
 							<FormControl>
-								<Input disabled={isLoading} placeholder="Nome..." {...field} />
+								<Input
+									disabled={isLoading}
+									placeholder={tCommon("namePlaceholder") || "Nome..."}
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -86,11 +94,13 @@ export function ClientCreateForm() {
 					name="description"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Descrizione</FormLabel>
+							<FormLabel>{t("description")}</FormLabel>
 							<FormControl>
 								<Textarea
 									disabled={isLoading}
-									placeholder="Descrizione..."
+									placeholder={
+										tCommon("descriptionPlaceholder") || "Descrizione..."
+									}
 									className="resize-none"
 									{...field}
 								/>
@@ -102,7 +112,7 @@ export function ClientCreateForm() {
 
 				<Button disabled={isLoading} type="submit">
 					<Plus />
-					Aggiungi
+					{tCommon("add")}
 				</Button>
 			</form>
 		</Form>

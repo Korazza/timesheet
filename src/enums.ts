@@ -1,19 +1,23 @@
 import { ActivityType, EntryType, Role } from "@/db/schema";
+import { useTranslations } from "next-intl";
 
-export const roleOptions: { label: string; value: Role }[] = [
-  { label: "Dipendente", value: "EMPLOYEE" },
-  { label: "Amministratore", value: "ADMIN" },
-];
-
-export const entryTypeOptions: { label: string; value: EntryType }[] = [
-  { label: "Lavoro", value: "WORK" },
-  { label: "Ferie", value: "HOLIDAY" },
-  { label: "Permesso", value: "PERMIT" },
-  { label: "Malattia", value: "SICK" },
-];
-
-export const activityTypeOptions: { label: string; value: ActivityType }[] = [
-  { label: "Progetto", value: "PROJECT" },
-  { label: "Task", value: "TASK" },
-  { label: "AMS", value: "AMS" },
-];
+// HOOK per ottenere le opzioni tradotte
+export function useEnumOptions() {
+  const t = useTranslations("Enums");
+  const roleOptions = [
+    { label: t("role.employee"), value: "EMPLOYEE" },
+    { label: t("role.admin"), value: "ADMIN" },
+  ];
+  const entryTypeOptions = [
+    { label: t("entryType.work"), value: "WORK" },
+    { label: t("entryType.holiday"), value: "HOLIDAY" },
+    { label: t("entryType.permit"), value: "PERMIT" },
+    { label: t("entryType.sick"), value: "SICK" },
+  ];
+  const activityTypeOptions = [
+    { label: t("activityType.project"), value: "PROJECT" },
+    { label: t("activityType.task"), value: "TASK" },
+    { label: t("activityType.ams"), value: "AMS" },
+  ];
+  return { roleOptions, entryTypeOptions, activityTypeOptions };
+}

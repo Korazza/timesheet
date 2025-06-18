@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog"
 import { SickEntryCreateForm } from "@/components/forms/sick-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
+import { useTranslations } from "next-intl"
 
 interface SickEntryCreateDialogProps {
 	date?: Date
@@ -15,6 +16,7 @@ interface SickEntryCreateDialogProps {
 
 export function SickEntryCreateDialog({ date }: SickEntryCreateDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
+	const t = useTranslations("Dialog.Sick")
 
 	return (
 		<Dialog
@@ -23,7 +25,7 @@ export function SickEntryCreateDialog({ date }: SickEntryCreateDialogProps) {
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Aggiungi malattia</DialogTitle>
+					<DialogTitle>{t("createTitle")}</DialogTitle>
 				</DialogHeader>
 				<SickEntryCreateForm date={date} />
 			</DialogContent>

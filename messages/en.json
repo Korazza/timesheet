@@ -1,0 +1,264 @@
+{
+  "Calendar": {
+    "today": "Today",
+    "exportExcel": "Export Excel",
+    "noEntries": "No entries",
+    "activity": "Activity",
+    "holiday": "Holiday",
+    "permit": "Permit",
+    "sick": "Sick leave",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "client": "Client",
+    "description": "Description",
+    "hours": "Hours",
+    "overtimeHours": "Overtime hours",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "next": "Next section",
+    "previous": "Previous section",
+    "selectDate": "Select a date",
+    "selectRange": "Select a range"
+  },
+  "Common": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "close": "Close",
+    "openMenu": "Open menu",
+    "actions": "Actions",
+    "descriptionPlaceholder": "Description...",
+    "client": "Client",
+    "error": "An error occurred",
+    "reset": "Reset",
+    "namePlaceholder": "Name..."
+  },
+  "Sidebar": {
+    "dashboard": "Dashboard",
+    "clients": "Clients",
+    "activities": "Activities",
+    "entries": "Entries",
+    "holidays": "Holidays",
+    "permits": "Permits",
+    "sick": "Sick leave"
+  },
+  "Login": {
+    "description": "Login with your Google account",
+    "loginWithGoogle": "Login with Google"
+  },
+  "Error": {
+    "notFound": "Page not found",
+    "generic": "An error occurred"
+  },
+  "PageTitles": {
+    "home": "Home",
+    "activities": "Activities",
+    "clients": "Clients",
+    "entries": "Entries",
+    "holidays": "Holidays",
+    "permits": "Permits",
+    "sick": "Sick"
+  },
+  "Tables": {
+    "Working": {
+      "date": "Date",
+      "client": "Client",
+      "description": "Description",
+      "hours": "Hours",
+      "overtimeHours": "Overtime"
+    },
+    "Holiday": {
+      "date": "Date",
+      "hours": "Hours"
+    },
+    "Permit": {
+      "date": "Date",
+      "hours": "Hours"
+    },
+    "Sick": {
+      "date": "Date",
+      "hours": "Hours"
+    },
+    "Clients": {
+      "name": "Name",
+      "description": "Description"
+    },
+    "Pagination": {
+      "rowsPerPage": "Rows per page",
+      "page": "Page",
+      "of": "of",
+      "goToFirstPage": "Go to first page",
+      "goToPreviousPage": "Go to previous page",
+      "goToNextPage": "Go to next page",
+      "goToLastPage": "Go to last page"
+    },
+    "Toolbar": {
+      "filter": "Filter"
+    },
+    "FacetedFilter": {
+      "selected": "{n} selected",
+      "noResults": "No results found",
+      "clearFilters": "Clear filters"
+    }
+  },
+  "Form": {
+    "Client": {
+      "name": "Name",
+      "description": "Description",
+      "success": {
+        "updated": "Client updated successfully"
+      },
+      "errors": {
+        "requiredName": "Please enter a name",
+        "invalidValue": "Invalid value"
+      }
+    },
+    "Holiday": {
+      "date": "Date",
+      "hours": "Hours",
+      "success": {
+        "created": "Holiday added successfully",
+        "updated": "Holiday updated successfully"
+      },
+      "errors": {
+        "requiredDate": "Please enter a date",
+        "invalidValue": "Invalid value",
+        "minHours": "Hours must be greater than {min}",
+        "maxHours": "Hours must be less than {max}"
+      }
+    },
+    "Permit": {
+      "date": "Date",
+      "hours": "Hours",
+      "success": {
+        "created": "Permit added successfully",
+        "updated": "Permit updated successfully"
+      },
+      "errors": {
+        "requiredDate": "Please enter a date",
+        "invalidValue": "Invalid value",
+        "minHours": "Hours must be greater than {min}",
+        "maxHours": "Hours must be less than {max}"
+      }
+    },
+    "Sick": {
+      "date": "Date",
+      "hours": "Hours",
+      "success": {
+        "created": "Sick leave added successfully",
+        "updated": "Sick leave updated successfully"
+      },
+      "errors": {
+        "requiredDate": "Please enter a date",
+        "invalidValue": "Invalid value",
+        "minHours": "Hours must be greater than {min}",
+        "maxHours": "Hours must be less than {max}"
+      }
+    },
+    "Working": {
+      "date": "Date",
+      "client": "Client",
+      "description": "Description",
+      "hours": "Hours",
+      "overtimeHours": "Overtime",
+      "activityType": "Activity type",
+      "success": {
+        "created": "Activity added successfully",
+        "updated": "Activity updated successfully"
+      },
+      "errors": {
+        "requiredDate": "Please enter a date",
+        "requiredClient": "Please select a client",
+        "requiredActivityType": "Please select an activity type",
+        "requiredDescription": "Description cannot be empty",
+        "requiredHours": "Please enter hours",
+        "invalidValue": "Invalid value",
+        "minHours": "Hours must be greater than {min}",
+        "maxHours": "Hours must be less than {max}"
+      },
+      "selectClient": "Select client",
+      "searchClient": "Search client...",
+      "noClientFound": "No client found",
+      "selectActivityType": "Select activity type"
+    }
+  },
+  "Dialog": {
+    "Client": {
+      "createTitle": "Create client",
+      "editTitle": "Edit client"
+    },
+    "Holiday": {
+      "createTitle": "Add holiday",
+      "editTitle": "Edit holiday"
+    },
+    "Permit": {
+      "createTitle": "Add permit",
+      "editTitle": "Edit permit"
+    },
+    "Sick": {
+      "createTitle": "Add sick leave",
+      "editTitle": "Edit sick leave"
+    },
+    "Working": {
+      "createTitle": "Add activity",
+      "editTitle": "Edit activity"
+    },
+    "EntryDelete": {
+      "title": "Confirm deletion",
+      "description": "Are you sure you want to delete this entry? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "success": {
+        "work": "Activity deleted successfully",
+        "holiday": "Holiday deleted successfully",
+        "permit": "Permit deleted successfully",
+        "sick": "Sick leave deleted successfully"
+      }
+    }
+  },
+  "SectionCards": {
+    "averagePerDay": "Average hours/day",
+    "deltaUp": "Up {field}",
+    "deltaDown": "Down {field}",
+    "sinceLastMonth": "since last month",
+    "basedOnLastDays": "Based on the last {n} working days",
+    "registeredDays": "Registered days",
+    "daysToRegister": "{n} days to register",
+    "registeredDaysThisMonth": "Registered days this month",
+    "totalHours": "Total hours",
+    "totalHoursThisMonth": "Total hours this month",
+    "overtime": "Overtime",
+    "overtimeThisMonth": "Overtime this month"
+  },
+  "ThemeSwitcher": {
+    "changeTheme": "Change theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "lightLabel": "Light theme",
+    "darkLabel": "Dark theme",
+    "systemLabel": "System theme ({mode})"
+  },
+  "Enums": {
+    "role": {
+      "employee": "Employee",
+      "admin": "Administrator"
+    },
+    "entryType": {
+      "work": "Work",
+      "holiday": "Holiday",
+      "permit": "Permit",
+      "sick": "Sick leave"
+    },
+    "activityType": {
+      "project": "Project",
+      "task": "Task",
+      "ams": "AMS"
+    }
+  }
+}

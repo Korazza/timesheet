@@ -9,6 +9,7 @@ import {
 import { Entry } from "@/db/schema"
 import { useDialog } from "@/hooks/use-dialog"
 import { HolidayEntryEditForm } from "@/components/forms/holiday-entry-edit-form"
+import { useTranslations } from "next-intl"
 
 interface HolidayEntryEditDialogProps {
 	entry?: Entry | null
@@ -16,6 +17,7 @@ interface HolidayEntryEditDialogProps {
 
 export function HolidayEntryEditDialog({ entry }: HolidayEntryEditDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
+	const t = useTranslations("Dialog.Holiday")
 
 	if (!entry) return null
 
@@ -26,7 +28,7 @@ export function HolidayEntryEditDialog({ entry }: HolidayEntryEditDialogProps) {
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Modifica ferie</DialogTitle>
+					<DialogTitle>{t("editTitle")}</DialogTitle>
 				</DialogHeader>
 				<HolidayEntryEditForm entry={entry} />
 			</DialogContent>

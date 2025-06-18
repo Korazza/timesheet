@@ -263,7 +263,7 @@ export function ChartArea() {
 							<Area
 								key={client.id}
 								dataKey={client.id}
-								type="step"
+								type="bump"
 								fill={`url(#fill-${client.id})`}
 								stroke={chartConfig[client.id].color}
 								stackId="a"

@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog"
 import { HolidayEntryCreateForm } from "@/components/forms/holiday-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
+import { useTranslations } from "next-intl"
 
 interface HolidayEntryCreateDialogProps {
 	date?: Date
@@ -17,6 +18,7 @@ export function HolidayEntryCreateDialog({
 	date,
 }: HolidayEntryCreateDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
+	const t = useTranslations("Dialog.Holiday")
 
 	return (
 		<Dialog
@@ -25,7 +27,7 @@ export function HolidayEntryCreateDialog({
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Aggiungi ferie</DialogTitle>
+					<DialogTitle>{t("createTitle")}</DialogTitle>
 				</DialogHeader>
 				<HolidayEntryCreateForm date={date} />
 			</DialogContent>

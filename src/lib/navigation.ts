@@ -1,43 +1,31 @@
 import { Calendar, LayoutDashboard, LucideIcon, Users } from "lucide-react";
 
 export type NavigationItem = {
-	title: string;
+	key: string;
 	url: string;
 	icon: LucideIcon;
-	items?: { title: string; url: string }[];
+	items?: { key: string; url: string }[];
 };
 
 export const NAVIGATION_ITEMS: NavigationItem[] = [
 	{
-		title: "Dashboard",
+		key: "dashboard",
 		url: "/",
 		icon: LayoutDashboard,
 	},
 	{
-		title: "Consuntivazioni",
+		key: "entries",
 		icon: Calendar,
 		url: "/entries",
 		items: [
-			{
-				title: "Attività",
-				url: "/activity",
-			},
-			{
-				title: "Ferie",
-				url: "/holiday",
-			},
-			{
-				title: "Permessi",
-				url: "/permit",
-			},
-			{
-				title: "Malattia",
-				url: "/sick",
-			},
+			{ key: "activities", url: "/activity" },
+			{ key: "holidays", url: "/holiday" },
+			{ key: "permits", url: "/permit" },
+			{ key: "sick", url: "/sick" },
 		],
 	},
 	{
-		title: "Clienti",
+		key: "clients",
 		url: "/client",
 		icon: Users,
 	},

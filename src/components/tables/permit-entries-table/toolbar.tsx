@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Table } from "@tanstack/react-table"
 import { FunnelX, Plus } from "lucide-react"
 import { DateRange } from "react-day-picker"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import DateRangePicker from "@/components/date-range-picker"
@@ -16,6 +17,7 @@ interface PermitEntriesTableToolbarProps<Entry> {
 export function PermitEntriesTableToolbar<Entry>({
 	table,
 }: PermitEntriesTableToolbarProps<Entry>) {
+	const t = useTranslations("Common")
 	const { openDialog } = useDialog()
 	const defaultDateRange: DateRange = { from: undefined }
 	const [dateRange, setDateRange] = useState<DateRange>(defaultDateRange)
@@ -44,13 +46,13 @@ export function PermitEntriesTableToolbar<Entry>({
 						className="h-8 px-2 lg:px-3"
 					>
 						<FunnelX />
-						Reset
+						{t("reset")}
 					</Button>
 				)}
 			</div>
 			<Button size="lg" onClick={() => openDialog("createPermitEntry")}>
 				<Plus />
-				Aggiungi
+				{t("add")}
 			</Button>
 		</div>
 	)

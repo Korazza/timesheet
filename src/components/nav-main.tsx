@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useTranslations } from "next-intl"
 
 import {
 	SidebarGroup,
@@ -18,6 +19,7 @@ import { NAVIGATION_ITEMS } from "@/lib/navigation"
 
 export function NavMain() {
 	const pathname = usePathname()
+	const t = useTranslations("Sidebar")
 
 	return (
 		<SidebarGroup>
@@ -29,7 +31,7 @@ export function NavMain() {
 							<SidebarMenuButton asChild isActive={item.url === pathname}>
 								<Link href={item.url}>
 									<item.icon />
-									<span>{item.title}</span>
+									<span>{t(item.key)}</span>
 								</Link>
 							</SidebarMenuButton>
 							{item.items && item.items.length ? (
@@ -40,7 +42,7 @@ export function NavMain() {
 												asChild
 												isActive={subItem.url === pathname}
 											>
-												<Link href={subItem.url}>{subItem.title}</Link>
+												<Link href={subItem.url}>{t(subItem.key)}</Link>
 											</SidebarMenuSubButton>
 										</SidebarMenuSubItem>
 									))}

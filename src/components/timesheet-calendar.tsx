@@ -53,7 +53,8 @@ import { cn } from "@/lib/utils"
 import { useDialog } from "@/hooks/use-dialog"
 import { DialogId } from "@/contexts/dialog-context"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { activityTypeOptions, entryTypeOptions } from "@/enums"
+import { useEnumOptions } from "@/enums"
+import { useTranslations } from "next-intl"
 
 type TimesheetCalendarViewType = "month" | "week" | "day"
 
@@ -81,6 +82,7 @@ function getEditDialogId(entry: EntryWithClient): DialogId {
 }
 
 export function TimesheetCalendar() {
+	const t = useTranslations("Calendar")
 	const isMobile = useIsMobile()
 	const [date, setDate] = React.useState(() => getInitialDate())
 	const [viewType, setViewType] = React.useState<TimesheetCalendarViewType>(
@@ -98,6 +100,13 @@ export function TimesheetCalendar() {
 	const [selectedDate, setSelectedDate] = React.useState<Date>()
 	const { entries } = useEntries()
 	const { openDialog, closeDialog } = useDialog()
+	const { entryTypeOptions, activityTypeOptions } = useEnumOptions()
+
+	React.useEffect(() => {
+		if (isMobile) {
+			setViewType("week")
+		}
+	}, [isMobile])
 
 	const WEEK_DAYS = React.useMemo(() => {
 		const weekDaysRaw =
@@ -186,10 +195,10 @@ export function TimesheetCalendar() {
 					className="hidden lg:inline-flex"
 					variant="outline"
 					onClick={handleExportExcel}
-					title="Esporta tutte le consuntivazioni in Excel"
+					title={t("exportExcel")}
 				>
 					<FileSpreadsheet className="w-4 h-4" />
-					<span className="hidden xl:inline">Esporta Excel</span>
+					<span className="hidden xl:inline">{t("exportExcel")}</span>
 				</Button>
 			</div>
 			{viewType !== "day" && (
@@ -256,7 +265,7 @@ export function TimesheetCalendar() {
 									{viewType === "day" && dayEntries.length === 0 ? (
 										<div className="flex-1 flex items-center justify-center text-muted-foreground">
 											<span className="text-lg lg:text-xl">
-												Nessuna consuntivazione
+												{t("noEntries")}
 											</span>
 										</div>
 									) : (
@@ -300,7 +309,7 @@ export function TimesheetCalendar() {
 											}}
 										>
 											<Pencil />
-											Modifica
+											{t("edit")}
 										</ContextMenuItem>
 										<ContextMenuItem
 											variant="destructive"
@@ -312,13 +321,13 @@ export function TimesheetCalendar() {
 											}}
 										>
 											<Trash />
-											Elimina
+											{t("delete")}
 										</ContextMenuItem>
 									</React.Fragment>
 								) : selectedDate ? (
 									<ContextMenuSub>
 										<ContextMenuSubTrigger inset>
-											Aggiungi
+											{t("add")}
 										</ContextMenuSubTrigger>
 										<ContextMenuSubContent className="w-44">
 											<ContextMenuItem
@@ -328,7 +337,7 @@ export function TimesheetCalendar() {
 													})
 												}
 											>
-												Attività
+												{t("activity")}
 											</ContextMenuItem>
 											<ContextMenuItem
 												onClick={() =>
@@ -337,7 +346,7 @@ export function TimesheetCalendar() {
 													})
 												}
 											>
-												Ferie
+												{t("holiday")}
 											</ContextMenuItem>
 											<ContextMenuItem
 												onClick={() =>
@@ -346,7 +355,7 @@ export function TimesheetCalendar() {
 													})
 												}
 											>
-												Permesso
+												{t("permit")}
 											</ContextMenuItem>
 											<ContextMenuItem
 												onClick={() =>
@@ -355,7 +364,7 @@ export function TimesheetCalendar() {
 													})
 												}
 											>
-												Malattia
+												{t("sick")}
 											</ContextMenuItem>
 										</ContextMenuSubContent>
 									</ContextMenuSub>
@@ -383,6 +392,7 @@ function TimesheetCalendarHeader({
 	viewType,
 	onViewTypeChange,
 }: TimesheetCalendarHeaderProps) {
+	const t = useTranslations("Calendar")
 	function getNextValidDate(date: Date): Date {
 		let next = addDays(date, 1)
 		while (isWeekend(next)) {
@@ -404,7 +414,7 @@ function TimesheetCalendarHeader({
 			<Button
 				variant="outline"
 				className="hidden place-self-start md:block"
-				title="Naviga al giorno di oggi"
+				title={t("today")}
 				onClick={() => {
 					const today = new Date()
 					onDateChange(
@@ -414,13 +424,13 @@ function TimesheetCalendarHeader({
 					)
 				}}
 			>
-				Oggi
+				{t("today")}
 			</Button>
 			<div className="flex items-center gap-4">
 				<Button
 					variant="outline"
 					size="icon"
-					title="Naviga alla sezione precedente"
+					title={t("previous")}
 					onClick={() => {
 						if (viewType === "month") {
 							onDateChange(subMonths(currentDate, 1))
@@ -452,7 +462,7 @@ function TimesheetCalendarHeader({
 				<Button
 					variant="outline"
 					size="icon"
-					title="Naviga alla sezione successiva"
+					title={t("next")}
 					onClick={() => {
 						if (viewType === "month") {
 							onDateChange(addMonths(currentDate, 1))
@@ -480,19 +490,19 @@ function TimesheetCalendarHeader({
 						value={"month" as TimesheetCalendarViewType}
 						aria-label="Toggle month view type"
 					>
-						Mese
+						{t("month")}
 					</ToggleGroupItem>
 					<ToggleGroupItem
 						value={"week" as TimesheetCalendarViewType}
 						aria-label="Toggle week view type"
 					>
-						Settimana
+						{t("week")}
 					</ToggleGroupItem>
 					<ToggleGroupItem
 						value={"day" as TimesheetCalendarViewType}
 						aria-label="Toggle day view type"
 					>
-						Giorno
+						{t("day")}
 					</ToggleGroupItem>
 				</ToggleGroup>
 				<Select
@@ -513,19 +523,19 @@ function TimesheetCalendarHeader({
 							value={"month" as TimesheetCalendarViewType}
 							className="rounded-lg"
 						>
-							Mese
+							{t("month")}
 						</SelectItem>
 						<SelectItem
 							value={"week" as TimesheetCalendarViewType}
 							className="rounded-lg"
 						>
-							Settimana
+							{t("week")}
 						</SelectItem>
 						<SelectItem
 							value={"day" as TimesheetCalendarViewType}
 							className="rounded-lg"
 						>
-							Giorno
+							{t("day")}
 						</SelectItem>
 					</SelectContent>
 				</Select>
@@ -543,6 +553,7 @@ function TimesheetCalendarEntryPill({
 	entry,
 	viewType,
 }: TimesheetCalendarEntryPillProps) {
+	const t = useTranslations("Calendar")
 	const isMobile = useIsMobile()
 	const totalHours = entry.hours + (entry.overtimeHours ?? 0)
 
@@ -561,10 +572,10 @@ function TimesheetCalendarEntryPill({
 	}
 
 	const labelMap = {
-		WORK: entry.client?.name ?? "Lavoro",
-		HOLIDAY: "Ferie",
-		PERMIT: "Permesso",
-		SICK: "Malattia",
+		WORK: entry.client?.name ?? t("activity"),
+		HOLIDAY: t("holiday"),
+		PERMIT: t("permit"),
+		SICK: t("sick"),
 	}
 
 	const content = (
@@ -617,21 +628,22 @@ function TimesheetCalendarEntryPill({
 }
 
 function TimesheetLegend() {
+	const t = useTranslations("Calendar")
 	const legendItems = [
 		{
-			label: "Attività",
+			label: t("activity"),
 			color: "var(--working-entry)",
 		},
 		{
-			label: "Ferie",
+			label: t("holiday"),
 			color: "var(--holiday-entry)",
 		},
 		{
-			label: "Permesso",
+			label: t("permit"),
 			color: "var(--permit-entry)",
 		},
 		{
-			label: "Malattia",
+			label: t("sick"),
 			color: "var(--sick-entry)",
 		},
 	]

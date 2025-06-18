@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog"
 import { WorkingEntryCreateForm } from "@/components/forms/working-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
+import { useTranslations } from "next-intl"
 
 interface WorkingEntryCreateDialogProps {
 	date?: Date
@@ -17,6 +18,7 @@ export function WorkingEntryCreateDialog({
 	date,
 }: WorkingEntryCreateDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
+	const t = useTranslations("Dialog.Working")
 
 	return (
 		<Dialog
@@ -25,7 +27,7 @@ export function WorkingEntryCreateDialog({
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Aggiungi attività</DialogTitle>
+					<DialogTitle>{t("createTitle")}</DialogTitle>
 				</DialogHeader>
 				<WorkingEntryCreateForm date={date} />
 			</DialogContent>

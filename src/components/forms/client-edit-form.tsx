@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import { Save } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -26,19 +27,22 @@ interface ClientEditFormProps {
 	client: Client
 }
 
-const formSchema = z.object({
-	name: z.string({
-		required_error: "Inserire un nome",
-		message: "Valore errato",
-	}),
-	description: z
-		.string({
-			message: "Valore errato",
-		})
-		.optional(),
-})
-
 export function ClientEditForm({ client }: ClientEditFormProps) {
+	const t = useTranslations("Form.Client")
+	const tCommon = useTranslations("Common")
+
+	const formSchema = z.object({
+		name: z.string({
+			required_error: t("errors.requiredName"),
+			message: t("errors.invalidValue"),
+		}),
+		description: z
+			.string({
+				message: t("errors.invalidValue"),
+			})
+			.optional(),
+	})
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -63,9 +67,9 @@ export function ClientEditForm({ client }: ClientEditFormProps) {
 			)
 
 			closeDialog()
-			toast.success("Cliente aggiornato con successo")
+			toast.success(t("success.updated"))
 		} catch (e) {
-			toast.error(String(e))
+			toast.error(tCommon("error"))
 		}
 	}
 
@@ -79,9 +83,13 @@ export function ClientEditForm({ client }: ClientEditFormProps) {
 					name="name"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Username</FormLabel>
+							<FormLabel>{t("name")}</FormLabel>
 							<FormControl>
-								<Input disabled={isLoading} placeholder="Nome..." {...field} />
+								<Input
+									disabled={isLoading}
+									placeholder={tCommon("namePlaceholder") || "Nome..."}
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -93,11 +101,13 @@ export function ClientEditForm({ client }: ClientEditFormProps) {
 					name="description"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Descrizione</FormLabel>
+							<FormLabel>{t("description")}</FormLabel>
 							<FormControl>
 								<Textarea
 									disabled={isLoading}
-									placeholder="Descrizione..."
+									placeholder={
+										tCommon("descriptionPlaceholder") || "Descrizione..."
+									}
 									className="resize-none"
 									{...field}
 								/>
@@ -109,7 +119,7 @@ export function ClientEditForm({ client }: ClientEditFormProps) {
 
 				<Button disabled={isLoading} type="submit">
 					<Save />
-					Salva
+					{tCommon("save")}
 				</Button>
 			</form>
 		</Form>

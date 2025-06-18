@@ -25,7 +25,7 @@ import { ClientEditDialog } from "@/components/dialogs/client-edit-dialog"
 import { Client } from "@/db/schema"
 import { useClients } from "@/hooks/use-clients"
 import { useDialog } from "@/hooks/use-dialog"
-import { getColumns } from "./columns"
+import { useTableColumns } from "./columns"
 import { ClientsTableToolbar } from "./toolbar"
 import { ClientsTablePagination } from "./pagination"
 
@@ -47,7 +47,7 @@ export function ClientsTable() {
 		if (activeDialog !== "editClient") setEditingClient(null)
 	}, [activeDialog])
 
-	const columns = getColumns({ onEdit: onEditClient })
+	const columns = useTableColumns({ onEdit: onEditClient })
 
 	const table = useReactTable({
 		data: clients,
@@ -69,13 +69,17 @@ export function ClientsTable() {
 			<ClientsTableToolbar table={table} />
 			<ClientCreateDialog />
 			<ClientEditDialog client={editingClient} />
-			<div className="md:rounded-md border md:shadow-xs px-1">
+			<div className="md:rounded-md border md:shadow-xs">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => (
-									<TableHead key={header.id} colSpan={header.colSpan}>
+									<TableHead
+										key={header.id}
+										className="px-3"
+										colSpan={header.colSpan}
+									>
 										{header.isPlaceholder
 											? null
 											: flexRender(
