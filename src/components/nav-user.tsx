@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sidebar"
 import { logout } from "@/actions/auth"
 import { useUser } from "@/hooks/use-user"
+import { AvatarImage } from "@radix-ui/react-avatar"
 
 export function NavUser() {
 	const { user } = useUser()
@@ -32,6 +33,10 @@ export function NavUser() {
 							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
 						>
 							<Avatar className="h-8 w-8 rounded-lg">
+								<AvatarImage
+									src={user.avatarUrl}
+									alt={`${user.firstName} ${user.lastName}`}
+								/>
 								<AvatarFallback className="bg-primary text-primary-foreground rounded-lg font-semibold">
 									{user.firstName.charAt(0).toUpperCase()}
 									{user.lastName.charAt(0).toUpperCase()}

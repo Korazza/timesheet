@@ -244,6 +244,10 @@
 		"darkLabel": "Tema scuro",
 		"systemLabel": "Tema di sistema ({mode})"
 	},
+	"Denied": {
+		"title": "Accesso Negato",
+		"logout": "Esci"
+	},
 	"Enums": {
 		"role": {
 			"employee": "Dipendente",

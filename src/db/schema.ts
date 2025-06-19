@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm"
+import { relations } from "drizzle-orm";
 import {
 	index,
 	pgEnum,
@@ -8,27 +8,27 @@ import {
 	timestamp,
 	uuid,
 	varchar,
-} from "drizzle-orm/pg-core"
+} from "drizzle-orm/pg-core";
 
-const pgTable = pgTableCreator((name) => `timesheet_${name}`)
+const pgTable = pgTableCreator((name) => `timesheet_${name}`);
 
-export const roleEnum = pgEnum("role", ["EMPLOYEE", "ADMIN"])
-export type Role = (typeof roleEnum.enumValues)[number]
+export const roleEnum = pgEnum("role", ["EMPLOYEE", "ADMIN"]);
+export type Role = (typeof roleEnum.enumValues)[number];
 
 export const entryTypeEnum = pgEnum("entry_type", [
 	"WORK",
 	"HOLIDAY",
 	"PERMIT",
 	"SICK",
-])
-export type EntryType = (typeof entryTypeEnum.enumValues)[number]
+]);
+export type EntryType = (typeof entryTypeEnum.enumValues)[number];
 
 export const activityTypeEnum = pgEnum("activity_type", [
 	"PROJECT",
 	"TASK",
 	"AMS",
-])
-export type ActivityType = (typeof activityTypeEnum.enumValues)[number]
+]);
+export type ActivityType = (typeof activityTypeEnum.enumValues)[number];
 
 export const employeesTable = pgTable(
 	"employees",
@@ -43,16 +43,24 @@ export const employeesTable = pgTable(
 			.defaultNow()
 			.notNull(),
 	},
-	(table) => [index("idx_employees_user_id").on(table.userId)]
-)
-export type Employee = typeof employeesTable.$inferSelect
+	(
+		table,
+	) => [
+		index("idx_employees_user_id").on(table.userId),
+		index("idx_employees_email").on(table.email),
+	],
+);
+export type Employee = typeof employeesTable.$inferSelect;
+export type EmployeeWithAvatar = Employee & {
+	avatarUrl?: string;
+};
 
 export const clientsTable = pgTable("clients", {
 	id: uuid("id").defaultRandom().primaryKey(),
 	name: varchar("name", { length: 255 }).notNull(),
 	description: text("description"),
-})
-export type Client = typeof clientsTable.$inferSelect
+});
+export type Client = typeof clientsTable.$inferSelect;
 
 export const entriesTable = pgTable(
 	"entries",
@@ -76,10 +84,10 @@ export const entriesTable = pgTable(
 			.defaultNow()
 			.notNull(),
 	},
-	(table) => [index("idx_entries_employee_id").on(table.employeeId)]
-)
-export type Entry = typeof entriesTable.$inferSelect
-export type EntryWithClient = Entry & { client?: Client | null }
+	(table) => [index("idx_entries_employee_id").on(table.employeeId)],
+);
+export type Entry = typeof entriesTable.$inferSelect;
+export type EntryWithClient = Entry & { client?: Client | null };
 
 export const entriesRelations = relations(entriesTable, ({ one }) => ({
 	employee: one(employeesTable, {
@@ -90,4 +98,4 @@ export const entriesRelations = relations(entriesTable, ({ one }) => ({
 		fields: [entriesTable.clientId],
 		references: [clientsTable.id],
 	}),
-}))
+}));

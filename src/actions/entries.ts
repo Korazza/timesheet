@@ -5,14 +5,24 @@ import { desc, eq } from "drizzle-orm"
 
 import db from "@/db"
 import { entriesTable, type Entry } from "@/db/schema"
+import { getEmployee } from "./employees"
 
-export const getEntries = cache(async (employeeId: Entry["employeeId"]) =>
-	db.query.entriesTable.findMany({
-		where: eq(entriesTable.employeeId, employeeId),
+export const getEntries = cache(async (employeeId?: Entry["employeeId"]) => {
+	const user = await getEmployee()
+
+	if (!user) {
+		throw new Error("Unauthorized")
+	}
+
+	const effectiveEmployeeId =
+		user.role === "ADMIN" && employeeId ? employeeId : user.id
+
+	return db.query.entriesTable.findMany({
+		where: eq(entriesTable.employeeId, effectiveEmployeeId),
 		orderBy: desc(entriesTable.date),
 		with: { client: true },
 	})
-)
+})
 
 export const addEntry = async (entry: typeof entriesTable.$inferInsert) => {
 	const createdEntry = await db.insert(entriesTable).values(entry).returning()

@@ -20,6 +20,7 @@ import {
 	FileSpreadsheet,
 	Pencil,
 	Trash,
+	Calendar as CalendarIcon,
 } from "lucide-react"
 import * as XLSX from "xlsx"
 
@@ -55,6 +56,12 @@ import { DialogId } from "@/contexts/dialog-context"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useEnumOptions } from "@/enums"
 import { useTranslations } from "next-intl"
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
 
 type TimesheetCalendarViewType = "month" | "week" | "day"
 
@@ -190,7 +197,7 @@ export function TimesheetCalendar() {
 					viewType={viewType}
 					onViewTypeChange={setViewType}
 				/>
-				<Button
+				{/* <Button
 					className="hidden lg:inline-flex"
 					variant="outline"
 					onClick={handleExportExcel}
@@ -198,19 +205,39 @@ export function TimesheetCalendar() {
 				>
 					<FileSpreadsheet className="h-4 w-4" />
 					<span className="hidden xl:inline">{t("exportExcel")}</span>
-				</Button>
+				</Button> */}
 			</div>
 			{viewType !== "day" && (
 				<div className="grid grid-cols-5">
-					{WEEK_DAYS.map((d) => (
-						<div
-							key={d}
-							className="bg-card text-card-foreground border-1 py-2 text-center text-sm font-medium"
-							suppressHydrationWarning
-						>
-							{d}
-						</div>
-					))}
+					{viewType === "week"
+						? getWeekDays(date)
+								.filter((d) => d.getDay() !== 0 && d.getDay() !== 6)
+								.map((d) => (
+									<div
+										key={d.toISOString()}
+										className="bg-card text-card-foreground flex items-center justify-center gap-4 border-1 py-2 text-center text-sm font-medium"
+										suppressHydrationWarning
+									>
+										<span>{format(d, isMobile ? "E" : "EEEE")}</span>
+										<span
+											className={cn(
+												"text-muted-foreground font-bold",
+												isToday(d) && "text-primary"
+											)}
+										>
+											{d.getDate()}
+										</span>
+									</div>
+								))
+						: WEEK_DAYS.map((d) => (
+								<div
+									key={d}
+									className="bg-card text-card-foreground border-1 py-2 text-center text-sm font-medium"
+									suppressHydrationWarning
+								>
+									{d}
+								</div>
+							))}
 				</div>
 			)}
 			<div
@@ -243,15 +270,16 @@ export function TimesheetCalendar() {
 									className={cn(
 										"bg-card text-card-foreground flex flex-col gap-1.5 border p-2 transition-all",
 										!isSameMonth(day, date) && "opacity-25",
-										isToday(day) && "border-primary border-2",
+										isToday(day) &&
+											"border-t-primary xl:border-primary border-2",
 										viewType === "week" && "gap-4",
 										viewType === "day" && "gap-6 p-4"
 									)}
 								>
-									{viewType !== "day" && (
+									{viewType !== "day" && viewType !== "week" && (
 										<span
 											className={cn(
-												"text-muted-foreground ml-auto max-w-fit font-medium",
+												"text-muted-foreground ml-auto max-w-fit font-bold",
 												isToday(day) &&
 													"bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 shadow",
 												viewType === "month" && "text-sm"
@@ -271,7 +299,8 @@ export function TimesheetCalendar() {
 										<div
 											className={cn(
 												"flex flex-1 flex-col gap-1 md:gap-1.5",
-												viewType === "week" && "gap-2.5 md:gap-6",
+												viewType === "week" &&
+													"mt-2.5 gap-2.5 md:mt-6 md:gap-6",
 												viewType === "day" &&
 													"gap-4 md:gap-6 lg:items-center lg:justify-center lg:gap-8"
 											)}
@@ -392,6 +421,7 @@ function TimesheetCalendarHeader({
 	onViewTypeChange,
 }: TimesheetCalendarHeaderProps) {
 	const t = useTranslations("Calendar")
+
 	function getNextValidDate(date: Date): Date {
 		let next = addDays(date, 1)
 		while (isWeekend(next)) {
@@ -425,9 +455,10 @@ function TimesheetCalendarHeader({
 			>
 				{t("today")}
 			</Button>
-			<div className="flex items-center gap-4">
+			<div className="flex items-center gap-2">
 				<Button
 					variant="outline"
+					className="hidden md:inline-flex"
 					size="icon"
 					title={t("previous")}
 					onClick={() => {
@@ -442,23 +473,29 @@ function TimesheetCalendarHeader({
 				>
 					<ChevronLeft className="h-5 w-5" />
 				</Button>
-				<div suppressHydrationWarning className="text-lg font-semibold">
-					{viewType === "month" ? (
-						format(currentDate, "MMMM yyyy")
-					) : viewType === "week" ? (
-						<>
-							{format(startOfWeek(currentDate, { weekStartsOn: 1 }), "dd")}-
-							{format(
-								endOfWeek(currentDate, { weekStartsOn: 6 }),
-								"dd MMMM yyyy"
-							)}
-						</>
-					) : (
-						format(currentDate, "dd MMMM yyyy")
-					)}
-				</div>
+				<Popover>
+					<PopoverTrigger asChild>
+						<Button variant="outline" className="flex items-center gap-2">
+							<CalendarIcon className="h-5 w-5" />
+							{viewType === "month"
+								? format(currentDate, "MMMM yyyy")
+								: viewType === "week"
+									? `${format(startOfWeek(currentDate, { weekStartsOn: 1 }), "dd")}-${format(endOfWeek(currentDate, { weekStartsOn: 6 }), "dd MMMM yyyy")}`
+									: format(currentDate, "dd MMMM yyyy")}
+						</Button>
+					</PopoverTrigger>
+					<PopoverContent className="w-auto p-0">
+						<Calendar
+							mode="single"
+							selected={currentDate}
+							onSelect={(date) => date && onDateChange(date)}
+							disabled={(date) => date.getDay() === 0 || date.getDay() === 6}
+						/>
+					</PopoverContent>
+				</Popover>
 				<Button
 					variant="outline"
+					className="hidden md:inline-flex"
 					size="icon"
 					title={t("next")}
 					onClick={() => {
@@ -510,7 +547,7 @@ function TimesheetCalendarHeader({
 					}}
 				>
 					<SelectTrigger
-						className="flex w-40 justify-self-end **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate md:hidden"
+						className="flex w-30 justify-self-end **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate md:hidden"
 						size="sm"
 						aria-label="Select a value"
 					>

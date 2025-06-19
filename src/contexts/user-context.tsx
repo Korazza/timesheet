@@ -2,10 +2,10 @@
 
 import { createContext, useState } from "react"
 
-import type { Employee } from "@/db/schema"
+import type { EmployeeWithAvatar } from "@/db/schema"
 
 type EmployeeContextType = {
-	user: Employee
+	user: EmployeeWithAvatar
 }
 
 export const UserContext = createContext<EmployeeContextType | undefined>(
@@ -17,9 +17,9 @@ export const UserProvider = ({
 	employee,
 }: {
 	children: React.ReactNode
-	employee: Employee
+	employee: EmployeeWithAvatar
 }) => {
-	const [user] = useState<Employee>(employee)
+	const [user] = useState<EmployeeWithAvatar>(employee)
 
 	return (
 		<UserContext.Provider value={{ user }}>{children}</UserContext.Provider>

@@ -10,7 +10,7 @@ export default function LoginPage() {
 					<div className="flex size-6 items-center justify-center">
 						<div className="flex aspect-square size-10 items-center justify-center">
 							<Image
-								className="dark:drop-shadow-primary/15 drop-shadow-sm"
+								className="dark:drop-shadow-primary/30 drop-shadow-lg"
 								src="/logo-no-text-no-bg.png"
 								alt="Assertcode Logo"
 								width="36"

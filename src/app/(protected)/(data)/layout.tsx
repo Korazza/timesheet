@@ -19,14 +19,7 @@ export default async function DataLayout({
 }: {
 	children: React.ReactNode
 }) {
-	const employee = await getEmployee()
-
-	if (!employee) return null
-
-	const [clients, entries] = await Promise.all([
-		getClients(),
-		getEntries(employee.id),
-	])
+	const [clients, entries] = await Promise.all([getClients(), getEntries()])
 
 	return (
 		<ClientProvider initialClients={clients}>
