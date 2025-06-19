@@ -85,9 +85,8 @@ export function TimesheetCalendar() {
 	const t = useTranslations("Calendar")
 	const isMobile = useIsMobile()
 	const [date, setDate] = React.useState(() => getInitialDate())
-	const [viewType, setViewType] = React.useState<TimesheetCalendarViewType>(
-		isMobile ? "week" : "month"
-	)
+	const [viewType, setViewType] =
+		React.useState<TimesheetCalendarViewType>("week")
 	const days = (
 		viewType === "month"
 			? getCalendarMatrix(date)
@@ -183,7 +182,7 @@ export function TimesheetCalendar() {
 	}, [entries])
 
 	return (
-		<div className="flex-1 h-full flex flex-col md:border border-border md:rounded-2xl overflow-hidden md:shadow-md">
+		<div className="flex-1 h-full flex flex-col md:border border-border overflow-hidden md:shadow-md">
 			<div className="flex items-center justify-between p-2">
 				<TimesheetCalendarHeader
 					currentDate={date}
@@ -244,7 +243,7 @@ export function TimesheetCalendar() {
 									className={cn(
 										"transition-all flex flex-col border gap-1.5 p-2 bg-card text-card-foreground",
 										!isSameMonth(day, date) && "opacity-25",
-										isToday(day) && "border-primary rounded-sm shadow-xs",
+										isToday(day) && "border-2 border-primary",
 										viewType === "week" && "gap-4",
 										viewType === "day" && "p-4 gap-6"
 									)}
@@ -448,8 +447,7 @@ function TimesheetCalendarHeader({
 						format(currentDate, "MMMM yyyy")
 					) : viewType === "week" ? (
 						<>
-							{format(startOfWeek(currentDate, { weekStartsOn: 1 }), "dd MMM")}{" "}
-							–{" "}
+							{format(startOfWeek(currentDate, { weekStartsOn: 1 }), "dd")}–
 							{format(
 								endOfWeek(currentDate, { weekStartsOn: 6 }),
 								"dd MMM yyyy"
