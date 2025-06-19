@@ -30,7 +30,7 @@ export function DatePicker({ date, onChange }: DatePickerProps) {
 					>
 						<CalendarIcon />
 						{date ? (
-							format(date, "P")
+							format(date, "dd MMMM yyyy")
 						) : (
 							<span>{t("selectDate", { default: "Select a date" })}</span>
 						)}

@@ -43,10 +43,11 @@ export default function DateRangePicker({
 							dateRange.to &&
 							dateRange.from.toDateString() !== dateRange.to.toDateString() ? (
 								<>
-									{format(dateRange.from, "P")} - {format(dateRange.to, "P")}
+									{format(dateRange.from, "dd")}-
+									{format(dateRange.to, "dd MMMM yyyy")}
 								</>
 							) : (
-								format(dateRange.from, "P")
+								format(dateRange.from, "dd MMMM yyyy")
 							)
 						) : (
 							<span>{t("selectRange", { default: "Select a range" })}</span>
