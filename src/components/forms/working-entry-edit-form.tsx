@@ -181,7 +181,7 @@ export function WorkingEntryEditForm({ entry }: WorkingEntryEditFormProps) {
 														?.name
 												: t("selectClient", {
 														defaultValue: "Seleziona cliente",
-												  })}
+													})}
 											<ChevronsUpDown className="opacity-50" />
 										</Button>
 									</FormControl>

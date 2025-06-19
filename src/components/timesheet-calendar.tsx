@@ -91,8 +91,8 @@ export function TimesheetCalendar() {
 		viewType === "month"
 			? getCalendarMatrix(date)
 			: viewType === "week"
-			? getWeekDays(date)
-			: getDayView(date)
+				? getWeekDays(date)
+				: getDayView(date)
 	).filter((d) => d.getDay() !== 0 && d.getDay() !== 6)
 	const [selectedEntry, setSelectedEntry] =
 		React.useState<EntryWithClient | null>(null)
@@ -115,14 +115,14 @@ export function TimesheetCalendar() {
 							label: format(date, "EEEE"),
 							date,
 						},
-				  ]
+					]
 				: eachDayOfInterval({
 						start: startOfWeek(date, { weekStartsOn: 1 }),
 						end: addDays(startOfWeek(date, { weekStartsOn: 1 }), 6),
-				  }).map((date) => ({
+					}).map((date) => ({
 						label: format(date, isMobile ? "E" : "EEEE"),
 						date,
-				  }))
+					}))
 
 		return weekDaysRaw
 			.filter((d) => d.date.getDay() !== 0 && d.date.getDay() !== 6)
@@ -182,7 +182,7 @@ export function TimesheetCalendar() {
 	}, [entries])
 
 	return (
-		<div className="flex-1 h-full flex flex-col md:border border-border overflow-hidden md:shadow-md">
+		<div className="border-border flex h-full flex-1 flex-col overflow-hidden md:border md:shadow-md">
 			<div className="flex items-center justify-between p-2">
 				<TimesheetCalendarHeader
 					currentDate={date}
@@ -196,7 +196,7 @@ export function TimesheetCalendar() {
 					onClick={handleExportExcel}
 					title={t("exportExcel")}
 				>
-					<FileSpreadsheet className="w-4 h-4" />
+					<FileSpreadsheet className="h-4 w-4" />
 					<span className="hidden xl:inline">{t("exportExcel")}</span>
 				</Button>
 			</div>
@@ -205,7 +205,7 @@ export function TimesheetCalendar() {
 					{WEEK_DAYS.map((d) => (
 						<div
 							key={d}
-							className="bg-card border-1 py-2 text-sm font-medium text-center text-card-foreground"
+							className="bg-card text-card-foreground border-1 py-2 text-center text-sm font-medium"
 							suppressHydrationWarning
 						>
 							{d}
@@ -215,7 +215,7 @@ export function TimesheetCalendar() {
 			)}
 			<div
 				className={cn(
-					"flex-1 grid",
+					"grid flex-1",
 					(viewType === "month" || viewType === "week") && "grid-cols-5",
 					viewType === "day" && "grid-cols-1"
 				)}
@@ -241,19 +241,19 @@ export function TimesheetCalendar() {
 							>
 								<div
 									className={cn(
-										"transition-all flex flex-col border gap-1.5 p-2 bg-card text-card-foreground",
+										"bg-card text-card-foreground flex flex-col gap-1.5 border p-2 transition-all",
 										!isSameMonth(day, date) && "opacity-25",
-										isToday(day) && "border-2 border-primary",
+										isToday(day) && "border-primary border-2",
 										viewType === "week" && "gap-4",
-										viewType === "day" && "p-4 gap-6"
+										viewType === "day" && "gap-6 p-4"
 									)}
 								>
 									{viewType !== "day" && (
 										<span
 											className={cn(
-												"font-medium max-w-fit ml-auto text-muted-foreground",
+												"text-muted-foreground ml-auto max-w-fit font-medium",
 												isToday(day) &&
-													"bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full shadow",
+													"bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 shadow",
 												viewType === "month" && "text-sm"
 											)}
 										>
@@ -262,7 +262,7 @@ export function TimesheetCalendar() {
 									)}
 
 									{viewType === "day" && dayEntries.length === 0 ? (
-										<div className="flex-1 flex items-center justify-center text-muted-foreground">
+										<div className="text-muted-foreground flex flex-1 items-center justify-center">
 											<span className="text-lg lg:text-xl">
 												{t("noEntries")}
 											</span>
@@ -270,10 +270,10 @@ export function TimesheetCalendar() {
 									) : (
 										<div
 											className={cn(
-												"flex flex-col flex-1 gap-1 md:gap-1.5",
+												"flex flex-1 flex-col gap-1 md:gap-1.5",
 												viewType === "week" && "gap-2.5 md:gap-6",
 												viewType === "day" &&
-													"gap-4 md:gap-6 lg:gap-8 lg:items-center lg:justify-center"
+													"gap-4 md:gap-6 lg:items-center lg:justify-center lg:gap-8"
 											)}
 										>
 											{dayEntries.map((entry) => (
@@ -409,7 +409,7 @@ function TimesheetCalendarHeader({
 	}
 
 	return (
-		<div className="w-full grid grid-cols-2 md:grid-cols-3 px-2 place-items-center">
+		<div className="grid w-full grid-cols-2 place-items-center px-2 md:grid-cols-3">
 			<Button
 				variant="outline"
 				className="hidden place-self-start md:block"
@@ -447,10 +447,10 @@ function TimesheetCalendarHeader({
 						format(currentDate, "MMMM yyyy")
 					) : viewType === "week" ? (
 						<>
-							{format(startOfWeek(currentDate, { weekStartsOn: 1 }), "dd")}–
+							{format(startOfWeek(currentDate, { weekStartsOn: 1 }), "dd")}-
 							{format(
 								endOfWeek(currentDate, { weekStartsOn: 6 }),
-								"dd MMM yyyy"
+								"dd MMMM yyyy"
 							)}
 						</>
 					) : (
@@ -510,7 +510,7 @@ function TimesheetCalendarHeader({
 					}}
 				>
 					<SelectTrigger
-						className="flex justify-self-end w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate md:hidden"
+						className="flex w-40 justify-self-end **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate md:hidden"
 						size="sm"
 						aria-label="Select a value"
 					>
@@ -578,7 +578,7 @@ function TimesheetCalendarEntryPill({
 
 	const content = (
 		<div
-			className="rounded px-2.5 py-1 md:px-3 md:py-2 transition-shadow shadow hover:shadow-xl"
+			className="rounded px-2.5 py-1 shadow transition-shadow hover:shadow-xl md:px-3 md:py-2"
 			style={{
 				backgroundColor: colorMap[entry.type],
 				color: foregroundColorMap[entry.type],
@@ -590,10 +590,10 @@ function TimesheetCalendarEntryPill({
 					"md:flex-row md:items-center md:justify-between"
 				)}
 			>
-				<div className="text-xs md:text-sm font-semibold truncate max-w-full">
+				<div className="max-w-full truncate text-xs font-semibold md:text-sm">
 					{labelMap[entry.type]}
 				</div>
-				<div className="text-sm md:text-base font-bold">
+				<div className="text-sm font-bold md:text-base">
 					{totalHours} h
 					{entry.overtimeHours && (
 						<span className="ml-1 text-xs font-medium opacity-80">
@@ -604,7 +604,7 @@ function TimesheetCalendarEntryPill({
 			</div>
 
 			{(viewType === "day" || !isMobile) && entry.description && (
-				<div className="text-xs mt-1 font-medium opacity-80 line-clamp-2 max-w-full break-words">
+				<div className="mt-1 line-clamp-2 max-w-full text-xs font-medium break-words opacity-80">
 					{entry.description}
 				</div>
 			)}
@@ -647,14 +647,14 @@ function TimesheetLegend() {
 	]
 
 	return (
-		<div className="flex flex-wrap gap-2.5 md:gap-4 lg:gap-8 xl:gap-10 px-4 md:w-full justify-center py-2 bg-muted/50 border-t">
+		<div className="bg-muted/50 flex flex-wrap justify-center gap-2.5 border-t px-4 py-2 md:w-full md:gap-4 lg:gap-8 xl:gap-10">
 			{legendItems.map((item) => (
 				<div
 					key={item.label}
-					className="flex items-center gap-1 md:gap-2 text-xs md:text-sm"
+					className="flex items-center gap-1 text-xs md:gap-2 md:text-sm"
 				>
 					<span
-						className="w-4 h-4 rounded shadow"
+						className="h-4 w-4 rounded shadow"
 						style={{ backgroundColor: item.color }}
 					/>
 					<span className="text-card-foreground">{item.label}</span>

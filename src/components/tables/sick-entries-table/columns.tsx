@@ -28,7 +28,10 @@ interface GetColumnsOptions {
 	onDelete: (entry: Entry) => void
 }
 
-export function useTableColumns({ onEdit, onDelete }: GetColumnsOptions): ColumnDef<EntryWithClient>[] {
+export function useTableColumns({
+	onEdit,
+	onDelete,
+}: GetColumnsOptions): ColumnDef<EntryWithClient>[] {
 	const t = useTranslations("Tables.Sick")
 	const tCommon = useTranslations("Common")
 	return [

@@ -29,7 +29,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 							>
 								<div className="flex aspect-square size-8 items-center justify-center">
 									<Image
-										className="drop-shadow-sm dark:drop-shadow-primary/15"
+										className="dark:drop-shadow-primary/15 drop-shadow-sm"
 										src="/logo-no-text-no-bg.png"
 										alt="Assertcode Logo"
 										width="32"

@@ -147,12 +147,12 @@ export function SectionCards() {
 			<Card className="@container/card">
 				<CardHeader>
 					<CardDescription>{t("averagePerDay")}</CardDescription>
-					<CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-nowrap">
+					<CardTitle className="text-2xl font-semibold text-nowrap tabular-nums @[250px]/card:text-3xl">
 						{averageHoursPerDay.toFixed(1)} h
 					</CardTitle>
 					<CardAction>{renderDeltaBadge(deltas.avg)}</CardAction>
 				</CardHeader>
-				<CardFooter className="flex-col items-start gap-1.5 text-sm hidden md:block">
+				<CardFooter className="hidden flex-col items-start gap-1.5 text-sm md:block">
 					{renderDeltaLabel(deltas.avg, t("sinceLastMonth"))}
 					<div className="text-muted-foreground">
 						{t("basedOnLastDays", { n: registeredWorkingDays })}
@@ -163,7 +163,7 @@ export function SectionCards() {
 			<Card className="@container/card">
 				<CardHeader>
 					<CardDescription>{t("registeredDays")}</CardDescription>
-					<CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-nowrap">
+					<CardTitle className="text-2xl font-semibold text-nowrap tabular-nums @[250px]/card:text-3xl">
 						{registeredWorkingDays}/{totalWorkingDays}
 					</CardTitle>
 					<CardAction>
@@ -172,9 +172,11 @@ export function SectionCards() {
 						</Badge>
 					</CardAction>
 				</CardHeader>
-				<CardFooter className="flex-col items-start gap-1.5 text-sm hidden md:block">
+				<CardFooter className="hidden flex-col items-start gap-1.5 text-sm md:block">
 					<div className="line-clamp-1 flex gap-2 font-medium">
-						{t("daysToRegister", { n: totalWorkingDays - registeredWorkingDays })}
+						{t("daysToRegister", {
+							n: totalWorkingDays - registeredWorkingDays,
+						})}
 					</div>
 					<div className="text-muted-foreground">
 						{t("registeredDaysThisMonth")}
@@ -185,11 +187,11 @@ export function SectionCards() {
 			<Card className="@container/card">
 				<CardHeader>
 					<CardDescription>{t("totalHours")}</CardDescription>
-					<CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-nowrap">
+					<CardTitle className="text-2xl font-semibold text-nowrap tabular-nums @[250px]/card:text-3xl">
 						{totalHours} h
 					</CardTitle>
 				</CardHeader>
-				<CardFooter className="flex-col items-start gap-1.5 text-sm hidden md:block">
+				<CardFooter className="hidden flex-col items-start gap-1.5 text-sm md:block">
 					<div className="text-muted-foreground">
 						{t("totalHoursThisMonth")}
 					</div>
@@ -199,14 +201,12 @@ export function SectionCards() {
 			<Card className="@container/card">
 				<CardHeader>
 					<CardDescription>{t("overtime")}</CardDescription>
-					<CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-nowrap">
+					<CardTitle className="text-2xl font-semibold text-nowrap tabular-nums @[250px]/card:text-3xl">
 						{overtimeHours} h
 					</CardTitle>
 				</CardHeader>
-				<CardFooter className="flex-col items-start gap-1.5 text-sm hidden md:block">
-					<div className="text-muted-foreground">
-						{t("overtimeThisMonth")}
-					</div>
+				<CardFooter className="hidden flex-col items-start gap-1.5 text-sm md:block">
+					<div className="text-muted-foreground">{t("overtimeThisMonth")}</div>
 				</CardFooter>
 			</Card>
 		</div>

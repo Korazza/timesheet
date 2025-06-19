@@ -20,8 +20,8 @@ export function ClientsTableToolbar<Client>({
 	const isFiltered = table.getState().columnFilters.length > 0
 
 	return (
-		<div className="flex flex-col md:flex-row items-end md:items-center gap-2 justify-between px-2 md:px-0">
-			<div className="flex flex-1 flex-wrap gap-2 items-center">
+		<div className="flex flex-col items-end justify-between gap-2 px-2 md:flex-row md:items-center md:px-0">
+			<div className="flex flex-1 flex-wrap items-center gap-2">
 				<Input
 					placeholder={t("namePlaceholder")}
 					value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}

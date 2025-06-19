@@ -1,27 +1,24 @@
-"use server";
+"use server"
 
-import { cache } from "react";
-import { eq } from "drizzle-orm";
+import { cache } from "react"
+import { eq } from "drizzle-orm"
 
-import db from "@/db";
-import { Client, clientsTable } from "@/db/schema";
+import db from "@/db"
+import { Client, clientsTable } from "@/db/schema"
 
-export const getClients = cache(
-	async () => db.select().from(clientsTable),
-);
+export const getClients = cache(async () => db.select().from(clientsTable))
 
 export const addClient = async (client: typeof clientsTable.$inferInsert) => {
-	return db.insert(clientsTable).values(client)
-		.returning();
-};
+	return db.insert(clientsTable).values(client).returning()
+}
 
 export const updateClient = async (client: Client) => {
 	await db
 		.update(clientsTable)
 		.set(client)
-		.where(eq(clientsTable.id, client.id));
-};
+		.where(eq(clientsTable.id, client.id))
+}
 
 export const deleteClient = async (clientId: Client["id"]) => {
-	await db.delete(clientsTable).where(eq(clientsTable.id, clientId));
-};
+	await db.delete(clientsTable).where(eq(clientsTable.id, clientId))
+}

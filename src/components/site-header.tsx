@@ -26,17 +26,17 @@ export function SiteHeader() {
 	const title = getPageTitle(pathname, t)
 
 	return (
-		<header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height) sticky bottom-0 md:top-0 saturate-150 backdrop-blur-xl z-10">
-			<div className="flex w-full items-center justify-between md:justify-start gap-1 px-4">
+		<header className="sticky bottom-0 z-10 flex h-(--header-height) shrink-0 items-center gap-2 border-b saturate-150 backdrop-blur-xl transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height) md:top-0">
+			<div className="flex w-full items-center justify-between gap-1 px-4 md:justify-start">
 				<SidebarTrigger className="-ml-1" />
 				<Separator
 					orientation="vertical"
-					className="mx-2 data-[orientation=vertical]:h-4 hidden md:block"
+					className="mx-2 hidden data-[orientation=vertical]:h-4 md:block"
 				/>
 				<h1 className="scroll-m-20 text-xl font-semibold tracking-tight">
 					{title}
 				</h1>
-				<div className="ml-0 md:ml-auto flex items-center gap-2">
+				<div className="ml-0 flex items-center gap-2 md:ml-auto">
 					<ThemeSwitcher />
 				</div>
 			</div>

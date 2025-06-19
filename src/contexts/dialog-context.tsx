@@ -58,7 +58,7 @@ export const DialogProvider = ({ children, registry }: DialogProviderProps) => {
 			? cloneElement(registry[activeDialog], {
 					...dialogProps,
 					key: activeDialog,
-			  })
+				})
 			: null
 
 	return (

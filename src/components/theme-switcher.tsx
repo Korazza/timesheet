@@ -26,7 +26,7 @@ export function ThemeSwitcher() {
 		theme === "system"
 			? t("systemLabel", {
 					mode: t(resolvedTheme === "light" ? "light" : "dark"),
-			  })
+				})
 			: t(resolvedTheme === "light" ? "lightLabel" : "darkLabel")
 
 	const icon =
@@ -67,7 +67,7 @@ export function ThemeSwitcher() {
 					<Monitor className="mr-2 h-4 w-4" />
 					{t("system")}{" "}
 					{theme === "system" && (
-						<span className="ml-1 text-muted-foreground text-xs">
+						<span className="text-muted-foreground ml-1 text-xs">
 							({t(resolvedTheme === "light" ? "light" : "dark")})
 						</span>
 					)}

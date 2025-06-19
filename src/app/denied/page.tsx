@@ -8,8 +8,8 @@ import { redirect } from "next/navigation"
 
 export default function AccessDeniedPage() {
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center text-center px-4">
-			<h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance text-primary mb-6">
+		<div className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
+			<h1 className="text-primary mb-6 scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
 				Accesso Negato
 			</h1>
 			<Button

@@ -31,7 +31,7 @@ export default async function RootLayout({
 			<SidebarProvider>
 				<AppSidebar />
 				<SidebarInset>
-					<div className="flex flex-col-reverse md:flex-col flex-1">
+					<div className="flex flex-1 flex-col-reverse md:flex-col">
 						<SiteHeader />
 						<NextIntlClientProvider>{children}</NextIntlClientProvider>
 					</div>

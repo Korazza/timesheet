@@ -211,7 +211,7 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 														?.name
 												: t("selectClient", {
 														defaultValue: "Seleziona cliente",
-												  })}
+													})}
 											<ChevronsUpDown className="opacity-50" />
 										</Button>
 									</FormControl>

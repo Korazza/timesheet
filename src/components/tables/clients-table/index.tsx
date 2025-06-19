@@ -65,11 +65,11 @@ export function ClientsTable() {
 	})
 
 	return (
-		<div className="flex-1 flex flex-col gap-2">
+		<div className="flex flex-1 flex-col gap-4">
 			<ClientsTableToolbar table={table} />
 			<ClientCreateDialog />
 			<ClientEditDialog client={editingClient} />
-			<div className="md:rounded-md border md:shadow-xs">
+			<div className="border md:rounded-md md:shadow-xs">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
@@ -85,7 +85,7 @@ export function ClientsTable() {
 											: flexRender(
 													header.column.columnDef.header,
 													header.getContext()
-											  )}
+												)}
 									</TableHead>
 								))}
 							</TableRow>

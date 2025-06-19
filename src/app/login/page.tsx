@@ -6,11 +6,11 @@ export default function LoginPage() {
 	return (
 		<div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
 			<div className="flex w-full max-w-sm flex-col gap-4">
-				<div className="flex items-center gap-2 self-center font-semibold text-lg">
+				<div className="flex items-center gap-2 self-center text-lg font-semibold">
 					<div className="flex size-6 items-center justify-center">
 						<div className="flex aspect-square size-10 items-center justify-center">
 							<Image
-								className="drop-shadow-sm dark:drop-shadow-primary/15"
+								className="dark:drop-shadow-primary/15 drop-shadow-sm"
 								src="/logo-no-text-no-bg.png"
 								alt="Assertcode Logo"
 								width="36"

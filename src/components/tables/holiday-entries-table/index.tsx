@@ -55,7 +55,10 @@ export function HolidayEntriesTable() {
 		if (activeDialog !== "confirmDeleteEntry") setDeletingEntry(null)
 	}, [activeDialog])
 
-	const columns = useTableColumns({ onEdit: onEditEntry, onDelete: onDeleteEntry })
+	const columns = useTableColumns({
+		onEdit: onEditEntry,
+		onDelete: onDeleteEntry,
+	})
 
 	const table = useReactTable({
 		data: holidayEntries,
@@ -73,12 +76,12 @@ export function HolidayEntriesTable() {
 	})
 
 	return (
-		<div className="flex-1 flex flex-col gap-2">
+		<div className="flex flex-1 flex-col gap-4">
 			<HolidayEntriesTableToolbar table={table} />
 			<HolidayEntryCreateDialog />
 			<HolidayEntryEditDialog entry={editingEntry} />
 			<EntryConfirmDeleteDialog entry={deletingEntry} />
-			<div className="md:rounded-md border md:shadow-xs">
+			<div className="border md:rounded-md md:shadow-xs">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
@@ -94,7 +97,7 @@ export function HolidayEntriesTable() {
 											: flexRender(
 													header.column.columnDef.header,
 													header.getContext()
-											  )}
+												)}
 									</TableHead>
 								))}
 							</TableRow>

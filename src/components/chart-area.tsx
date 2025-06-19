@@ -185,7 +185,7 @@ export function ChartArea() {
 					</Select>
 				</CardAction>
 			</CardHeader>
-			<CardContent className="px-2 pt-4 sm:px-6 sm:pt-6 h-full items-end flex">
+			<CardContent className="flex h-full items-end px-2 pt-4 sm:px-6 sm:pt-6">
 				<ChartContainer
 					config={chartConfig}
 					className="aspect-auto h-full w-full"
@@ -242,10 +242,10 @@ export function ChartArea() {
 									}}
 									formatter={(value, name, item) =>
 										Number(value) > 0 ? (
-											<span className="flex flex-row justify-between items-center w-full">
+											<span className="flex w-full flex-row items-center justify-between">
 												<span className="flex items-center gap-1">
 													<div
-														className="w-2.5 h-2.5 rounded-full bg-red-500"
+														className="h-2.5 w-2.5 rounded-full bg-red-500"
 														style={{ backgroundColor: item.color }}
 													/>
 													<span className="font-semibold">
