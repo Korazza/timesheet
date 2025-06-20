@@ -4,7 +4,6 @@ import { createClient } from "@/utils/supabase/server";
 import db from "@/db";
 import { eq, or } from "drizzle-orm";
 import { employeesTable } from "@/db/schema";
-import { getUserAvatar } from "@/utils/supabase/user";
 
 export async function GET(request: Request) {
 	const { searchParams, origin } = new URL(request.url);
@@ -39,8 +38,6 @@ export async function GET(request: Request) {
 					eq(employeesTable.email, email),
 				),
 			});
-
-			console.log(await getUserAvatar());
 
 			if (!existing) {
 				await db.insert(employeesTable).values({
