@@ -2,7 +2,7 @@
 
 import { createContext, useState } from "react"
 
-import type { EmployeeWithAvatar } from "@/db/schema"
+import type { EmployeeWithAvatar } from "@/types"
 
 type EmployeeContextType = {
 	user: EmployeeWithAvatar

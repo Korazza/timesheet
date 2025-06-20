@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useMemo, useState } from "react"
-import type { EntryWithClient } from "@/db/schema"
+import type { EntryWithClient } from "@/types"
 
 type EntryContextType = {
 	entries: EntryWithClient[]

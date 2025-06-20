@@ -2,7 +2,7 @@
 
 import { createContext, useState } from "react"
 
-import type { Client } from "@/db/schema"
+import type { Client } from "@/types"
 
 type ClientContextType = {
 	clients: Client[]
