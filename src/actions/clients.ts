@@ -4,7 +4,8 @@ import { cache } from "react"
 import { eq } from "drizzle-orm"
 
 import db from "@/db"
-import { Client, clientsTable } from "@/db/schema"
+import { clientsTable } from "@/db/schema"
+import { Client } from "@/types"
 
 export const getClients = cache(async () => db.select().from(clientsTable))
 
