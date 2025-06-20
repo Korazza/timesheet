@@ -14,7 +14,10 @@ export async function login() {
 	const { data } = await supabase.auth.signInWithOAuth({
 		provider: "google",
 		options: {
-			redirectTo: "http://localhost:3000/auth/callback",
+			redirectTo:
+				process.env.NODE_ENV === "development"
+					? "http://localhost:3000/auth/callback"
+					: "https://assertcode-timesheet.netlify.app/auth/callback",
 		},
 	})
 
