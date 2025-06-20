@@ -4,7 +4,8 @@ import { cache } from "react"
 import { desc, eq } from "drizzle-orm"
 
 import db from "@/db"
-import { entriesTable, type Entry } from "@/db/schema"
+import { entriesTable } from "@/db/schema"
+import { Entry } from "@/types"
 import { getEmployee } from "./employees"
 
 export const getEntries = cache(async (employeeId?: Entry["employeeId"]) => {
