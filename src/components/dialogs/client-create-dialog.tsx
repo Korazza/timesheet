@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 import {
 	Dialog,
 	DialogContent,
@@ -8,7 +10,6 @@ import {
 } from "@/components/ui/dialog"
 import { ClientCreateForm } from "@/components/forms/client-create-form"
 import { useDialog } from "@/hooks/use-dialog"
-import { useTranslations } from "next-intl"
 
 export function ClientCreateDialog() {
 	const { activeDialog, closeDialog } = useDialog()

@@ -14,7 +14,7 @@ import {
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { useDialog } from "@/hooks/use-dialog"
-import { Entry } from "@/db/schema"
+import { Entry } from "@/types"
 import { deleteEntry } from "@/actions/entries"
 import { useEntries } from "@/hooks/use-entries"
 

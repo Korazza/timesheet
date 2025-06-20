@@ -1,15 +1,16 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { Entry } from "@/db/schema"
 import { useDialog } from "@/hooks/use-dialog"
 import { PermitEntryEditForm } from "@/components/forms/permit-entry-edit-form"
-import { useTranslations } from "next-intl"
+import { Entry } from "@/types"
 
 interface PermitEntryEditDialogProps {
 	entry?: Entry | null
