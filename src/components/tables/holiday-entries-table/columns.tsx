@@ -11,6 +11,7 @@ import {
 	Pencil,
 	Trash,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -21,7 +22,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { type Entry, type EntryWithClient } from "@/types"
-import { useTranslations } from "next-intl"
 
 interface GetColumnsOptions {
 	onEdit: (entry: Entry) => void

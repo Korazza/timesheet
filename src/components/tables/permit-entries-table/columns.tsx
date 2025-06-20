@@ -21,7 +21,7 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Entry, EntryWithClient } from "@/db/schema"
+import { Entry, EntryWithClient } from "@/types"
 
 interface GetColumnsOptions {
 	onEdit: (entry: Entry) => void
