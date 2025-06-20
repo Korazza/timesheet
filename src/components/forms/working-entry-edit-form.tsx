@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/command"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { EntryWithClient } from "@/db/schema"
+import { EntryWithClient } from "@/types"
 import { useClients } from "@/hooks/use-clients"
 import { updateEntry } from "@/actions/entries"
 import { useEntries } from "@/hooks/use-entries"
@@ -68,9 +68,8 @@ export function WorkingEntryEditForm({ entry }: WorkingEntryEditFormProps) {
 			.max(MAX_HOURS, t("errors.maxHours", { max: MAX_HOURS })),
 		overtimeHours: z
 			.number()
-			.min(MIN_HOURS, t("errors.minHours", { min: MIN_HOURS }))
-			.max(MAX_HOURS, t("errors.maxHours", { max: MAX_HOURS }))
-			.optional(),
+			.min(0, t("errors.minHours", { min: MIN_HOURS }))
+			.max(MAX_HOURS, t("errors.maxHours", { max: MAX_HOURS })),
 	})
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -80,6 +79,7 @@ export function WorkingEntryEditForm({ entry }: WorkingEntryEditFormProps) {
 			clientId: entry.clientId,
 			description: entry.description ?? "",
 			hours: entry.hours,
+			overtimeHours: entry.overtimeHours ?? 0,
 		},
 	})
 	const { clients } = useClients()
@@ -91,7 +91,7 @@ export function WorkingEntryEditForm({ entry }: WorkingEntryEditFormProps) {
 			const updatedEntry: EntryWithClient = {
 				...entry,
 				...values,
-				date: values.date.toISOString(),
+				overtimeHours: values.overtimeHours || null,
 			}
 
 			updatedEntry.client = clients.find((c) => c.id === updatedEntry.clientId)

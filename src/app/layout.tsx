@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { ThemeProvider } from "next-themes"
 import { NextIntlClientProvider } from "next-intl"
 import { getLocale } from "next-intl/server"
@@ -26,10 +26,22 @@ const mono = Source_Code_Pro({
 
 export const metadata: Metadata = {
 	icons: {
-		icon: [{ url: "/logo-no-text-no-bg.png", type: "image/png" }],
+		icon: [{ url: "/icon512_rounded.png", type: "image/png" }],
 	},
 	title: "Timesheet",
 	description: "Assertcode Timesheet",
+	keywords: ["assertcode", "timesheet"],
+	robots: "noindex, nofollow",
+
+	appleWebApp: {
+		title: "Timesheet",
+	},
+}
+
+export const viewport: Viewport = {
+	themeColor: {
+		color: "oklch(0.8229 0.1443 82.3092)",
+	},
 }
 
 export default async function RootLayout({
@@ -42,14 +54,7 @@ export default async function RootLayout({
 
 	return (
 		<html lang={locale} suppressHydrationWarning>
-			<head>
-				<link
-					rel="icon"
-					href="/assets/logo-no-text-no-bg?<generated>"
-					type="image/<generated>"
-					sizes="<generated>"
-				/>
-			</head>
+			<head></head>
 			<body
 				className={`${sans.variable} ${serif.variable} ${mono.variable} antialiased`}
 			>

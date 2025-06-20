@@ -12,6 +12,7 @@ const compat = new FlatCompat({
 const eslintConfig = [
 	...compat.config({
 		extends: ["next"],
+		plugins: ["prettier"],
 		rules: {
 			"prettier/prettier": "error",
 			"@typescript-eslint/no-explicit-any": "off",

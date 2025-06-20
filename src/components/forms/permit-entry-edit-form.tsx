@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils"
 import { CalendarIcon, Save } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
-import { EntryWithClient } from "@/db/schema"
+import { EntryWithClient } from "@/types"
 import { updateEntry } from "@/actions/entries"
 import { useEntries } from "@/hooks/use-entries"
 import { useDialog } from "@/hooks/use-dialog"
@@ -69,7 +69,6 @@ export function PermitEntryEditForm({ entry }: PermitEntryEditFormProps) {
 			const updatedEntry: EntryWithClient = {
 				...entry,
 				...values,
-				date: values.date.toISOString(),
 			}
 
 			await updateEntry(updatedEntry)

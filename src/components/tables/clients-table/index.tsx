@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/table"
 import { ClientCreateDialog } from "@/components/dialogs/client-create-dialog"
 import { ClientEditDialog } from "@/components/dialogs/client-edit-dialog"
-import { Client } from "@/db/schema"
+import { Client } from "@/types"
 import { useClients } from "@/hooks/use-clients"
 import { useDialog } from "@/hooks/use-dialog"
 import { useTableColumns } from "./columns"

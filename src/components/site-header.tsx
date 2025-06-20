@@ -26,7 +26,7 @@ export function SiteHeader() {
 	const title = getPageTitle(pathname, t)
 
 	return (
-		<header className="sticky bottom-0 z-10 flex h-(--header-height) shrink-0 items-center gap-2 border-b saturate-150 backdrop-blur-xl transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height) md:top-0">
+		<header className="sticky bottom-0 z-10 flex h-(--header-height) shrink-0 items-center gap-2 border-t saturate-150 backdrop-blur-xl transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height) md:top-0 md:border-b">
 			<div className="flex w-full items-center justify-between gap-1 px-4 md:justify-start">
 				<SidebarTrigger className="-ml-1" />
 				<Separator

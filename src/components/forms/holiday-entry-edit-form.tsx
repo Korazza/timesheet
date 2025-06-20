@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
-import { EntryWithClient } from "@/db/schema"
+import { EntryWithClient } from "@/types"
 import { updateEntry } from "@/actions/entries"
 import { useEntries } from "@/hooks/use-entries"
 import { useDialog } from "@/hooks/use-dialog"
@@ -68,7 +68,6 @@ export function HolidayEntryEditForm({ entry }: HolidayEntryEditFormProps) {
 			const updatedEntry: EntryWithClient = {
 				...entry,
 				...values,
-				date: values.date.toISOString(),
 			}
 
 			await updateEntry(updatedEntry)

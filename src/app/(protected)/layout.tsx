@@ -10,11 +10,6 @@ import { Toaster } from "@/components/ui/sonner"
 import { UserProvider } from "@/contexts/user-context"
 import "../globals.css"
 
-export const metadata: Metadata = {
-	title: "Timesheet",
-	description: "Assertcode Timesheet",
-}
-
 export default async function RootLayout({
 	children,
 }: {

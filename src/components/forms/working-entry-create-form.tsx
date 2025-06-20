@@ -42,7 +42,8 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { activityTypeEnum, entriesTable, EntryWithClient } from "@/db/schema"
+import { activityTypeEnum, entriesTable } from "@/db/schema"
+import { EntryWithClient } from "@/types"
 import { useClients } from "@/hooks/use-clients"
 import { addEntry } from "@/actions/entries"
 import { useUser } from "@/hooks/use-user"
@@ -82,9 +83,8 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 			.max(MAX_HOURS, t("errors.maxHours", { max: MAX_HOURS })),
 		overtimeHours: z
 			.number()
-			.min(MIN_HOURS, t("errors.minHours", { min: MIN_HOURS }))
-			.max(MAX_HOURS, t("errors.maxHours", { max: MAX_HOURS }))
-			.optional(),
+			.min(0, t("errors.minHours", { min: 0 }))
+			.max(MAX_HOURS, t("errors.maxHours", { max: MAX_HOURS })),
 	})
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -93,7 +93,7 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 			date: date ?? new Date(),
 			description: undefined,
 			hours: 8,
-			overtimeHours: undefined,
+			overtimeHours: 0,
 		},
 	})
 	const { user } = useUser()
@@ -107,7 +107,7 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 				...values,
 				employeeId: user.id,
 				type: "WORK",
-				date: values.date.toISOString(),
+				overtimeHours: values.overtimeHours || null,
 			}
 
 			const [createdEntry] = await addEntry(entry)
@@ -328,7 +328,10 @@ export function WorkingEntryCreateForm({ date }: WorkingEntryCreateFormProps) {
 										className="w-fit"
 										type="number"
 										{...field}
-										onChange={(e) => field.onChange(Number(e.target.value))}
+										onChange={(e) => {
+											const val = e.target.value
+											field.onChange(Number(val))
+										}}
 									/>
 									h
 								</span>

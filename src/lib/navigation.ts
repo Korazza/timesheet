@@ -1,11 +1,5 @@
 import { Calendar, LayoutDashboard, LucideIcon, Users } from "lucide-react"
-
-export type NavigationItem = {
-	key: string
-	url: string
-	icon: LucideIcon
-	items?: { key: string; url: string }[]
-}
+import type { NavigationItem } from "@/types"
 
 export const NAVIGATION_ITEMS: NavigationItem[] = [
 	{

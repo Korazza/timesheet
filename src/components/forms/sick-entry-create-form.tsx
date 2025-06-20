@@ -71,7 +71,6 @@ export function SickEntryCreateForm({ date }: SickEntryCreateFormProps) {
 				...values,
 				employeeId: user.id,
 				type: "SICK",
-				date: values.date.toISOString(),
 			}
 
 			const [createdEntry] = await addEntry(entry)

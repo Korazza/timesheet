@@ -71,7 +71,6 @@ export function PermitEntryCreateForm({ date }: PermitEntryCreateFormProps) {
 				...values,
 				employeeId: user.id,
 				type: "PERMIT",
-				date: values.date.toISOString(),
 			}
 
 			const [createdEntry] = await addEntry(entry)

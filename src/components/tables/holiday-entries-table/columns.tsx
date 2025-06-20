@@ -20,7 +20,7 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Entry, EntryWithClient } from "@/db/schema"
+import { type Entry, type EntryWithClient } from "@/types"
 import { useTranslations } from "next-intl"
 
 interface GetColumnsOptions {

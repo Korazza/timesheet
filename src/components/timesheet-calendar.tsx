@@ -49,7 +49,7 @@ import {
 } from "@/components/ui/select"
 import { useEntries } from "@/hooks/use-entries"
 import { getCalendarMatrix, getDayView, getWeekDays } from "@/lib/calendar"
-import { EntryWithClient } from "@/db/schema"
+import { EntryWithClient } from "@/types"
 import { cn } from "@/lib/utils"
 import { useDialog } from "@/hooks/use-dialog"
 import { DialogId } from "@/contexts/dialog-context"
@@ -186,7 +186,7 @@ export function TimesheetCalendar() {
 			workbook,
 			`Consuntivazioni_${format(new Date(), "dd-MM-yyyy_HH-mm-ss")}.xlsx`
 		)
-	}, [entries])
+	}, [activityTypeOptions, entries, entryTypeOptions])
 
 	return (
 		<div className="border-border flex h-full flex-1 flex-col overflow-hidden md:border md:shadow-md">

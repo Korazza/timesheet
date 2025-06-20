@@ -1,4 +1,4 @@
-import { ActivityType, EntryType, Role } from "@/db/schema"
+import { ActivityType, EntryType, Role } from "@/types"
 import { useTranslations } from "next-intl"
 
 // HOOK per ottenere le opzioni tradotte

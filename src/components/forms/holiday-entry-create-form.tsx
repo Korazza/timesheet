@@ -71,7 +71,6 @@ export function HolidayEntryCreateForm({ date }: HolidayEntryCreateFormProps) {
 				...values,
 				employeeId: user.id,
 				type: "HOLIDAY",
-				date: values.date.toISOString(),
 			}
 
 			const [createdEntry] = await addEntry(entry)

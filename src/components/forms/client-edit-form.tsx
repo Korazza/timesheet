@@ -17,7 +17,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Client } from "@/db/schema"
+import { Client } from "@/types"
 import { useDialog } from "@/hooks/use-dialog"
 import { useClients } from "@/hooks/use-clients"
 import { updateClient } from "@/actions/clients"
