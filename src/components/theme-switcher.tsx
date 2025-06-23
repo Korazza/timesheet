@@ -12,8 +12,13 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { cn } from "@/lib/utils"
 
-export function ThemeSwitcher() {
+interface ThemeSwitcherProps {
+	className?: string
+}
+
+export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
 	const t = useTranslations("ThemeSwitcher")
 	const { setTheme, theme, resolvedTheme } = useTheme()
 	const [isMounted, setIsMounted] = React.useState(false)
@@ -31,9 +36,9 @@ export function ThemeSwitcher() {
 
 	const icon =
 		resolvedTheme === "light" ? (
-			<Sun className="h-[1.2rem] w-[1.2rem]" />
+			<Sun className={cn("size-[1rem]", className)} />
 		) : (
-			<Moon className="h-[1.2rem] w-[1.2rem]" />
+			<Moon className={cn("size-[1rem]", className)} />
 		)
 
 	const isSelected = (value: string) => theme === value

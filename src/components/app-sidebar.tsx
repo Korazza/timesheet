@@ -13,20 +13,27 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
+	useSidebar,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const { isMobile, setOpenMobile } = useSidebar()
+
 	return (
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarHeader>
 				<SidebarMenu>
 					<SidebarMenuItem>
-						<Link href="/">
-							<SidebarMenuButton
-								size="lg"
-								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
-							>
+						<SidebarMenuButton
+							size="lg"
+							asChild
+							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
+							onClick={() => {
+								if (isMobile) setOpenMobile(false)
+							}}
+						>
+							<Link href="/">
 								<div className="flex aspect-square size-10 items-center justify-center">
 									<Image
 										className="drop-shadow"
@@ -38,8 +45,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 									/>
 								</div>
 								<span className="font-medium">Assertcode</span>
-							</SidebarMenuButton>
-						</Link>
+							</Link>
+						</SidebarMenuButton>
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarHeader>

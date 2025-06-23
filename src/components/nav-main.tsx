@@ -14,6 +14,7 @@ import {
 	SidebarMenuSub,
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
+	useSidebar,
 } from "@/components/ui/sidebar"
 import { NAVIGATION_ITEMS } from "@/lib/navigation"
 import { useUser } from "@/hooks/use-user"
@@ -21,6 +22,7 @@ import { useUser } from "@/hooks/use-user"
 export function NavMain() {
 	const pathname = usePathname()
 	const { user } = useUser()
+	const { isMobile, setOpenMobile } = useSidebar()
 	const t = useTranslations("Sidebar")
 
 	const isAdmin = user?.role === "ADMIN"
@@ -35,7 +37,13 @@ export function NavMain() {
 				<SidebarMenu>
 					{visibleItems.map((item) => (
 						<SidebarMenuItem key={item.url}>
-							<SidebarMenuButton asChild isActive={item.url === pathname}>
+							<SidebarMenuButton
+								asChild
+								isActive={item.url === pathname}
+								onClick={() => {
+									if (isMobile) setOpenMobile(false)
+								}}
+							>
 								<Link href={item.url}>
 									<item.icon />
 									<span>{t(item.key)}</span>

@@ -9,7 +9,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher"
 import { NAVIGATION_ITEMS } from "@/lib/navigation"
 
 function getPageTitle(
-	pathname: string,
+	pathname: string | null,
 	t: (key: string) => string
 ): string | null {
 	for (const item of NAVIGATION_ITEMS) {
@@ -26,18 +26,18 @@ export function SiteHeader() {
 	const title = getPageTitle(pathname, t)
 
 	return (
-		<header className="sticky bottom-0 z-10 flex h-(--header-height) shrink-0 items-center gap-2 border-t saturate-150 backdrop-blur-xl transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height) md:top-0 md:border-b">
+		<header className="sticky bottom-0 z-10 flex h-12 shrink-0 items-center gap-2 border-t saturate-150 backdrop-blur-xl transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-10 md:top-0 md:h-10 md:border-b">
 			<div className="flex w-full items-center justify-between gap-1 px-4 md:justify-start">
-				<SidebarTrigger className="-ml-1" />
+				<SidebarTrigger className="-ml-1 size-6 md:size-5" />
 				<Separator
 					orientation="vertical"
 					className="mx-2 hidden data-[orientation=vertical]:h-4 md:block"
 				/>
-				<h1 className="scroll-m-20 text-xl font-semibold tracking-tight">
+				<h1 className="scroll-m-20 text-2xl font-semibold tracking-tight md:text-xl">
 					{title}
 				</h1>
 				<div className="ml-0 flex items-center gap-2 md:ml-auto">
-					<ThemeSwitcher />
+					<ThemeSwitcher className="size-6 md:size-5" />
 				</div>
 			</div>
 		</header>
