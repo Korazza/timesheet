@@ -376,10 +376,10 @@ function TimesheetCalendarHeader({
 	}
 
 	return (
-		<div className="grid w-full grid-cols-2 place-items-center px-2 md:grid-cols-3">
+		<div className="flex w-full flex-col gap-3 px-2 md:grid md:grid-cols-3 md:place-items-center md:gap-0">
 			<Button
 				variant="outline"
-				className="place-self-start"
+				className="self-center md:place-self-start"
 				title={t("today")}
 				onClick={() => {
 					const today = new Date()
@@ -392,10 +392,9 @@ function TimesheetCalendarHeader({
 			>
 				{t("today")}
 			</Button>
-			<div className="flex items-center gap-2">
+			<div className="flex items-center justify-center gap-2">
 				<Button
 					variant="outline"
-					className="hidden md:inline-flex"
 					size="icon"
 					title={t("previous")}
 					onClick={() => {
@@ -483,7 +482,7 @@ function TimesheetCalendarHeader({
 					}}
 				>
 					<SelectTrigger
-						className="flex w-30 justify-self-end **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate md:hidden"
+						className="flex w-30 self-center justify-self-start **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate md:hidden"
 						size="sm"
 						aria-label="Select a value"
 					>

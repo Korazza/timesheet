@@ -30,7 +30,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
-import { useEnumOptions } from "@/enums"
+import { useEnumOptions } from "@/hooks/use-enum-options"
 
 interface EmployeeEditFormProps {
 	employee: Employee

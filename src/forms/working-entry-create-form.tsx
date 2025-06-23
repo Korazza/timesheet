@@ -49,7 +49,7 @@ import { addEntry } from "@/actions/entries"
 import { useUser } from "@/hooks/use-user"
 import { useEntries } from "@/hooks/use-entries"
 import { useDialog } from "@/hooks/use-dialog"
-import { useEnumOptions } from "@/enums"
+import { useEnumOptions } from "@/hooks/use-enum-options"
 
 const MIN_HOURS = 0.5
 const MAX_HOURS = 24

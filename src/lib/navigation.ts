@@ -1,4 +1,4 @@
-import { Calendar, LayoutDashboard, Users } from "lucide-react"
+import { Calendar, LayoutDashboard, Handshake, Users } from "lucide-react"
 import type { NavigationItem } from "@/types"
 
 export const NAVIGATION_ITEMS: NavigationItem[] = [
@@ -21,7 +21,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
 	{
 		key: "clients",
 		url: "/client",
-		icon: Users,
+		icon: Handshake,
 	},
 	{
 		key: "employees",

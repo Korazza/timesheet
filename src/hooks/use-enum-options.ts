@@ -1,7 +1,5 @@
-import { ActivityType, EntryType, Role } from "@/types"
 import { useTranslations } from "next-intl"
 
-// HOOK per ottenere le opzioni tradotte
 export function useEnumOptions() {
 	const t = useTranslations("Enums")
 	const roleOptions = [

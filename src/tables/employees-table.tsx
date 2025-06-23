@@ -1,14 +1,15 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
-import { Plus, Pencil, Trash } from "lucide-react"
+import { ColumnDef } from "@tanstack/react-table"
+import { Plus, Pencil, Trash, Eye } from "lucide-react"
 
 import { DataTable, DataTableAction } from "@/components/data-table"
 import { DataTableColumnHeader } from "@/components/data-table/column-header"
 import { ToolbarFilterOption } from "@/components/data-table/toolbar"
 import type { Employee, Role } from "@/types"
-import { useEnumOptions } from "@/enums"
+import { useEnumOptions } from "@/hooks/use-enum-options"
 import { Button } from "@/components/ui/button"
 import { useDialog } from "@/hooks/use-dialog"
 
@@ -17,6 +18,7 @@ interface EmployeesTableProps {
 }
 
 export default function EmployeesTable({ employees }: EmployeesTableProps) {
+	const router = useRouter()
 	const { openDialog } = useDialog()
 	const { roleOptions } = useEnumOptions()
 	const t = useTranslations("Tables.Employees")
@@ -54,6 +56,22 @@ export default function EmployeesTable({ employees }: EmployeesTableProps) {
 					</span>
 				)
 			},
+		},
+		{
+			id: "detail",
+			header: () => null,
+			cell: ({ row }) => (
+				<Button
+					variant="ghost"
+					size="icon"
+					onClick={() => router.push(`/employees/${row.original.id}`)}
+					title={tCommon("detail")}
+				>
+					<Eye className="size-4" />
+				</Button>
+			),
+			enableSorting: false,
+			enableHiding: false,
 		},
 	]
 
