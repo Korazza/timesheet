@@ -113,10 +113,9 @@ export function EmployeeEditForm({ employee }: EmployeeEditFormProps) {
 						<FormItem>
 							<FormLabel>{t("lastName")}</FormLabel>
 							<FormControl>
-								<Textarea
+								<Input
 									disabled={isLoading}
 									placeholder={tCommon("lastNamePlaceholder")}
-									className="resize-none"
 									{...field}
 								/>
 							</FormControl>

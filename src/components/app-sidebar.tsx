@@ -34,13 +34,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 							}}
 						>
 							<Link href="/">
-								<div className="flex aspect-square size-10 items-center justify-center">
+								<div className="flex aspect-square size-8 items-center justify-center">
 									<Image
 										className="drop-shadow"
 										src="/icon512_rounded.png"
 										alt="Assertcode Logo"
-										width="42"
-										height="42"
+										width="36"
+										height="36"
 										priority={false}
 									/>
 								</div>
