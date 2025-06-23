@@ -35,12 +35,6 @@ export default function EmployeesTable({ employees }: EmployeesTableProps) {
 				<DataTableColumnHeader column={column} title="Ruolo" />
 			),
 		},
-		{
-			accessorKey: "createdAt",
-			header: ({ column }) => (
-				<DataTableColumnHeader column={column} title="Creazione" />
-			),
-		},
 	]
 
 	return <DataTable data={employees} columns={columns} />

@@ -1,5 +1,11 @@
 import { Column } from "@tanstack/react-table"
-import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from "lucide-react"
+import {
+	ArrowDown,
+	ArrowUp,
+	ArrowUpDown,
+	ChevronsUpDown,
+	EyeOff,
+} from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -11,56 +17,44 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-interface DataTableColumnHeaderProps<T>
+interface DataTableColumnHeaderProps<TData, TValue>
 	extends React.HTMLAttributes<HTMLDivElement> {
-	column: Column<T>
+	column: Column<TData, TValue>
 	title: string
 }
 
-export function DataTableColumnHeader<T>({
+export function DataTableColumnHeader<TData, TValue>({
 	column,
 	title,
 	className,
-}: DataTableColumnHeaderProps<T>) {
+}: DataTableColumnHeaderProps<TData, TValue>) {
 	if (!column.getCanSort()) {
 		return <div className={cn(className)}>{title}</div>
 	}
 
 	return (
-		<div className={cn("flex items-center gap-2", className)}>
-			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<Button
-						variant="ghost"
-						size="sm"
-						className="data-[state=open]:bg-accent -ml-3 h-8"
-					>
-						<span>{title}</span>
-						{column.getIsSorted() === "desc" ? (
-							<ArrowDown />
-						) : column.getIsSorted() === "asc" ? (
-							<ArrowUp />
-						) : (
-							<ChevronsUpDown />
-						)}
-					</Button>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="start">
-					<DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-						<ArrowUp />
-						Asc
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-						<ArrowDown />
-						Desc
-					</DropdownMenuItem>
-					<DropdownMenuSeparator />
-					<DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-						<EyeOff />
-						Hide
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
-		</div>
+		<Button
+			size="sm"
+			variant="ghost"
+			className={cn("-ml-2.5", className)}
+			onClick={() => {
+				if (column.getIsSorted() === "desc") {
+					column.toggleSorting(false)
+				} else if (column.getIsSorted() === "asc") {
+					column.clearSorting()
+				} else {
+					column.toggleSorting(true)
+				}
+			}}
+		>
+			{title}
+			{column.getIsSorted() === "asc" ? (
+				<ArrowUp className="ml-2 h-4 w-4" />
+			) : column.getIsSorted() === "desc" ? (
+				<ArrowDown className="ml-2 h-4 w-4" />
+			) : (
+				<ArrowUpDown className="ml-2 h-4 w-4" />
+			)}
+		</Button>
 	)
 }
