@@ -90,7 +90,7 @@ export default function EmployeesTable({ employees }: EmployeesTableProps) {
 		openDialog("confirmDeleteEmployee", { employee })
 
 	const toolbarActions = [
-		<Button onClick={handleAdd}>
+		<Button key="add-employee" onClick={handleAdd}>
 			<Plus className="size-4" />
 			{tCommon("add")}
 		</Button>,
