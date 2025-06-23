@@ -63,7 +63,7 @@ export function DataTable<TData, TValue>({
 	})
 
 	return (
-		<div className="flex flex-1 flex-col gap-4">
+		<div className="flex h-full w-full flex-1 flex-col gap-4">
 			{(filters.length > 0 || toolbarActions) && (
 				<div className="flex flex-col items-end justify-between gap-2 px-2 md:flex-row md:items-center md:px-0">
 					<div className="flex flex-1 flex-wrap items-center gap-2">

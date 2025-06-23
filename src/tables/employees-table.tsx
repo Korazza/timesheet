@@ -57,22 +57,6 @@ export default function EmployeesTable({ employees }: EmployeesTableProps) {
 				)
 			},
 		},
-		{
-			id: "detail",
-			header: () => null,
-			cell: ({ row }) => (
-				<Button
-					variant="ghost"
-					size="icon"
-					onClick={() => router.push(`/employees/${row.original.id}`)}
-					title={tCommon("detail")}
-				>
-					<Eye className="size-4" />
-				</Button>
-			),
-			enableSorting: false,
-			enableHiding: false,
-		},
 	]
 
 	const filters: ToolbarFilterOption[] = [

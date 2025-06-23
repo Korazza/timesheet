@@ -40,10 +40,17 @@ export const getEmployee = async (): Promise<EmployeeWithAvatar | null> => {
 		: null
 }
 
+export const getEmployeeByUserId = cache(
+	async (employeeUserId: string): Promise<Employee | undefined> =>
+		db.query.employeesTable.findFirst({
+			where: eq(employeesTable.userId, employeeUserId),
+		})
+)
+
 export const getEmployeeById = cache(
 	async (employeeId: string): Promise<Employee | undefined> =>
 		db.query.employeesTable.findFirst({
-			where: eq(employeesTable.userId, employeeId),
+			where: eq(employeesTable.id, employeeId),
 		})
 )
 
