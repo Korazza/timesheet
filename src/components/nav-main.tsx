@@ -56,6 +56,9 @@ export function NavMain() {
 											<SidebarMenuSubButton
 												asChild
 												isActive={subItem.url === pathname}
+												onClick={() => {
+													if (isMobile) setOpenMobile(false)
+												}}
 											>
 												<Link href={subItem.url}>{t(subItem.key)}</Link>
 											</SidebarMenuSubButton>
