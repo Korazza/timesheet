@@ -15,6 +15,9 @@ export type DialogId =
 	| "createClient"
 	| "editClient"
 	| "confirmDeleteClient"
+	| "createEmployee"
+	| "editEmployee"
+	| "confirmDeleteEmployee"
 	| null
 
 type DialogRegistry = {

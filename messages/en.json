@@ -32,11 +32,16 @@
 		"close": "Close",
 		"openMenu": "Open menu",
 		"actions": "Actions",
+		"error": "An error occurred",
+		"noResults": "Nessun risultato trovato",
+		"reset": "Reset",
 		"descriptionPlaceholder": "Description...",
 		"client": "Client",
-		"error": "An error occurred",
-		"reset": "Reset",
-		"namePlaceholder": "Name..."
+		"namePlaceholder": "Name...",
+		"firstNamePlaceholder": "Name...",
+		"lastNamePlaceholder": "Surname...",
+		"emailPlaceholder": "Email...",
+		"rolePlaceholder": "Role"
 	},
 	"Sidebar": {
 		"dashboard": "Dashboard",
@@ -88,6 +93,12 @@
 		"Clients": {
 			"name": "Name",
 			"description": "Description"
+		},
+		"Employees": {
+			"name": "Name",
+			"lastName": "Surname",
+			"email": "Email",
+			"role": "Role"
 		},
 		"Pagination": {
 			"rowsPerPage": "Rows per page",
@@ -265,17 +276,5 @@
 			"task": "Task",
 			"ams": "AMS"
 		}
-	},
-	"Employees": {
-		"title": "Employees",
-		"name": "Name",
-		"surname": "Surname",
-		"email": "Email",
-		"role": "Role",
-		"createdAt": "Created at",
-		"actions": "Actions",
-		"viewDetails": "View details",
-		"exportAll": "Export all entries (Excel)",
-		"noEmployees": "No employees found"
 	}
 }

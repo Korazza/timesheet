@@ -32,11 +32,16 @@
 		"close": "Chiudi",
 		"openMenu": "Apri menu",
 		"actions": "Azioni",
+		"error": "Si è verificato un errore",
+		"noResults": "Nessun risultato trovato",
 		"reset": "Reset",
 		"descriptionPlaceholder": "Descrizione...",
 		"client": "Cliente",
 		"namePlaceholder": "Nome...",
-		"error": "Si è verificato un errore"
+		"firstNamePlaceholder": "Nome...",
+		"lastNamePlaceholder": "Cognome...",
+		"emailPlaceholder": "Email...",
+		"rolePlaceholder": "Ruolo"
 	},
 	"Sidebar": {
 		"dashboard": "Dashboard",
@@ -88,6 +93,12 @@
 		"Clients": {
 			"name": "Nome",
 			"description": "Descrizione"
+		},
+		"Employees": {
+			"name": "Nome",
+			"lastName": "Cognome",
+			"email": "Email",
+			"role": "Ruolo"
 		},
 		"Pagination": {
 			"rowsPerPage": "Righe per pagina",
@@ -186,6 +197,26 @@
 			"searchClient": "Cerca cliente...",
 			"noClientFound": "Nessun cliente trovato",
 			"selectActivityType": "Seleziona tipologia"
+		},
+		"Employee": {
+			"firstName": "Nome",
+			"lastName": "Cognome",
+			"email": "Email",
+			"role": "Ruolo",
+			"success": {
+				"created": "Dipendente aggiunto con successo",
+				"updated": "Dipendente aggiornato con successo"
+			},
+			"errors": {
+				"requiredFirstName": "Inserire un nome",
+				"requiredLastName": "Inserire un nome",
+				"requiredEmail": "Inserire un'email",
+				"requiredRole": "Scegliere un ruolo",
+				"invalidValue": "Valore errato",
+				"invalidEmail": "Email non valida",
+				"invalidEmailDomain": "Dominio dell'email errato"
+			},
+			"selectRole": "Seleziona ruolo"
 		}
 	},
 	"Dialog": {
@@ -220,6 +251,17 @@
 				"permit": "Permesso eliminato con successo",
 				"sick": "Malattia eliminata con successo"
 			}
+		},
+		"Employee": {
+			"createTitle": "Aggiungi dipendente",
+			"editTitle": "Modifica dipendente"
+		},
+		"EmployeeDelete": {
+			"title": "Conferma eliminazione",
+			"description": "Sei sicuro di voler eliminare il dipendente? L'operazione non può essere annullata.",
+			"cancel": "Annulla",
+			"confirm": "Conferma",
+			"success": "Dipendente eliminato con successo"
 		}
 	},
 	"SectionCards": {
@@ -265,17 +307,5 @@
 			"task": "Task",
 			"ams": "AMS"
 		}
-	},
-	"Employees": {
-		"title": "Dipendenti",
-		"name": "Nome",
-		"surname": "Cognome",
-		"email": "Email",
-		"role": "Ruolo",
-		"createdAt": "Creato il",
-		"actions": "Azioni",
-		"viewDetails": "Dettagli",
-		"exportAll": "Esporta tutte le consuntivazioni (Excel)",
-		"noEmployees": "Nessun dipendente trovato"
 	}
 }

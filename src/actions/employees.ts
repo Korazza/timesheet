@@ -1,4 +1,6 @@
-import { unstable_cache } from "next/cache"
+"use server"
+
+import { revalidateTag, unstable_cache } from "next/cache"
 import { eq } from "drizzle-orm"
 
 import db from "@/db"
@@ -48,9 +50,44 @@ export const getEmployeeById = cache(
 export const getEmployees = async (): Promise<Employee[]> => {
 	const user = await getUser()
 	if (!user) throw new Error("Unauthorized")
-
-	const employee = await getCachedEmployee(user.id)
-	assertIsAdmin(employee)
-
+	const userEmployee = await getCachedEmployee(user.id)
+	assertIsAdmin(userEmployee)
 	return db.query.employeesTable.findMany()
+}
+
+export const addEmployee = async (
+	employee: typeof employeesTable.$inferInsert
+) => {
+	const user = await getUser()
+	if (!user) throw new Error("Unauthorized")
+	const userEmployee = await getCachedEmployee(user.id)
+	assertIsAdmin(userEmployee)
+	return db.insert(employeesTable).values(employee).returning()
+}
+
+export const updateEmployee = async (employee: Employee) => {
+	const user = await getUser()
+	if (!user) throw new Error("Unauthorized")
+	const userEmployee = await getCachedEmployee(user.id)
+	assertIsAdmin(userEmployee)
+	await db
+		.update(employeesTable)
+		.set(employee)
+		.where(eq(employeesTable.id, employee.id))
+	revalidateTag("user")
+}
+
+export const deleteEmployee = async (employeeId: Employee["id"]) => {
+	const user = await getUser()
+	if (!user) throw new Error("Unauthorized")
+	const userEmployee = await getCachedEmployee(user.id)
+	assertIsAdmin(userEmployee)
+
+	const employee = await db.query.employeesTable.findFirst({
+		where: eq(employeesTable.id, employeeId),
+	})
+
+	if (employee) {
+		await db.delete(employeesTable).where(eq(employeesTable.id, employeeId))
+	}
 }
