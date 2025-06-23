@@ -45,7 +45,8 @@
 		"entries": "Consuntivazioni",
 		"holidays": "Ferie",
 		"permits": "Permessi",
-		"sick": "Malattia"
+		"sick": "Malattia",
+		"employees": "Dipendenti"
 	},
 	"Login": {
 		"description": "Accedi con il tuo account Google",
@@ -264,5 +265,17 @@
 			"task": "Task",
 			"ams": "AMS"
 		}
+	},
+	"Employees": {
+		"title": "Dipendenti",
+		"name": "Nome",
+		"surname": "Cognome",
+		"email": "Email",
+		"role": "Ruolo",
+		"createdAt": "Creato il",
+		"actions": "Azioni",
+		"viewDetails": "Dettagli",
+		"exportAll": "Esporta tutte le consuntivazioni (Excel)",
+		"noEmployees": "Nessun dipendente trovato"
 	}
 }

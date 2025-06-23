@@ -28,4 +28,5 @@ export type NavigationItem = {
 	url: string
 	icon: LucideIcon
 	items?: { key: string; url: string }[]
+	adminOnly?: boolean
 }
