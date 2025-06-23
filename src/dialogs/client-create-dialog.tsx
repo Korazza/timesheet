@@ -8,30 +8,23 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { Client } from "@/types"
+import { ClientCreateForm } from "@/forms/client-create-form"
 import { useDialog } from "@/hooks/use-dialog"
-import { ClientEditForm } from "@/components/forms/client-edit-form"
 
-interface ClientEditDialogProps {
-	client: Client | null
-}
-
-export function ClientEditDialog({ client }: ClientEditDialogProps) {
+export function ClientCreateDialog() {
 	const { activeDialog, closeDialog } = useDialog()
 	const t = useTranslations("Dialog.Client")
 
-	if (!client) return null
-
 	return (
 		<Dialog
-			open={activeDialog === "editClient"}
+			open={activeDialog === "createClient"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>{t("editTitle")}</DialogTitle>
+					<DialogTitle>{t("createTitle")}</DialogTitle>
 				</DialogHeader>
-				<ClientEditForm client={client} />
+				<ClientCreateForm />
 			</DialogContent>
 		</Dialog>
 	)

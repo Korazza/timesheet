@@ -1,4 +1,4 @@
-import { HolidayEntriesTable } from "@/components/tables/holiday-entries-table"
+import { HolidayEntriesTable } from "@/tables/holiday-entries-table"
 
 export default async function HolidayPage() {
 	return (

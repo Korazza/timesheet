@@ -20,9 +20,9 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
-import { SickEntryCreateDialog } from "@/components/dialogs/sick-entry-create-dialog"
-import { SickEntryEditDialog } from "@/components/dialogs/sick-entry-edit-dialog"
-import { EntryConfirmDeleteDialog } from "@/components/dialogs/entry-confirm-delete-dialog"
+import { SickEntryCreateDialog } from "@/dialogs/sick-entry-create-dialog"
+import { SickEntryEditDialog } from "@/dialogs/sick-entry-edit-dialog"
+import { EntryConfirmDeleteDialog } from "@/dialogs/entry-confirm-delete-dialog"
 import { Entry } from "@/types"
 import { useEntries } from "@/hooks/use-entries"
 import { useDialog } from "@/hooks/use-dialog"

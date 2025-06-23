@@ -20,18 +20,18 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
-import { HolidayEntryCreateDialog } from "@/components/dialogs/holiday-entry-create-dialog"
-import { HolidayEntryEditDialog } from "@/components/dialogs/holiday-entry-edit-dialog"
-import { EntryConfirmDeleteDialog } from "@/components/dialogs/entry-confirm-delete-dialog"
+import { PermitEntryCreateDialog } from "@/dialogs/permit-entry-create-dialog"
+import { PermitEntryEditDialog } from "@/dialogs/permit-entry-edit-dialog"
+import { EntryConfirmDeleteDialog } from "@/dialogs/entry-confirm-delete-dialog"
 import { Entry } from "@/types"
 import { useEntries } from "@/hooks/use-entries"
 import { useDialog } from "@/hooks/use-dialog"
 import { useTableColumns } from "./columns"
-import { HolidayEntriesTableToolbar } from "./toolbar"
-import { HolidayEntriesTablePagination } from "./pagination"
+import { PermitEntriesTableToolbar } from "./toolbar"
+import { PermitEntriesTablePagination } from "./pagination"
 
-export function HolidayEntriesTable() {
-	const { holidayEntries } = useEntries()
+export function PermitEntriesTable() {
+	const { permitEntries } = useEntries()
 	const { activeDialog, openDialog } = useDialog()
 	const [sorting, setSorting] = React.useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -42,7 +42,7 @@ export function HolidayEntriesTable() {
 
 	const onEditEntry = (entry: Entry) => {
 		setEditingEntry(entry)
-		openDialog("editHolidayEntry")
+		openDialog("editPermitEntry")
 	}
 
 	const onDeleteEntry = (entry: Entry) => {
@@ -51,7 +51,7 @@ export function HolidayEntriesTable() {
 	}
 
 	React.useEffect(() => {
-		if (activeDialog !== "editHolidayEntry") setEditingEntry(null)
+		if (activeDialog !== "editPermitEntry") setEditingEntry(null)
 		if (activeDialog !== "confirmDeleteEntry") setDeletingEntry(null)
 	}, [activeDialog])
 
@@ -61,7 +61,7 @@ export function HolidayEntriesTable() {
 	})
 
 	const table = useReactTable({
-		data: holidayEntries,
+		data: permitEntries,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
@@ -77,9 +77,9 @@ export function HolidayEntriesTable() {
 
 	return (
 		<div className="flex flex-1 flex-col gap-4">
-			<HolidayEntriesTableToolbar table={table} />
-			<HolidayEntryCreateDialog />
-			<HolidayEntryEditDialog entry={editingEntry} />
+			<PermitEntriesTableToolbar table={table} />
+			<PermitEntryCreateDialog />
+			<PermitEntryEditDialog entry={editingEntry} />
 			<EntryConfirmDeleteDialog entry={deletingEntry} />
 			<div className="border md:rounded-md md:shadow-xs">
 				<Table>
@@ -133,7 +133,7 @@ export function HolidayEntriesTable() {
 					</TableBody>
 				</Table>
 			</div>
-			<HolidayEntriesTablePagination table={table} />
+			<PermitEntriesTablePagination table={table} />
 		</div>
 	)
 }

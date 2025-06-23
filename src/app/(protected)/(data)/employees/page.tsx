@@ -1,5 +1,5 @@
 import { getEmployees } from "@/actions/employees"
-import EmployeesTable from "@/components/tables/employees-table"
+import EmployeesTable from "@/tables/employees-table"
 import type { Employee } from "@/types"
 
 export default async function EmployeesPage() {

@@ -8,30 +8,30 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { Entry } from "@/types"
-import { WorkingEntryEditForm } from "@/components/forms/working-entry-edit-form"
 import { useDialog } from "@/hooks/use-dialog"
+import { PermitEntryEditForm } from "@/forms/permit-entry-edit-form"
+import { Entry } from "@/types"
 
-interface WorkingEntryEditDialogProps {
+interface PermitEntryEditDialogProps {
 	entry?: Entry | null
 }
 
-export function WorkingEntryEditDialog({ entry }: WorkingEntryEditDialogProps) {
+export function PermitEntryEditDialog({ entry }: PermitEntryEditDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
-	const t = useTranslations("Dialog.Working")
+	const t = useTranslations("Dialog.Permit")
 
 	if (!entry) return null
 
 	return (
 		<Dialog
-			open={activeDialog === "editWorkingEntry"}
+			open={activeDialog === "editPermitEntry"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>{t("editTitle")}</DialogTitle>
 				</DialogHeader>
-				<WorkingEntryEditForm entry={entry} />
+				<PermitEntryEditForm entry={entry} />
 			</DialogContent>
 		</Dialog>
 	)

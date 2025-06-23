@@ -20,37 +20,48 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
-import { ClientCreateDialog } from "@/components/dialogs/client-create-dialog"
-import { ClientEditDialog } from "@/components/dialogs/client-edit-dialog"
-import { Client } from "@/types"
-import { useClients } from "@/hooks/use-clients"
+import { HolidayEntryCreateDialog } from "@/dialogs/holiday-entry-create-dialog"
+import { HolidayEntryEditDialog } from "@/dialogs/holiday-entry-edit-dialog"
+import { EntryConfirmDeleteDialog } from "@/dialogs/entry-confirm-delete-dialog"
+import { Entry } from "@/types"
+import { useEntries } from "@/hooks/use-entries"
 import { useDialog } from "@/hooks/use-dialog"
 import { useTableColumns } from "./columns"
-import { ClientsTableToolbar } from "./toolbar"
-import { ClientsTablePagination } from "./pagination"
+import { HolidayEntriesTableToolbar } from "./toolbar"
+import { HolidayEntriesTablePagination } from "./pagination"
 
-export function ClientsTable() {
-	const { clients } = useClients()
+export function HolidayEntriesTable() {
+	const { holidayEntries } = useEntries()
 	const { activeDialog, openDialog } = useDialog()
 	const [sorting, setSorting] = React.useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
 		[]
 	)
-	const [editingClient, setEditingClient] = React.useState<Client | null>(null)
+	const [editingEntry, setEditingEntry] = React.useState<Entry | null>(null)
+	const [deletingEntry, setDeletingEntry] = React.useState<Entry | null>(null)
 
-	const onEditClient = (client: Client) => {
-		setEditingClient(client)
-		openDialog("editClient")
+	const onEditEntry = (entry: Entry) => {
+		setEditingEntry(entry)
+		openDialog("editHolidayEntry")
+	}
+
+	const onDeleteEntry = (entry: Entry) => {
+		setDeletingEntry(entry)
+		openDialog("confirmDeleteEntry")
 	}
 
 	React.useEffect(() => {
-		if (activeDialog !== "editClient") setEditingClient(null)
+		if (activeDialog !== "editHolidayEntry") setEditingEntry(null)
+		if (activeDialog !== "confirmDeleteEntry") setDeletingEntry(null)
 	}, [activeDialog])
 
-	const columns = useTableColumns({ onEdit: onEditClient })
+	const columns = useTableColumns({
+		onEdit: onEditEntry,
+		onDelete: onDeleteEntry,
+	})
 
 	const table = useReactTable({
-		data: clients,
+		data: holidayEntries,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
@@ -66,9 +77,10 @@ export function ClientsTable() {
 
 	return (
 		<div className="flex flex-1 flex-col gap-4">
-			<ClientsTableToolbar table={table} />
-			<ClientCreateDialog />
-			<ClientEditDialog client={editingClient} />
+			<HolidayEntriesTableToolbar table={table} />
+			<HolidayEntryCreateDialog />
+			<HolidayEntryEditDialog entry={editingEntry} />
+			<EntryConfirmDeleteDialog entry={deletingEntry} />
 			<div className="border md:rounded-md md:shadow-xs">
 				<Table>
 					<TableHeader>
@@ -121,7 +133,7 @@ export function ClientsTable() {
 					</TableBody>
 				</Table>
 			</div>
-			<ClientsTablePagination table={table} />
+			<HolidayEntriesTablePagination table={table} />
 		</div>
 	)
 }

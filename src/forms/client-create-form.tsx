@@ -21,7 +21,7 @@ import { clientsTable } from "@/db/schema"
 import { useDialog } from "@/hooks/use-dialog"
 import { useClients } from "@/hooks/use-clients"
 import { addClient } from "@/actions/clients"
-import { Textarea } from "../ui/textarea"
+import { Textarea } from "@/components/ui/textarea"
 
 export function ClientCreateForm() {
 	const t = useTranslations("Form.Client")

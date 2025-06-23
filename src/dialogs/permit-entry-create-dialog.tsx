@@ -8,23 +8,29 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { ClientCreateForm } from "@/components/forms/client-create-form"
+import { PermitEntryCreateForm } from "@/forms/permit-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
 
-export function ClientCreateDialog() {
+interface PermitEntryCreatedialogProps {
+	date?: Date
+}
+
+export function PermitEntryCreateDialog({
+	date,
+}: PermitEntryCreatedialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
-	const t = useTranslations("Dialog.Client")
+	const t = useTranslations("Dialog.Permit")
 
 	return (
 		<Dialog
-			open={activeDialog === "createClient"}
+			open={activeDialog === "createPermitEntry"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>{t("createTitle")}</DialogTitle>
 				</DialogHeader>
-				<ClientCreateForm />
+				<PermitEntryCreateForm date={date} />
 			</DialogContent>
 		</Dialog>
 	)

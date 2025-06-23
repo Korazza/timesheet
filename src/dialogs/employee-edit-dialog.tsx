@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Employee } from "@/types"
 import { useDialog } from "@/hooks/use-dialog"
-import { EmployeeEditForm } from "@/components/forms/employee-edit-form"
+import { EmployeeEditForm } from "@/forms/employee-edit-form"
 
 interface EmployeeEditDialogProps {
 	employee?: Employee | null

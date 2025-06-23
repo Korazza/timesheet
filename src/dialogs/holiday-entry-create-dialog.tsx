@@ -8,29 +8,29 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { PermitEntryCreateForm } from "@/components/forms/permit-entry-create-form"
+import { HolidayEntryCreateForm } from "@/forms/holiday-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
 
-interface PermitEntryCreatedialogProps {
+interface HolidayEntryCreateDialogProps {
 	date?: Date
 }
 
-export function PermitEntryCreateDialog({
+export function HolidayEntryCreateDialog({
 	date,
-}: PermitEntryCreatedialogProps) {
+}: HolidayEntryCreateDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
-	const t = useTranslations("Dialog.Permit")
+	const t = useTranslations("Dialog.Holiday")
 
 	return (
 		<Dialog
-			open={activeDialog === "createPermitEntry"}
+			open={activeDialog === "createHolidayEntry"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>{t("createTitle")}</DialogTitle>
 				</DialogHeader>
-				<PermitEntryCreateForm date={date} />
+				<HolidayEntryCreateForm date={date} />
 			</DialogContent>
 		</Dialog>
 	)

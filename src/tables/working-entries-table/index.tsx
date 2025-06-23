@@ -20,18 +20,18 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
-import { PermitEntryCreateDialog } from "@/components/dialogs/permit-entry-create-dialog"
-import { PermitEntryEditDialog } from "@/components/dialogs/permit-entry-edit-dialog"
-import { EntryConfirmDeleteDialog } from "@/components/dialogs/entry-confirm-delete-dialog"
+import { WorkingEntryCreateDialog } from "@/dialogs/working-entry-create-dialog"
+import { WorkingEntryEditDialog } from "@/dialogs/working-entry-edit-dialog"
+import { EntryConfirmDeleteDialog } from "@/dialogs/entry-confirm-delete-dialog"
 import { Entry } from "@/types"
 import { useEntries } from "@/hooks/use-entries"
 import { useDialog } from "@/hooks/use-dialog"
 import { useTableColumns } from "./columns"
-import { PermitEntriesTableToolbar } from "./toolbar"
-import { PermitEntriesTablePagination } from "./pagination"
+import { WorkingEntriesTableToolbar } from "./toolbar"
+import { WorkingEntriesTablePagination } from "./pagination"
 
-export function PermitEntriesTable() {
-	const { permitEntries } = useEntries()
+export function WorkingEntriesTable() {
+	const { workingEntries } = useEntries()
 	const { activeDialog, openDialog } = useDialog()
 	const [sorting, setSorting] = React.useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -42,7 +42,7 @@ export function PermitEntriesTable() {
 
 	const onEditEntry = (entry: Entry) => {
 		setEditingEntry(entry)
-		openDialog("editPermitEntry")
+		openDialog("editWorkingEntry")
 	}
 
 	const onDeleteEntry = (entry: Entry) => {
@@ -51,7 +51,7 @@ export function PermitEntriesTable() {
 	}
 
 	React.useEffect(() => {
-		if (activeDialog !== "editPermitEntry") setEditingEntry(null)
+		if (activeDialog !== "editWorkingEntry") setEditingEntry(null)
 		if (activeDialog !== "confirmDeleteEntry") setDeletingEntry(null)
 	}, [activeDialog])
 
@@ -61,7 +61,7 @@ export function PermitEntriesTable() {
 	})
 
 	const table = useReactTable({
-		data: permitEntries,
+		data: workingEntries,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
@@ -77,9 +77,9 @@ export function PermitEntriesTable() {
 
 	return (
 		<div className="flex flex-1 flex-col gap-4">
-			<PermitEntriesTableToolbar table={table} />
-			<PermitEntryCreateDialog />
-			<PermitEntryEditDialog entry={editingEntry} />
+			<WorkingEntriesTableToolbar table={table} />
+			<WorkingEntryCreateDialog />
+			<WorkingEntryEditDialog entry={editingEntry} />
 			<EntryConfirmDeleteDialog entry={deletingEntry} />
 			<div className="border md:rounded-md md:shadow-xs">
 				<Table>
@@ -133,7 +133,7 @@ export function PermitEntriesTable() {
 					</TableBody>
 				</Table>
 			</div>
-			<PermitEntriesTablePagination table={table} />
+			<WorkingEntriesTablePagination table={table} />
 		</div>
 	)
 }

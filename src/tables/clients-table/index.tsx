@@ -20,48 +20,37 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
-import { WorkingEntryCreateDialog } from "@/components/dialogs/working-entry-create-dialog"
-import { WorkingEntryEditDialog } from "@/components/dialogs/working-entry-edit-dialog"
-import { EntryConfirmDeleteDialog } from "@/components/dialogs/entry-confirm-delete-dialog"
-import { Entry } from "@/types"
-import { useEntries } from "@/hooks/use-entries"
+import { ClientCreateDialog } from "@/dialogs/client-create-dialog"
+import { ClientEditDialog } from "@/dialogs/client-edit-dialog"
+import { Client } from "@/types"
+import { useClients } from "@/hooks/use-clients"
 import { useDialog } from "@/hooks/use-dialog"
 import { useTableColumns } from "./columns"
-import { WorkingEntriesTableToolbar } from "./toolbar"
-import { WorkingEntriesTablePagination } from "./pagination"
+import { ClientsTableToolbar } from "./toolbar"
+import { ClientsTablePagination } from "./pagination"
 
-export function WorkingEntriesTable() {
-	const { workingEntries } = useEntries()
+export function ClientsTable() {
+	const { clients } = useClients()
 	const { activeDialog, openDialog } = useDialog()
 	const [sorting, setSorting] = React.useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
 		[]
 	)
-	const [editingEntry, setEditingEntry] = React.useState<Entry | null>(null)
-	const [deletingEntry, setDeletingEntry] = React.useState<Entry | null>(null)
+	const [editingClient, setEditingClient] = React.useState<Client | null>(null)
 
-	const onEditEntry = (entry: Entry) => {
-		setEditingEntry(entry)
-		openDialog("editWorkingEntry")
-	}
-
-	const onDeleteEntry = (entry: Entry) => {
-		setDeletingEntry(entry)
-		openDialog("confirmDeleteEntry")
+	const onEditClient = (client: Client) => {
+		setEditingClient(client)
+		openDialog("editClient")
 	}
 
 	React.useEffect(() => {
-		if (activeDialog !== "editWorkingEntry") setEditingEntry(null)
-		if (activeDialog !== "confirmDeleteEntry") setDeletingEntry(null)
+		if (activeDialog !== "editClient") setEditingClient(null)
 	}, [activeDialog])
 
-	const columns = useTableColumns({
-		onEdit: onEditEntry,
-		onDelete: onDeleteEntry,
-	})
+	const columns = useTableColumns({ onEdit: onEditClient })
 
 	const table = useReactTable({
-		data: workingEntries,
+		data: clients,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
@@ -77,10 +66,9 @@ export function WorkingEntriesTable() {
 
 	return (
 		<div className="flex flex-1 flex-col gap-4">
-			<WorkingEntriesTableToolbar table={table} />
-			<WorkingEntryCreateDialog />
-			<WorkingEntryEditDialog entry={editingEntry} />
-			<EntryConfirmDeleteDialog entry={deletingEntry} />
+			<ClientsTableToolbar table={table} />
+			<ClientCreateDialog />
+			<ClientEditDialog client={editingClient} />
 			<div className="border md:rounded-md md:shadow-xs">
 				<Table>
 					<TableHeader>
@@ -133,7 +121,7 @@ export function WorkingEntriesTable() {
 					</TableBody>
 				</Table>
 			</div>
-			<WorkingEntriesTablePagination table={table} />
+			<ClientsTablePagination table={table} />
 		</div>
 	)
 }

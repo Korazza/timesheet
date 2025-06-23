@@ -8,30 +8,30 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
+import { Client } from "@/types"
 import { useDialog } from "@/hooks/use-dialog"
-import { Entry } from "@/types"
-import { HolidayEntryEditForm } from "@/components/forms/holiday-entry-edit-form"
+import { ClientEditForm } from "@/forms/client-edit-form"
 
-interface HolidayEntryEditDialogProps {
-	entry?: Entry | null
+interface ClientEditDialogProps {
+	client: Client | null
 }
 
-export function HolidayEntryEditDialog({ entry }: HolidayEntryEditDialogProps) {
+export function ClientEditDialog({ client }: ClientEditDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
-	const t = useTranslations("Dialog.Holiday")
+	const t = useTranslations("Dialog.Client")
 
-	if (!entry) return null
+	if (!client) return null
 
 	return (
 		<Dialog
-			open={activeDialog === "editHolidayEntry"}
+			open={activeDialog === "editClient"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>{t("editTitle")}</DialogTitle>
 				</DialogHeader>
-				<HolidayEntryEditForm entry={entry} />
+				<ClientEditForm client={client} />
 			</DialogContent>
 		</Dialog>
 	)

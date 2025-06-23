@@ -9,7 +9,7 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog"
 import { useDialog } from "@/hooks/use-dialog"
-import { SickEntryEditForm } from "@/components/forms/sick-entry-edit-form"
+import { SickEntryEditForm } from "@/forms/sick-entry-edit-form"
 import { Entry } from "@/types"
 
 interface SickEntryEditDialogProps {

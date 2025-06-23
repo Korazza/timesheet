@@ -8,29 +8,30 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { HolidayEntryCreateForm } from "@/components/forms/holiday-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
+import { Entry } from "@/types"
+import { HolidayEntryEditForm } from "@/forms/holiday-entry-edit-form"
 
-interface HolidayEntryCreateDialogProps {
-	date?: Date
+interface HolidayEntryEditDialogProps {
+	entry?: Entry | null
 }
 
-export function HolidayEntryCreateDialog({
-	date,
-}: HolidayEntryCreateDialogProps) {
+export function HolidayEntryEditDialog({ entry }: HolidayEntryEditDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
 	const t = useTranslations("Dialog.Holiday")
 
+	if (!entry) return null
+
 	return (
 		<Dialog
-			open={activeDialog === "createHolidayEntry"}
+			open={activeDialog === "editHolidayEntry"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>{t("createTitle")}</DialogTitle>
+					<DialogTitle>{t("editTitle")}</DialogTitle>
 				</DialogHeader>
-				<HolidayEntryCreateForm date={date} />
+				<HolidayEntryEditForm entry={entry} />
 			</DialogContent>
 		</Dialog>
 	)

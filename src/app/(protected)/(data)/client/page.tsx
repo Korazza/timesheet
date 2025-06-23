@@ -1,4 +1,4 @@
-import { ClientsTable } from "@/components/tables/clients-table"
+import { ClientsTable } from "@/tables/clients-table"
 
 export default async function ClientPage() {
 	return (

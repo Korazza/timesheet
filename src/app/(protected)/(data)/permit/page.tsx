@@ -1,4 +1,4 @@
-import { PermitEntriesTable } from "@/components/tables/permit-entries-table"
+import { PermitEntriesTable } from "@/tables/permit-entries-table"
 
 export default async function PermitPage() {
 	return (

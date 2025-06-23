@@ -1,36 +1,33 @@
 "use client"
 
-import { useTranslations } from "next-intl"
-
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { WorkingEntryCreateForm } from "@/components/forms/working-entry-create-form"
+import { SickEntryCreateForm } from "@/forms/sick-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
+import { useTranslations } from "next-intl"
 
-interface WorkingEntryCreateDialogProps {
+interface SickEntryCreateDialogProps {
 	date?: Date
 }
 
-export function WorkingEntryCreateDialog({
-	date,
-}: WorkingEntryCreateDialogProps) {
+export function SickEntryCreateDialog({ date }: SickEntryCreateDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
-	const t = useTranslations("Dialog.Working")
+	const t = useTranslations("Dialog.Sick")
 
 	return (
 		<Dialog
-			open={activeDialog === "createWorkingEntry"}
+			open={activeDialog === "createSickEntry"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>{t("createTitle")}</DialogTitle>
 				</DialogHeader>
-				<WorkingEntryCreateForm date={date} />
+				<SickEntryCreateForm date={date} />
 			</DialogContent>
 		</Dialog>
 	)

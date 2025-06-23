@@ -8,23 +8,29 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
-import { EmployeeCreateForm } from "@/components/forms/employee-create-form"
+import { WorkingEntryCreateForm } from "@/forms/working-entry-create-form"
 import { useDialog } from "@/hooks/use-dialog"
 
-export function EmployeeCreateDialog() {
+interface WorkingEntryCreateDialogProps {
+	date?: Date
+}
+
+export function WorkingEntryCreateDialog({
+	date,
+}: WorkingEntryCreateDialogProps) {
 	const { activeDialog, closeDialog } = useDialog()
-	const t = useTranslations("Dialog.Employee")
+	const t = useTranslations("Dialog.Working")
 
 	return (
 		<Dialog
-			open={activeDialog === "createEmployee"}
+			open={activeDialog === "createWorkingEntry"}
 			onOpenChange={(open) => !open && closeDialog()}
 		>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>{t("createTitle")}</DialogTitle>
 				</DialogHeader>
-				<EmployeeCreateForm />
+				<WorkingEntryCreateForm date={date} />
 			</DialogContent>
 		</Dialog>
 	)

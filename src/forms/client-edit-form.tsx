@@ -21,7 +21,7 @@ import { Client } from "@/types"
 import { useDialog } from "@/hooks/use-dialog"
 import { useClients } from "@/hooks/use-clients"
 import { updateClient } from "@/actions/clients"
-import { Textarea } from "../ui/textarea"
+import { Textarea } from "@/components/ui/textarea"
 
 interface ClientEditFormProps {
 	client: Client

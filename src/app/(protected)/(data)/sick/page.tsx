@@ -1,4 +1,4 @@
-import { SickEntriesTable } from "@/components/tables/sick-entries-table"
+import { SickEntriesTable } from "@/tables/sick-entries-table"
 
 export default async function SickPage() {
 	return (

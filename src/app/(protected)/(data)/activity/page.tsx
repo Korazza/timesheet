@@ -1,4 +1,4 @@
-import { WorkingEntriesTable } from "@/components/tables/working-entries-table"
+import { WorkingEntriesTable } from "@/tables/working-entries-table"
 
 export default async function ActivityPage() {
 	return (
