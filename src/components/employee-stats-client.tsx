@@ -2,8 +2,9 @@
 
 import { useTranslations } from "next-intl"
 import { useMemo, useState } from "react"
-import { format } from "date-fns"
-import { Mail } from "lucide-react"
+import { format, formatDate } from "date-fns"
+import { Mail, Sheet } from "lucide-react"
+import * as XLSX from "xlsx"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -16,6 +17,8 @@ import {
 import type { EntryWithClient, Employee } from "@/types"
 import { useEnumOptions } from "@/hooks/use-enum-options"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 
 interface EmployeeStatsClientProps {
 	entries: EntryWithClient[]
@@ -27,8 +30,9 @@ export function EmployeeStatsClient({
 	employee,
 }: EmployeeStatsClientProps) {
 	const t = useTranslations("EmployeeDetail")
+	const tExcel = useTranslations("ExcelEntries")
 	const now = useMemo(() => new Date(), [])
-	const { roleOptions } = useEnumOptions()
+	const { roleOptions, entryTypeOptions } = useEnumOptions()
 	const [selectedYear, setSelectedYear] = useState(now.getFullYear())
 	const [selectedMonth, setSelectedMonth] = useState(now.getMonth() + 1)
 
@@ -88,6 +92,67 @@ export function EmployeeStatsClient({
 		return allYears.sort((a, b) => b - a)
 	}, [entries, now])
 
+	const handleExportExcel = () => {
+		if (!filteredEntries.length) {
+			toast(t("noEntriesForMonth"))
+			return
+		}
+		// Ordina le entries per data crescente
+		const sortedEntries = [...filteredEntries].sort(
+			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+		)
+		const data = sortedEntries.map((e) => {
+			const overtime = Number(e.overtimeHours)
+			const row = {
+				[tExcel("date")]: e.date.toLocaleDateString(),
+				[tExcel("type")]:
+					entryTypeOptions.find((option) => option.value === e.type)?.label ||
+					e.type,
+				[tExcel("client")]: e.client ? e.client.name : e.clientId || "",
+				[tExcel("description")]: e.description || "",
+				[tExcel("hours")]: Number(e.hours),
+			}
+			if (overtime) {
+				row[tExcel("overtimeHours")] = overtime
+			}
+			return row
+		})
+		const ws = XLSX.utils.json_to_sheet(data)
+		// Imposta larghezza colonne
+		ws["!cols"] = [
+			{ wch: 14 }, // Date
+			{ wch: 14 }, // Type
+			{ wch: 28 }, // Client
+			{ wch: 48 }, // Description
+			{ wch: 12 }, // Hours
+			{ wch: 16 }, // Overtime
+		]
+		// Tipizza colonne: Date (d), Hours/Overtime (n)
+		const range = XLSX.utils.decode_range(ws["!ref"] || "")
+		for (let R = range.s.r + 1; R <= range.e.r; ++R) {
+			// Date
+			const cellDate = ws[XLSX.utils.encode_cell({ r: R, c: 0 })]
+			if (cellDate && typeof cellDate.v === "string") {
+				cellDate.v = new Date(cellDate.v)
+				cellDate.t = "d"
+			}
+			// Hours, Overtime
+			for (const C of [4, 5]) {
+				const cell = ws[XLSX.utils.encode_cell({ r: R, c: C })]
+				if (cell) {
+					cell.v = Number(cell.v)
+					cell.t = "n"
+				}
+			}
+		}
+		const wb = XLSX.utils.book_new()
+		XLSX.utils.book_append_sheet(wb, ws, "Entries")
+		XLSX.writeFile(
+			wb,
+			`${employee.firstName}_${employee.lastName}_${String(selectedMonth).padStart(2, "0")}-${selectedYear}.xlsx`
+		)
+	}
+
 	return (
 		<div className="mx-auto flex h-full w-full max-w-2xl flex-col gap-4 p-4">
 			<div className="from-primary/80 to-primary/40 text-primary-foreground dark:from-primary/80 dark:to-primary/40 dark:text-foreground flex flex-1 flex-col items-center justify-center rounded-xl bg-gradient-to-br p-6 shadow-lg">
@@ -109,41 +174,43 @@ export function EmployeeStatsClient({
 				</div>
 			</div>
 
-			<div className="bg-muted/60 border-muted-foreground/10 flex w-full items-center gap-4 rounded-lg border p-4 shadow-sm">
-				<div className="flex flex-col gap-2">
-					<div className="flex gap-2">
-						<Select
-							value={String(selectedMonth)}
-							onValueChange={(v) => setSelectedMonth(Number(v))}
-						>
-							<SelectTrigger className="border-muted-foreground/30 bg-background/90 h-10 w-32 rounded-md border px-3 text-base font-semibold shadow">
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								{Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
-									<SelectItem key={month} value={String(month)}>
-										{format(new Date(2000, month - 1, 1), "MMMM")}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-						<Select
-							value={String(selectedYear)}
-							onValueChange={(v) => setSelectedYear(Number(v))}
-						>
-							<SelectTrigger className="border-muted-foreground/30 bg-background/90 h-10 w-24 rounded-md border px-3 text-base font-semibold shadow">
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								{years.map((year) => (
-									<SelectItem key={year} value={String(year)}>
-										{year}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-					</div>
+			<div className="bg-muted/60 border-muted-foreground/10 flex w-full items-center justify-between gap-2 rounded-lg border p-4 shadow-sm">
+				<div className="flex gap-2">
+					<Select
+						value={String(selectedMonth)}
+						onValueChange={(v) => setSelectedMonth(Number(v))}
+					>
+						<SelectTrigger className="border-muted-foreground/30 bg-background/90 h-10 w-32 rounded-md border px-3 text-base font-semibold shadow">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
+								<SelectItem key={month} value={String(month)}>
+									{format(new Date(2000, month - 1, 1), "MMMM")}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+					<Select
+						value={String(selectedYear)}
+						onValueChange={(v) => setSelectedYear(Number(v))}
+					>
+						<SelectTrigger className="border-muted-foreground/30 bg-background/90 h-10 w-24 rounded-md border px-3 text-base font-semibold shadow">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{years.map((year) => (
+								<SelectItem key={year} value={String(year)}>
+									{year}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 				</div>
+				<Button variant="outline" onClick={handleExportExcel}>
+					<Sheet className="size-4" />
+					{t("exportExcel")}
+				</Button>
 			</div>
 
 			<div className="grid grid-cols-1 gap-4 md:grid-cols-2">

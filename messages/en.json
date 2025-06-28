@@ -199,6 +199,26 @@
 			"searchClient": "Search client...",
 			"noClientFound": "No client found",
 			"selectActivityType": "Select activity type"
+		},
+		"Employee": {
+			"firstName": "First name",
+			"lastName": "Last name",
+			"email": "Email",
+			"role": "Role",
+			"selectRole": "Select role",
+			"success": {
+				"created": "Employee added successfully",
+				"updated": "Employee updated successfully"
+			},
+			"errors": {
+				"requiredFirstName": "Please enter a first name",
+				"requiredLastName": "Please enter a last name",
+				"requiredEmail": "Please enter an email",
+				"requiredRole": "Please select a role",
+				"invalidValue": "Invalid value",
+				"invalidEmail": "Invalid email address",
+				"invalidEmailDomain": "Invalid email domain"
+			}
 		}
 	},
 	"Dialog": {
@@ -300,6 +320,15 @@
 		"holiday": "Holiday",
 		"permit": "Permit",
 		"sick": "Sick leave",
-		"email": "Email"
+		"email": "Email",
+		"exportExcel": "Export Excel"
+	},
+	"ExcelEntries": {
+		"date": "Date",
+		"type": "Type",
+		"client": "Client",
+		"description": "Description",
+		"hours": "Hours",
+		"overtimeHours": "Overtime hours"
 	}
 }

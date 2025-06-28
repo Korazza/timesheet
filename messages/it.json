@@ -198,6 +198,26 @@
 			"searchClient": "Cerca cliente...",
 			"noClientFound": "Nessun cliente trovato",
 			"selectActivityType": "Seleziona tipologia"
+		},
+		"Employee": {
+			"firstName": "Nome",
+			"lastName": "Cognome",
+			"email": "Email",
+			"role": "Ruolo",
+			"selectRole": "Seleziona ruolo",
+			"success": {
+				"created": "Dipendente aggiunto con successo",
+				"updated": "Dipendente aggiornato con successo"
+			},
+			"errors": {
+				"requiredFirstName": "Inserire un nome",
+				"requiredLastName": "Inserire un cognome",
+				"requiredEmail": "Inserire un'email",
+				"requiredRole": "Scegliere un ruolo",
+				"invalidValue": "Valore errato",
+				"invalidEmail": "Email non valida",
+				"invalidEmailDomain": "Dominio dell'email errato"
+			}
 		}
 	},
 	"Dialog": {
@@ -299,6 +319,15 @@
 		"holiday": "Ferie",
 		"permit": "Permesso",
 		"sick": "Malattia",
-		"email": "Email"
+		"email": "Email",
+		"exportExcel": "Esporta Excel"
+	},
+	"ExcelEntries": {
+		"date": "Data",
+		"type": "Tipologia",
+		"client": "Cliente",
+		"description": "Descrizione",
+		"hours": "Ore",
+		"overtimeHours": "Straordinari"
 	}
 }
