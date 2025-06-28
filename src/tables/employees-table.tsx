@@ -2,7 +2,8 @@
 
 import { useTranslations } from "next-intl"
 import { ColumnDef } from "@tanstack/react-table"
-import { Plus, Pencil, Trash } from "lucide-react"
+import { Plus, Pencil, Trash, Eye } from "lucide-react"
+import Link from "next/link"
 
 import { DataTable, DataTableAction } from "@/components/data-table"
 import { DataTableColumnHeader } from "@/components/data-table/column-header"
@@ -54,6 +55,17 @@ export function EmployeesTable({ employees }: EmployeesTableProps) {
 					</span>
 				)
 			},
+		},
+		{
+			id: "view",
+			header: "",
+			cell: ({ row }) => (
+				<Link href={`/employees/${row.original.id}`}>
+					<Button size="icon" variant="outline" className="size-8">
+						<Eye className="size-4" />
+					</Button>
+				</Link>
+			),
 		},
 	]
 

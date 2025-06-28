@@ -30,7 +30,6 @@
 		"cancel": "Annulla",
 		"save": "Salva",
 		"close": "Chiudi",
-		"detail": "Dettaglio",
 		"openMenu": "Apri menu",
 		"actions": "Azioni",
 		"error": "Si è verificato un errore",
@@ -199,26 +198,6 @@
 			"searchClient": "Cerca cliente...",
 			"noClientFound": "Nessun cliente trovato",
 			"selectActivityType": "Seleziona tipologia"
-		},
-		"Employee": {
-			"firstName": "Nome",
-			"lastName": "Cognome",
-			"email": "Email",
-			"role": "Ruolo",
-			"success": {
-				"created": "Dipendente aggiunto con successo",
-				"updated": "Dipendente aggiornato con successo"
-			},
-			"errors": {
-				"requiredFirstName": "Inserire un nome",
-				"requiredLastName": "Inserire un nome",
-				"requiredEmail": "Inserire un'email",
-				"requiredRole": "Scegliere un ruolo",
-				"invalidValue": "Valore errato",
-				"invalidEmail": "Email non valida",
-				"invalidEmailDomain": "Dominio dell'email errato"
-			},
-			"selectRole": "Seleziona ruolo"
 		}
 	},
 	"Dialog": {
@@ -309,5 +288,17 @@
 			"task": "Task",
 			"ams": "AMS"
 		}
+	},
+	"EmployeeDetail": {
+		"period": "Periodo",
+		"totalHours": "Ore totali",
+		"overtime": "Straordinari",
+		"daysWorked": "Giorni lavorati",
+		"uniqueClients": "Clienti unici",
+		"work": "Lavoro",
+		"holiday": "Ferie",
+		"permit": "Permesso",
+		"sick": "Malattia",
+		"email": "Email"
 	}
 }

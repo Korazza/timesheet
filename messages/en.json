@@ -41,7 +41,8 @@
 		"firstNamePlaceholder": "Name...",
 		"lastNamePlaceholder": "Surname...",
 		"emailPlaceholder": "Email...",
-		"rolePlaceholder": "Role"
+		"rolePlaceholder": "Role",
+		"detail": "Detail"
 	},
 	"Sidebar": {
 		"dashboard": "Dashboard",
@@ -232,6 +233,17 @@
 				"permit": "Permit deleted successfully",
 				"sick": "Sick leave deleted successfully"
 			}
+		},
+		"Employee": {
+			"createTitle": "Add employee",
+			"editTitle": "Edit employee"
+		},
+		"EmployeeDelete": {
+			"title": "Confirm deletion",
+			"description": "Are you sure you want to delete this employee? This action cannot be undone.",
+			"cancel": "Cancel",
+			"confirm": "Confirm",
+			"success": "Employee deleted successfully"
 		}
 	},
 	"SectionCards": {
@@ -277,5 +289,17 @@
 			"task": "Task",
 			"ams": "AMS"
 		}
+	},
+	"EmployeeDetail": {
+		"period": "Period",
+		"totalHours": "Total hours",
+		"overtime": "Overtime",
+		"daysWorked": "Days worked",
+		"uniqueClients": "Unique clients",
+		"work": "Work",
+		"holiday": "Holiday",
+		"permit": "Permit",
+		"sick": "Sick leave",
+		"email": "Email"
 	}
 }
