@@ -9,6 +9,8 @@ import { SickEntryCreateDialog } from "@/dialogs/sick-entry-create-dialog"
 import { SickEntryEditDialog } from "@/dialogs/sick-entry-edit-dialog"
 import { WorkingEntryCreateDialog } from "@/dialogs/working-entry-create-dialog"
 import { WorkingEntryEditDialog } from "@/dialogs/working-entry-edit-dialog"
+import { ClientCreateDialog } from "@/dialogs/client-create-dialog"
+import { ClientEditDialog } from "@/dialogs/client-edit-dialog"
 import { EmployeeCreateDialog } from "@/dialogs/employee-create-dialog"
 import { EmployeeEditDialog } from "@/dialogs/employee-edit-dialog"
 import { EmployeeConfirmDeleteDialog } from "@/dialogs/employee-confirm-delete-dialog"
@@ -37,6 +39,8 @@ export default async function DataLayout({
 						createWorkingEntry: <WorkingEntryCreateDialog />,
 						editWorkingEntry: <WorkingEntryEditDialog />,
 						confirmDeleteEntry: <EntryConfirmDeleteDialog />,
+						createClient: <ClientCreateDialog />,
+						editClient: <ClientEditDialog />,
 						createEmployee: <EmployeeCreateDialog />,
 						editEmployee: <EmployeeEditDialog />,
 						confirmDeleteEmployee: <EmployeeConfirmDeleteDialog />,

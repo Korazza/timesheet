@@ -1,6 +1,6 @@
 {
-  "id": "00000000-0000-0000-0000-000000000000",
-  "prevId": "",
+  "id": "a38caa4e-ece0-4874-bab8-8c97182163d6",
+  "prevId": "7d195e65-b685-44d9-887b-75384abee056",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -38,17 +38,16 @@
           "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {},
       "policies": {},
-      "isRLSEnabled": false
+      "checkConstraints": {},
+      "isRLSEnabled": true
     },
     "public.timesheet_employees": {
       "name": "timesheet_employees",
@@ -104,20 +103,18 @@
           "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": true
         }
       },
       "indexes": {
-        "idx_employees_email": {
-          "name": "idx_employees_email",
+        "idx_employees_user_id": {
+          "name": "idx_employees_user_id",
           "columns": [
             {
-              "expression": "email",
+              "expression": "user_id",
+              "isExpression": false,
               "asc": true,
-              "nulls": "last",
-              "opclass": "text_ops",
-              "isExpression": false
+              "nulls": "last"
             }
           ],
           "isUnique": false,
@@ -125,15 +122,14 @@
           "method": "btree",
           "with": {}
         },
-        "idx_employees_user_id": {
-          "name": "idx_employees_user_id",
+        "idx_employees_email": {
+          "name": "idx_employees_email",
           "columns": [
             {
-              "expression": "user_id",
+              "expression": "email",
+              "isExpression": false,
               "asc": true,
-              "nulls": "last",
-              "opclass": "text_ops",
-              "isExpression": false
+              "nulls": "last"
             }
           ],
           "isUnique": false,
@@ -146,16 +142,16 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "timesheet_employees_email_unique": {
+          "name": "timesheet_employees_email_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ],
-          "nullsNotDistinct": false,
-          "name": "timesheet_employees_email_unique"
+          ]
         }
       },
-      "checkConstraints": {},
       "policies": {},
-      "isRLSEnabled": false
+      "checkConstraints": {},
+      "isRLSEnabled": true
     },
     "public.timesheet_entries": {
       "name": "timesheet_entries",
@@ -230,8 +226,7 @@
           "name": "updated_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": true
         }
       },
       "indexes": {
@@ -240,10 +235,9 @@
           "columns": [
             {
               "expression": "employee_id",
+              "isExpression": false,
               "asc": true,
-              "nulls": "last",
-              "opclass": "uuid_ops",
-              "isExpression": false
+              "nulls": "last"
             }
           ],
           "isUnique": false,
@@ -253,25 +247,10 @@
         }
       },
       "foreignKeys": {
-        "timesheet_entries_client_id_timesheet_clients_id_fk": {
-          "name": "timesheet_entries_client_id_timesheet_clients_id_fk",
-          "tableFrom": "timesheet_entries",
-          "tableTo": "timesheet_clients",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "client_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
         "timesheet_entries_employee_id_timesheet_employees_id_fk": {
           "name": "timesheet_entries_employee_id_timesheet_employees_id_fk",
           "tableFrom": "timesheet_entries",
           "tableTo": "timesheet_employees",
-          "schemaTo": "public",
           "columnsFrom": [
             "employee_id"
           ],
@@ -280,42 +259,55 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "timesheet_entries_client_id_timesheet_clients_id_fk": {
+          "name": "timesheet_entries_client_id_timesheet_clients_id_fk",
+          "tableFrom": "timesheet_entries",
+          "tableTo": "timesheet_clients",
+          "columnsFrom": [
+            "client_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {},
       "policies": {},
-      "isRLSEnabled": false
+      "checkConstraints": {},
+      "isRLSEnabled": true
     }
   },
   "enums": {
     "public.activity_type": {
       "name": "activity_type",
+      "schema": "public",
       "values": [
         "PROJECT",
         "TASK",
         "AMS"
-      ],
-      "schema": "public"
+      ]
     },
     "public.entry_type": {
       "name": "entry_type",
+      "schema": "public",
       "values": [
         "WORK",
         "HOLIDAY",
         "PERMIT",
         "SICK"
-      ],
-      "schema": "public"
+      ]
     },
     "public.role": {
       "name": "role",
+      "schema": "public",
       "values": [
         "EMPLOYEE",
         "ADMIN"
-      ],
-      "schema": "public"
+      ]
     }
   },
   "schemas": {},
@@ -324,11 +316,8 @@
   "policies": {},
   "views": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "internal": {
     "tables": {}
   }
 }

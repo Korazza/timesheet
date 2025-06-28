@@ -49,7 +49,7 @@ export async function GET(request: Request) {
 			} else if (existing.email === email && existing.userId !== userId) {
 				await db
 					.update(employeesTable)
-					.set({ userId })
+					.set({ userId, updatedAt: new Date() })
 					.where(eq(employeesTable.email, email))
 			}
 

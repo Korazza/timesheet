@@ -206,7 +206,9 @@ export function TimesheetCalendar() {
 								<div
 									className={cn(
 										"bg-card text-card-foreground flex flex-col gap-1.5 border p-2 transition-all",
-										!isSameMonth(day, date) && "opacity-25",
+										viewType === "month" &&
+											!isSameMonth(day, date) &&
+											"opacity-25",
 										isToday(day) &&
 											"border-t-primary xl:border-primary border-2",
 										viewType === "week" && "gap-4",
@@ -550,7 +552,7 @@ function TimesheetCalendarEntryPill({
 
 	const content = (
 		<div
-			className="rounded px-2.5 py-1 shadow transition-shadow hover:shadow-xl md:px-3 md:py-2"
+			className="rounded px-2.5 py-1 shadow transition-shadow hover:shadow-xl md:px-3 md:py-1.5"
 			style={{
 				backgroundColor: colorMap[entry.type],
 				color: foregroundColorMap[entry.type],
@@ -576,7 +578,7 @@ function TimesheetCalendarEntryPill({
 			</div>
 
 			{(viewType === "day" || !isMobile) && entry.description && (
-				<div className="mt-1 line-clamp-2 max-w-full text-xs font-medium break-words opacity-80">
+				<div className="mt-0.5 line-clamp-2 max-w-full text-xs font-medium break-words opacity-80">
 					{entry.description}
 				</div>
 			)}

@@ -25,8 +25,8 @@ export type EntryWithClient = Entry & { client?: Client | null }
 
 export type NavigationItem = {
 	key: string
-	url: string
 	icon: LucideIcon
+	url: string
 	items?: { key: string; url: string }[]
 	adminOnly?: boolean
 }

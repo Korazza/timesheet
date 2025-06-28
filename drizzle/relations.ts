@@ -1,21 +1,21 @@
-import { relations } from "drizzle-orm/relations"
-import { clients, entries, employees } from "./schema"
+import { relations } from "drizzle-orm/relations";
+import { timesheetClients, timesheetEntries, timesheetEmployees } from "./schema";
 
-export const entriesRelations = relations(entries, ({ one }) => ({
-	client: one(clients, {
-		fields: [entries.clientId],
-		references: [clients.id],
+export const timesheetEntriesRelations = relations(timesheetEntries, ({one}) => ({
+	timesheetClient: one(timesheetClients, {
+		fields: [timesheetEntries.clientId],
+		references: [timesheetClients.id]
 	}),
-	employee: one(employees, {
-		fields: [entries.employeeId],
-		references: [employees.id],
+	timesheetEmployee: one(timesheetEmployees, {
+		fields: [timesheetEntries.employeeId],
+		references: [timesheetEmployees.id]
 	}),
-}))
+}));
 
-export const clientsRelations = relations(clients, ({ many }) => ({
-	entries: many(entries),
-}))
+export const timesheetClientsRelations = relations(timesheetClients, ({many}) => ({
+	timesheetEntries: many(timesheetEntries),
+}));
 
-export const employeesRelations = relations(employees, ({ many }) => ({
-	entries: many(entries),
-}))
+export const timesheetEmployeesRelations = relations(timesheetEmployees, ({many}) => ({
+	timesheetEntries: many(timesheetEntries),
+}));

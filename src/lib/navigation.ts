@@ -4,29 +4,23 @@ import type { NavigationItem } from "@/types"
 export const NAVIGATION_ITEMS: NavigationItem[] = [
 	{
 		key: "dashboard",
-		url: "/",
 		icon: LayoutDashboard,
+		url: "/",
 	},
 	{
 		key: "entries",
 		icon: Calendar,
 		url: "/entries",
-		items: [
-			{ key: "activities", url: "/activity" },
-			{ key: "holidays", url: "/holiday" },
-			{ key: "permits", url: "/permit" },
-			{ key: "sick", url: "/sick" },
-		],
 	},
 	{
 		key: "clients",
-		url: "/client",
 		icon: Handshake,
+		url: "/client",
 	},
 	{
 		key: "employees",
-		url: "/employees",
 		icon: Users,
+		url: "/employees",
 		adminOnly: true,
 	},
 ] as const

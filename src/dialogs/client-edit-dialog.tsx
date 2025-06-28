@@ -13,7 +13,7 @@ import { useDialog } from "@/hooks/use-dialog"
 import { ClientEditForm } from "@/forms/client-edit-form"
 
 interface ClientEditDialogProps {
-	client: Client | null
+	client?: Client | null
 }
 
 export function ClientEditDialog({ client }: ClientEditDialogProps) {

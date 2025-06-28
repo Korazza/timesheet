@@ -124,6 +124,7 @@
 			"name": "Nome",
 			"description": "Descrizione",
 			"success": {
+				"created": "Cliente creato con successo",
 				"updated": "Cliente aggiornato con successo"
 			},
 			"errors": {

@@ -16,7 +16,7 @@ export const addClient = async (client: typeof clientsTable.$inferInsert) => {
 export const updateClient = async (client: Client) => {
 	await db
 		.update(clientsTable)
-		.set(client)
+		.set({ ...client, updatedAt: new Date() })
 		.where(eq(clientsTable.id, client.id))
 }
 

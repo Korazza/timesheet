@@ -31,7 +31,10 @@ export const addEntry = async (entry: typeof entriesTable.$inferInsert) => {
 }
 
 export const updateEntry = async (entry: Entry) => {
-	await db.update(entriesTable).set(entry).where(eq(entriesTable.id, entry.id))
+	await db
+		.update(entriesTable)
+		.set({ ...entry, updatedAt: new Date() })
+		.where(eq(entriesTable.id, entry.id))
 }
 
 export const deleteEntry = async (entryId: Entry["id"]) => {

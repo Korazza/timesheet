@@ -42,8 +42,8 @@ export function ClientCreateForm() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: undefined,
-			description: undefined,
+			name: "",
+			description: "",
 		},
 	})
 	const { setClients } = useClients()
@@ -53,6 +53,7 @@ export function ClientCreateForm() {
 		try {
 			const client: typeof clientsTable.$inferInsert = {
 				...values,
+				description: values.description || null,
 			}
 
 			const [createdEntry] = await addClient(client)

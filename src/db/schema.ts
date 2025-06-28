@@ -43,14 +43,14 @@ export const employeesTable = pgTable(
 		index("idx_employees_user_id").on(table.userId),
 		index("idx_employees_email").on(table.email),
 	]
-)
+).enableRLS()
 
 export const clientsTable = pgTable("clients", {
 	id: uuid("id").defaultRandom().primaryKey(),
 	name: varchar("name", { length: 255 }).notNull(),
 	description: text("description"),
 	...timestamps,
-})
+}).enableRLS()
 
 export const entriesTable = pgTable(
 	"entries",
@@ -73,7 +73,7 @@ export const entriesTable = pgTable(
 		...timestamps,
 	},
 	(table) => [index("idx_entries_employee_id").on(table.employeeId)]
-)
+).enableRLS()
 
 export const entriesRelations = relations(entriesTable, ({ one }) => ({
 	employee: one(employeesTable, {

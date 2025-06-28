@@ -79,7 +79,7 @@ export const updateEmployee = async (employee: Employee) => {
 	assertIsAdmin(userEmployee)
 	await db
 		.update(employeesTable)
-		.set(employee)
+		.set({ ...employee, updatedAt: new Date() })
 		.where(eq(employeesTable.id, employee.id))
 	revalidateTag("user")
 }

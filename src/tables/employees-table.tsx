@@ -1,9 +1,8 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { ColumnDef } from "@tanstack/react-table"
-import { Plus, Pencil, Trash, Eye } from "lucide-react"
+import { Plus, Pencil, Trash } from "lucide-react"
 
 import { DataTable, DataTableAction } from "@/components/data-table"
 import { DataTableColumnHeader } from "@/components/data-table/column-header"
@@ -17,8 +16,7 @@ interface EmployeesTableProps {
 	employees: Employee[]
 }
 
-export default function EmployeesTable({ employees }: EmployeesTableProps) {
-	const router = useRouter()
+export function EmployeesTable({ employees }: EmployeesTableProps) {
 	const { openDialog } = useDialog()
 	const { roleOptions } = useEnumOptions()
 	const t = useTranslations("Tables.Employees")

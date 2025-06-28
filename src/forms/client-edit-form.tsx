@@ -58,6 +58,7 @@ export function ClientEditForm({ client }: ClientEditFormProps) {
 			const updatedClient: Client = {
 				...client,
 				...values,
+				description: values.description || null,
 			}
 
 			await updateClient(updatedClient)
