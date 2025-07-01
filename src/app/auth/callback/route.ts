@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server"
-// The client you created from the Server-Side Auth instructions
-import { createClient } from "@/utils/supabase/server"
-import db from "@/db"
+import { forbidden } from "next/navigation"
 import { eq, or } from "drizzle-orm"
+
+import db from "@/db"
 import { employeesTable } from "@/db/schema"
+import { createClient } from "@/utils/supabase/server"
 
 export async function GET(request: Request) {
 	const { searchParams, origin } = new URL(request.url)
@@ -29,7 +30,7 @@ export async function GET(request: Request) {
 			const lastName = user?.user_metadata.full_name.split(" ")[1] || ""
 
 			if (!userId || !email || !email.endsWith("@assertcode.it")) {
-				return NextResponse.redirect(`${origin}/denied`)
+				return forbidden()
 			}
 
 			const existing = await db.query.employeesTable.findFirst({

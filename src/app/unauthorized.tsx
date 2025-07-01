@@ -7,14 +7,22 @@ import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { logout } from "@/actions/auth"
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 
-export default function AccessDeniedPage() {
-	const t = useTranslations("Denied")
+export default function Unauthorized() {
+	const t = useTranslations("Unauthorized")
+
 	return (
 		<div className="flex min-h-[100dvh] flex-col items-center justify-center text-center">
 			<Card className="px-4">
-				<CardTitle className="text-primary mb-6 scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
-					{t("title")}
+				<CardTitle className="flex h-5 items-center space-x-4 text-sm">
+					<span className="text-primary scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
+						401
+					</span>
+					<Separator orientation="vertical" />
+					<span className="scroll-m-20 text-3xl font-semibold tracking-tight">
+						{t("title")}
+					</span>
 				</CardTitle>
 				<CardContent>
 					<Button

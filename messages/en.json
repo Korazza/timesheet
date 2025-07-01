@@ -298,8 +298,12 @@
 		"darkLabel": "Dark theme",
 		"systemLabel": "System theme ({mode})"
 	},
-	"Denied": {
-		"title": "Access Denied",
+	"Unauthorized": {
+		"title": "Unauthorized",
+		"logout": "Log out"
+	},
+	"Forbidden": {
+		"title": "Forbidden",
 		"logout": "Log out"
 	},
 	"Enums": {

@@ -1,6 +1,5 @@
-import type { Metadata } from "next"
 import { NextIntlClientProvider } from "next-intl"
-import { redirect } from "next/navigation"
+import { forbidden } from "next/navigation"
 
 import { AppSidebar } from "@/components/app-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
@@ -18,7 +17,7 @@ export default async function RootLayout({
 	const employee = await getEmployee()
 
 	if (!employee) {
-		redirect("/denied")
+		forbidden()
 	}
 
 	return (
