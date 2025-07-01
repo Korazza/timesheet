@@ -23,7 +23,7 @@ function getDailyHoursMap(entries: EntryWithClient[]) {
 	const map = new Map<string, number>()
 	for (const e of entries) {
 		const dayKey = new Date(e.date).toDateString()
-		map.set(dayKey, (map.get(dayKey) || 0) + e.hours + (e.overtimeHours || 0))
+		map.set(dayKey, (map.get(dayKey) || 0) + e.hours + (e.overtimeHours ?? 0))
 	}
 	return map
 }
@@ -89,7 +89,10 @@ export function SectionCards() {
 		const avg = getAverage(currentMap)
 		const prevAvg = getAverage(prevMap)
 
-		const currentTotal = monthEntries.reduce((sum, e) => sum + e.hours, 0)
+		const currentTotal = monthEntries.reduce(
+			(sum, e) => sum + e.hours + (e.overtimeHours ?? 0),
+			0
+		)
 
 		const currentOvertime = monthEntries.reduce(
 			(sum, e) => sum + (e.overtimeHours ?? 0),
