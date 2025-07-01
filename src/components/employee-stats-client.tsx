@@ -34,7 +34,7 @@ export function EmployeeStatsClient({
 	const now = useMemo(() => new Date(), [])
 	const { roleOptions, entryTypeOptions } = useEnumOptions()
 	const [selectedYear, setSelectedYear] = useState(now.getFullYear())
-	const [selectedMonth, setSelectedMonth] = useState(now.getMonth() + 1)
+	const [selectedMonth, setSelectedMonth] = useState(now.getMonth())
 
 	const filteredEntries = useMemo(() => {
 		return entries.filter((e) => {
@@ -94,10 +94,10 @@ export function EmployeeStatsClient({
 
 	const handleExportExcel = () => {
 		if (!filteredEntries.length) {
-			toast(t("noEntriesForMonth"))
+			toast.warning(t("noEntriesForMonth"))
 			return
 		}
-		// Ordina le entries per data crescente
+
 		const sortedEntries = [...filteredEntries].sort(
 			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
 		)
@@ -127,26 +127,8 @@ export function EmployeeStatsClient({
 			{ wch: 12 }, // Hours
 			{ wch: 16 }, // Overtime
 		]
-		// Tipizza colonne: Date (d), Hours/Overtime (n)
-		const range = XLSX.utils.decode_range(ws["!ref"] || "")
-		for (let R = range.s.r + 1; R <= range.e.r; ++R) {
-			// Date
-			const cellDate = ws[XLSX.utils.encode_cell({ r: R, c: 0 })]
-			if (cellDate && typeof cellDate.v === "string") {
-				cellDate.v = new Date(cellDate.v)
-				cellDate.t = "d"
-			}
-			// Hours, Overtime
-			for (const C of [4, 5]) {
-				const cell = ws[XLSX.utils.encode_cell({ r: R, c: C })]
-				if (cell) {
-					cell.v = Number(cell.v)
-					cell.t = "n"
-				}
-			}
-		}
 		const wb = XLSX.utils.book_new()
-		XLSX.utils.book_append_sheet(wb, ws, "Entries")
+		XLSX.utils.book_append_sheet(wb, ws, tExcel("entries"))
 		XLSX.writeFile(
 			wb,
 			`${employee.firstName}_${employee.lastName}_${String(selectedMonth).padStart(2, "0")}-${selectedYear}.xlsx`

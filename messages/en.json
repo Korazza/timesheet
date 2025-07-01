@@ -330,9 +330,11 @@
 		"permit": "Permit",
 		"sick": "Sick leave",
 		"email": "Email",
-		"exportExcel": "Export Excel"
+		"exportExcel": "Export Excel",
+		"noEntriesForMonth": "No entries for the current month"
 	},
 	"ExcelEntries": {
+		"entries": "Entries",
 		"date": "Date",
 		"type": "Type",
 		"client": "Client",

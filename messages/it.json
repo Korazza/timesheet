@@ -329,9 +329,11 @@
 		"permit": "Permesso",
 		"sick": "Malattia",
 		"email": "Email",
-		"exportExcel": "Esporta Excel"
+		"exportExcel": "Esporta Excel",
+		"noEntriesForMonth": "Nessuna consuntivazione per il mese corrente"
 	},
 	"ExcelEntries": {
+		"entries": "Consuntivazioni",
 		"date": "Data",
 		"type": "Tipologia",
 		"client": "Cliente",
