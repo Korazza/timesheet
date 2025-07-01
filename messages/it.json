@@ -297,12 +297,8 @@
 		"darkLabel": "Tema scuro",
 		"systemLabel": "Tema di sistema ({mode})"
 	},
-	"Unauthorized": {
-		"title": "Accesso negato",
-		"logout": "Esci"
-	},
-	"Forbidden": {
-		"title": "Accesso negato",
+	"Denied": {
+		"title": "Accesso Negato",
 		"logout": "Esci"
 	},
 	"Enums": {

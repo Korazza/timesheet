@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server"
-import { forbidden } from "next/navigation"
 import { eq, or } from "drizzle-orm"
 
 import db from "@/db"
@@ -30,7 +29,7 @@ export async function GET(request: Request) {
 			const lastName = user?.user_metadata.full_name.split(" ")[1] || ""
 
 			if (!userId || !email || !email.endsWith("@assertcode.it")) {
-				return forbidden()
+				return NextResponse.redirect(`${origin}/denied`)
 			}
 
 			const existing = await db.query.employeesTable.findFirst({
@@ -50,7 +49,7 @@ export async function GET(request: Request) {
 			} else if (existing.email === email && existing.userId !== userId) {
 				await db
 					.update(employeesTable)
-					.set({ userId, updatedAt: new Date() })
+					.set({ userId, firstName, lastName, updatedAt: new Date() })
 					.where(eq(employeesTable.email, email))
 			}
 
