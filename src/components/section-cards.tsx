@@ -17,14 +17,13 @@ import {
 import { useEntries } from "@/hooks/use-entries"
 import { getItalianHolidays } from "@/lib/calendar"
 import { cn } from "@/lib/utils"
+import { EntryWithClient } from "@/types"
 
-function getDailyHoursMap(
-	entries: typeof useEntries extends () => { entries: infer T } ? T : never
-) {
+function getDailyHoursMap(entries: EntryWithClient[]) {
 	const map = new Map<string, number>()
 	for (const e of entries) {
 		const dayKey = new Date(e.date).toDateString()
-		map.set(dayKey, (map.get(dayKey) || 0) + e.hours)
+		map.set(dayKey, (map.get(dayKey) || 0) + e.hours + (e.overtimeHours || 0))
 	}
 	return map
 }
