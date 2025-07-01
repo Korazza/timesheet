@@ -16,11 +16,20 @@
 		"overtimeHours": "Ore Straordinarie",
 		"add": "Aggiungi",
 		"edit": "Modifica",
+		"copy": "Copia",
+		"paste": "Incolla",
 		"delete": "Elimina",
 		"next": "Prossima sezione",
 		"previous": "Sezione precedente",
 		"selectDate": "Seleziona una data",
-		"selectRange": "Seleziona un intervallo"
+		"selectRange": "Seleziona un intervallo",
+		"success": {
+			"pasted": "Incollato con successo",
+			"moved": "Consuntivazione spostata con successo"
+		},
+		"error": {
+			"moved": "Si è verificato un errore durante lo spostamento della consuntivazione"
+		}
 	},
 	"Common": {
 		"edit": "Modifica",

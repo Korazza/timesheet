@@ -16,11 +16,20 @@
 		"overtimeHours": "Overtime hours",
 		"add": "Add",
 		"edit": "Edit",
+		"copy": "Copy",
+		"paste": "Paste",
 		"delete": "Delete",
 		"next": "Next section",
 		"previous": "Previous section",
 		"selectDate": "Select a date",
-		"selectRange": "Select a range"
+		"selectRange": "Select a range",
+		"success": {
+			"pasted": "Successfully pasted",
+			"moved": "Entry successfully moved"
+		},
+		"error": {
+			"moved": "An error occurred while moving the entry"
+		}
 	},
 	"Common": {
 		"edit": "Edit",
